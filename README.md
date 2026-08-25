@@ -3,7 +3,8 @@
 Live Quickshell documentation for AI coding agents.
 
 [![PyPI](https://img.shields.io/pypi/v/quickshell-docs-mcp?logo=pypi&logoColor=white)](https://pypi.org/project/quickshell-docs-mcp/)
-[![Python](https://img.shields.io/pypi/pyversions/quickshell-docs-mcp?logo=python&logoColor=white)](pyproject.toml)
+[![Python](https://img.shields.io/pypi/pyversions/quickshell-docs-mcp?logo=python&logoColor=white)](https://github.com/franklinnolasco7/quickshell-docs-mcp/blob/main/pyproject.toml)
+[![codecov](https://codecov.io/gh/franklinnolasco7/quickshell-docs-mcp/graph/badge.svg)](https://codecov.io/gh/franklinnolasco7/quickshell-docs-mcp)
 
 ---
 
