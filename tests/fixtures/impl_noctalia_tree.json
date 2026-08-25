@@ -1,0 +1,2097 @@
+{
+ "repo": "noctalia-dev/noctalia",
+ "ref": "legacy-v4",
+ "truncated": false,
+ "tree": [
+  {
+   "path": "Commons/Color.qml",
+   "type": "blob",
+   "size": 14108
+  },
+  {
+   "path": "Commons/FuzzySort.qml",
+   "type": "blob",
+   "size": 26781
+  },
+  {
+   "path": "Commons/I18n.qml",
+   "type": "blob",
+   "size": 12574
+  },
+  {
+   "path": "Commons/Icons.qml",
+   "type": "blob",
+   "size": 2641
+  },
+  {
+   "path": "Commons/IconsTabler.qml",
+   "type": "blob",
+   "size": 208848
+  },
+  {
+   "path": "Commons/Keybinds.qml",
+   "type": "blob",
+   "size": 5737
+  },
+  {
+   "path": "Commons/Logger.qml",
+   "type": "blob",
+   "size": 1693
+  },
+  {
+   "path": "Commons/Migrations/Migration27.qml",
+   "type": "blob",
+   "size": 739
+  },
+  {
+   "path": "Commons/Migrations/Migration28.qml",
+   "type": "blob",
+   "size": 1210
+  },
+  {
+   "path": "Commons/Migrations/Migration32.qml",
+   "type": "blob",
+   "size": 631
+  },
+  {
+   "path": "Commons/Migrations/Migration33.qml",
+   "type": "blob",
+   "size": 913
+  },
+  {
+   "path": "Commons/Migrations/Migration35.qml",
+   "type": "blob",
+   "size": 557
+  },
+  {
+   "path": "Commons/Migrations/Migration36.qml",
+   "type": "blob",
+   "size": 835
+  },
+  {
+   "path": "Commons/Migrations/Migration37.qml",
+   "type": "blob",
+   "size": 2769
+  },
+  {
+   "path": "Commons/Migrations/Migration38.qml",
+   "type": "blob",
+   "size": 1214
+  },
+  {
+   "path": "Commons/Migrations/Migration40.qml",
+   "type": "blob",
+   "size": 1674
+  },
+  {
+   "path": "Commons/Migrations/Migration42.qml",
+   "type": "blob",
+   "size": 841
+  },
+  {
+   "path": "Commons/Migrations/Migration43.qml",
+   "type": "blob",
+   "size": 842
+  },
+  {
+   "path": "Commons/Migrations/Migration44.qml",
+   "type": "blob",
+   "size": 1163
+  },
+  {
+   "path": "Commons/Migrations/Migration45.qml",
+   "type": "blob",
+   "size": 361
+  },
+  {
+   "path": "Commons/Migrations/Migration46.qml",
+   "type": "blob",
+   "size": 516
+  },
+  {
+   "path": "Commons/Migrations/Migration47.qml",
+   "type": "blob",
+   "size": 405
+  },
+  {
+   "path": "Commons/Migrations/Migration48.qml",
+   "type": "blob",
+   "size": 890
+  },
+  {
+   "path": "Commons/Migrations/Migration49.qml",
+   "type": "blob",
+   "size": 434
+  },
+  {
+   "path": "Commons/Migrations/Migration50.qml",
+   "type": "blob",
+   "size": 692
+  },
+  {
+   "path": "Commons/Migrations/Migration53.qml",
+   "type": "blob",
+   "size": 1149
+  },
+  {
+   "path": "Commons/Migrations/Migration54.qml",
+   "type": "blob",
+   "size": 809
+  },
+  {
+   "path": "Commons/Migrations/Migration55.qml",
+   "type": "blob",
+   "size": 623
+  },
+  {
+   "path": "Commons/Migrations/Migration56.qml",
+   "type": "blob",
+   "size": 588
+  },
+  {
+   "path": "Commons/Migrations/Migration57.qml",
+   "type": "blob",
+   "size": 467
+  },
+  {
+   "path": "Commons/Migrations/Migration58.qml",
+   "type": "blob",
+   "size": 385
+  },
+  {
+   "path": "Commons/Migrations/Migration59.qml",
+   "type": "blob",
+   "size": 769
+  },
+  {
+   "path": "Commons/Migrations/MigrationRegistry.qml",
+   "type": "blob",
+   "size": 3289
+  },
+  {
+   "path": "Commons/Settings.qml",
+   "type": "blob",
+   "size": 46343
+  },
+  {
+   "path": "Commons/ShellState.qml",
+   "type": "blob",
+   "size": 7812
+  },
+  {
+   "path": "Commons/Style.qml",
+   "type": "blob",
+   "size": 10611
+  },
+  {
+   "path": "Commons/ThemeIcons.qml",
+   "type": "blob",
+   "size": 7788
+  },
+  {
+   "path": "Commons/Time.qml",
+   "type": "blob",
+   "size": 7548
+  },
+  {
+   "path": "Modules/Background/Background.qml",
+   "type": "blob",
+   "size": 29641
+  },
+  {
+   "path": "Modules/Background/FadeOverlay.qml",
+   "type": "blob",
+   "size": 1322
+  },
+  {
+   "path": "Modules/Background/Overview.qml",
+   "type": "blob",
+   "size": 3596
+  },
+  {
+   "path": "Modules/Bar/Bar.qml",
+   "type": "blob",
+   "size": 27908
+  },
+  {
+   "path": "Modules/Bar/Extras/BarExclusionZone.qml",
+   "type": "blob",
+   "size": 2759
+  },
+  {
+   "path": "Modules/Bar/Extras/BarPill.qml",
+   "type": "blob",
+   "size": 4130
+  },
+  {
+   "path": "Modules/Bar/Extras/BarPillHorizontal.qml",
+   "type": "blob",
+   "size": 10767
+  },
+  {
+   "path": "Modules/Bar/Extras/BarPillVertical.qml",
+   "type": "blob",
+   "size": 11399
+  },
+  {
+   "path": "Modules/Bar/Extras/BarWidgetLoader.qml",
+   "type": "blob",
+   "size": 6677
+  },
+  {
+   "path": "Modules/Bar/Extras/TrayMenu.qml",
+   "type": "blob",
+   "size": 23457
+  },
+  {
+   "path": "Modules/Bar/Extras/WorkspacePill.qml",
+   "type": "blob",
+   "size": 7090
+  },
+  {
+   "path": "Modules/Bar/Widgets/ActiveWindow.qml",
+   "type": "blob",
+   "size": 14307
+  },
+  {
+   "path": "Modules/Bar/Widgets/AudioVisualizer.qml",
+   "type": "blob",
+   "size": 7058
+  },
+  {
+   "path": "Modules/Bar/Widgets/Battery.qml",
+   "type": "blob",
+   "size": 10112
+  },
+  {
+   "path": "Modules/Bar/Widgets/Bluetooth.qml",
+   "type": "blob",
+   "size": 4552
+  },
+  {
+   "path": "Modules/Bar/Widgets/Brightness.qml",
+   "type": "blob",
+   "size": 6853
+  },
+  {
+   "path": "Modules/Bar/Widgets/Clock.qml",
+   "type": "blob",
+   "size": 7996
+  },
+  {
+   "path": "Modules/Bar/Widgets/ControlCenter.qml",
+   "type": "blob",
+   "size": 5104
+  },
+  {
+   "path": "Modules/Bar/Widgets/CustomButton.qml",
+   "type": "blob",
+   "size": 27895
+  },
+  {
+   "path": "Modules/Bar/Widgets/DarkMode.qml",
+   "type": "blob",
+   "size": 2133
+  },
+  {
+   "path": "Modules/Bar/Widgets/KeepAwake.qml",
+   "type": "blob",
+   "size": 3521
+  },
+  {
+   "path": "Modules/Bar/Widgets/KeyboardLayout.qml",
+   "type": "blob",
+   "size": 3390
+  },
+  {
+   "path": "Modules/Bar/Widgets/Launcher.qml",
+   "type": "blob",
+   "size": 4318
+  },
+  {
+   "path": "Modules/Bar/Widgets/LockKeys.qml",
+   "type": "blob",
+   "size": 6224
+  },
+  {
+   "path": "Modules/Bar/Widgets/MediaMini.qml",
+   "type": "blob",
+   "size": 18122
+  },
+  {
+   "path": "Modules/Bar/Widgets/Microphone.qml",
+   "type": "blob",
+   "size": 6620
+  },
+  {
+   "path": "Modules/Bar/Widgets/Network.qml",
+   "type": "blob",
+   "size": 3850
+  },
+  {
+   "path": "Modules/Bar/Widgets/NightLight.qml",
+   "type": "blob",
+   "size": 3110
+  },
+  {
+   "path": "Modules/Bar/Widgets/NoctaliaPerformance.qml",
+   "type": "blob",
+   "size": 2464
+  },
+  {
+   "path": "Modules/Bar/Widgets/NotificationHistory.qml",
+   "type": "blob",
+   "size": 5071
+  },
+  {
+   "path": "Modules/Bar/Widgets/PowerProfile.qml",
+   "type": "blob",
+   "size": 2407
+  },
+  {
+   "path": "Modules/Bar/Widgets/SessionMenu.qml",
+   "type": "blob",
+   "size": 2311
+  },
+  {
+   "path": "Modules/Bar/Widgets/Settings.qml",
+   "type": "blob",
+   "size": 2547
+  },
+  {
+   "path": "Modules/Bar/Widgets/Spacer.qml",
+   "type": "blob",
+   "size": 1433
+  },
+  {
+   "path": "Modules/Bar/Widgets/SystemMonitor.qml",
+   "type": "blob",
+   "size": 39675
+  },
+  {
+   "path": "Modules/Bar/Widgets/Taskbar.qml",
+   "type": "blob",
+   "size": 39329
+  },
+  {
+   "path": "Modules/Bar/Widgets/Tray.qml",
+   "type": "blob",
+   "size": 20914
+  },
+  {
+   "path": "Modules/Bar/Widgets/VPN.qml",
+   "type": "blob",
+   "size": 4827
+  },
+  {
+   "path": "Modules/Bar/Widgets/Volume.qml",
+   "type": "blob",
+   "size": 6775
+  },
+  {
+   "path": "Modules/Bar/Widgets/WallpaperSelector.qml",
+   "type": "blob",
+   "size": 2734
+  },
+  {
+   "path": "Modules/Bar/Widgets/Workspace.qml",
+   "type": "blob",
+   "size": 35438
+  },
+  {
+   "path": "Modules/Cards/AudioCard.qml",
+   "type": "blob",
+   "size": 9286
+  },
+  {
+   "path": "Modules/Cards/BrightnessCard.qml",
+   "type": "blob",
+   "size": 4687
+  },
+  {
+   "path": "Modules/Cards/CalendarHeaderCard.qml",
+   "type": "blob",
+   "size": 4185
+  },
+  {
+   "path": "Modules/Cards/CalendarMonthCard.qml",
+   "type": "blob",
+   "size": 16086
+  },
+  {
+   "path": "Modules/Cards/MediaCard.qml",
+   "type": "blob",
+   "size": 13442
+  },
+  {
+   "path": "Modules/Cards/ProfileCard.qml",
+   "type": "blob",
+   "size": 3215
+  },
+  {
+   "path": "Modules/Cards/ShortcutsCard.qml",
+   "type": "blob",
+   "size": 2324
+  },
+  {
+   "path": "Modules/Cards/SystemMonitorCard.qml",
+   "type": "blob",
+   "size": 4098
+  },
+  {
+   "path": "Modules/Cards/WeatherCard.qml",
+   "type": "blob",
+   "size": 10355
+  },
+  {
+   "path": "Modules/DesktopWidgets/DesktopWidgets.qml",
+   "type": "blob",
+   "size": 20770
+  },
+  {
+   "path": "Modules/DesktopWidgets/DraggableDesktopWidget.qml",
+   "type": "blob",
+   "size": 23698
+  },
+  {
+   "path": "Modules/DesktopWidgets/Widgets/DesktopAudioVisualizer.qml",
+   "type": "blob",
+   "size": 3877
+  },
+  {
+   "path": "Modules/DesktopWidgets/Widgets/DesktopClock.qml",
+   "type": "blob",
+   "size": 3147
+  },
+  {
+   "path": "Modules/DesktopWidgets/Widgets/DesktopMediaPlayer.qml",
+   "type": "blob",
+   "size": 10065
+  },
+  {
+   "path": "Modules/DesktopWidgets/Widgets/DesktopSystemStat.qml",
+   "type": "blob",
+   "size": 9459
+  },
+  {
+   "path": "Modules/DesktopWidgets/Widgets/DesktopWeather.qml",
+   "type": "blob",
+   "size": 4978
+  },
+  {
+   "path": "Modules/Dock/Dock.qml",
+   "type": "blob",
+   "size": 40114
+  },
+  {
+   "path": "Modules/Dock/DockContent.qml",
+   "type": "blob",
+   "size": 42468
+  },
+  {
+   "path": "Modules/Dock/DockMenu.qml",
+   "type": "blob",
+   "size": 25611
+  },
+  {
+   "path": "Modules/LockScreen/LockContext.qml",
+   "type": "blob",
+   "size": 4714
+  },
+  {
+   "path": "Modules/LockScreen/LockScreen.qml",
+   "type": "blob",
+   "size": 13565
+  },
+  {
+   "path": "Modules/LockScreen/LockScreenBackground.qml",
+   "type": "blob",
+   "size": 8165
+  },
+  {
+   "path": "Modules/LockScreen/LockScreenHeader.qml",
+   "type": "blob",
+   "size": 5584
+  },
+  {
+   "path": "Modules/LockScreen/LockScreenPanel.qml",
+   "type": "blob",
+   "size": 43585
+  },
+  {
+   "path": "Modules/MainScreen/AllScreens.qml",
+   "type": "blob",
+   "size": 5269
+  },
+  {
+   "path": "Modules/MainScreen/Backgrounds/AllBackgrounds.qml",
+   "type": "blob",
+   "size": 5199
+  },
+  {
+   "path": "Modules/MainScreen/Backgrounds/BarBackground.qml",
+   "type": "blob",
+   "size": 15136
+  },
+  {
+   "path": "Modules/MainScreen/Backgrounds/PanelBackground.qml",
+   "type": "blob",
+   "size": 7311
+  },
+  {
+   "path": "Modules/MainScreen/Backgrounds/ShapeCornerHelper.qml",
+   "type": "blob",
+   "size": 2155
+  },
+  {
+   "path": "Modules/MainScreen/BarContentWindow.qml",
+   "type": "blob",
+   "size": 8619
+  },
+  {
+   "path": "Modules/MainScreen/BarExclusionZone.qml",
+   "type": "blob",
+   "size": 3180
+  },
+  {
+   "path": "Modules/MainScreen/BarTriggerZone.qml",
+   "type": "blob",
+   "size": 2455
+  },
+  {
+   "path": "Modules/MainScreen/MainScreen.qml",
+   "type": "blob",
+   "size": 25285
+  },
+  {
+   "path": "Modules/MainScreen/PopupMenuWindow.qml",
+   "type": "blob",
+   "size": 5240
+  },
+  {
+   "path": "Modules/MainScreen/ScreenCorners.qml",
+   "type": "blob",
+   "size": 7216
+  },
+  {
+   "path": "Modules/MainScreen/SmartPanel.qml",
+   "type": "blob",
+   "size": 63663
+  },
+  {
+   "path": "Modules/Notification/Notification.qml",
+   "type": "blob",
+   "size": 31355
+  },
+  {
+   "path": "Modules/OSD/OSD.qml",
+   "type": "blob",
+   "size": 31175
+  },
+  {
+   "path": "Modules/Panels/Audio/AudioPanel.qml",
+   "type": "blob",
+   "size": 32631
+  },
+  {
+   "path": "Modules/Panels/Battery/BatteryPanel.qml",
+   "type": "blob",
+   "size": 15442
+  },
+  {
+   "path": "Modules/Panels/Bluetooth/BluetoothPanel.qml",
+   "type": "blob",
+   "size": 6522
+  },
+  {
+   "path": "Modules/Panels/Brightness/BrightnessPanel.qml",
+   "type": "blob",
+   "size": 9956
+  },
+  {
+   "path": "Modules/Panels/Changelog/ChangelogPanel.qml",
+   "type": "blob",
+   "size": 5779
+  },
+  {
+   "path": "Modules/Panels/Clock/ClockPanel.qml",
+   "type": "blob",
+   "size": 1764
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/ControlCenterPanel.qml",
+   "type": "blob",
+   "size": 5642
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/ControlCenterWidgetLoader.qml",
+   "type": "blob",
+   "size": 3136
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/AirplaneMode.qml",
+   "type": "blob",
+   "size": 513
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/Bluetooth.qml",
+   "type": "blob",
+   "size": 662
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/CustomButton.qml",
+   "type": "blob",
+   "size": 5431
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/DarkMode.qml",
+   "type": "blob",
+   "size": 397
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/KeepAwake.qml",
+   "type": "blob",
+   "size": 366
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/Network.qml",
+   "type": "blob",
+   "size": 512
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/NightLight.qml",
+   "type": "blob",
+   "size": 1071
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/NoctaliaPerformance.qml",
+   "type": "blob",
+   "size": 407
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/Notifications.qml",
+   "type": "blob",
+   "size": 498
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/PowerProfile.qml",
+   "type": "blob",
+   "size": 478
+  },
+  {
+   "path": "Modules/Panels/ControlCenter/Widgets/WallpaperSelector.qml",
+   "type": "blob",
+   "size": 397
+  },
+  {
+   "path": "Modules/Panels/Dock/StaticDockPanel.qml",
+   "type": "blob",
+   "size": 21450
+  },
+  {
+   "path": "Modules/Panels/Launcher/ClipboardPreview.qml",
+   "type": "blob",
+   "size": 5847
+  },
+  {
+   "path": "Modules/Panels/Launcher/Launcher.qml",
+   "type": "blob",
+   "size": 6625
+  },
+  {
+   "path": "Modules/Panels/Launcher/LauncherCore.qml",
+   "type": "blob",
+   "size": 28737
+  },
+  {
+   "path": "Modules/Panels/Launcher/LauncherGridDelegate.qml",
+   "type": "blob",
+   "size": 9490
+  },
+  {
+   "path": "Modules/Panels/Launcher/LauncherListDelegate.qml",
+   "type": "blob",
+   "size": 9430
+  },
+  {
+   "path": "Modules/Panels/Launcher/LauncherOverlayWindow.qml",
+   "type": "blob",
+   "size": 16234
+  },
+  {
+   "path": "Modules/Panels/Launcher/Providers/ApplicationsProvider.qml",
+   "type": "blob",
+   "size": 26333
+  },
+  {
+   "path": "Modules/Panels/Launcher/Providers/CalculatorProvider.qml",
+   "type": "blob",
+   "size": 2462
+  },
+  {
+   "path": "Modules/Panels/Launcher/Providers/ClipboardProvider.qml",
+   "type": "blob",
+   "size": 14643
+  },
+  {
+   "path": "Modules/Panels/Launcher/Providers/CommandProvider.qml",
+   "type": "blob",
+   "size": 1503
+  },
+  {
+   "path": "Modules/Panels/Launcher/Providers/EmojiProvider.qml",
+   "type": "blob",
+   "size": 5295
+  },
+  {
+   "path": "Modules/Panels/Launcher/Providers/SessionProvider.qml",
+   "type": "blob",
+   "size": 6346
+  },
+  {
+   "path": "Modules/Panels/Launcher/Providers/SettingsProvider.qml",
+   "type": "blob",
+   "size": 6209
+  },
+  {
+   "path": "Modules/Panels/Launcher/Providers/WindowsProvider.qml",
+   "type": "blob",
+   "size": 5140
+  },
+  {
+   "path": "Modules/Panels/Media/MediaPlayerPanel.qml",
+   "type": "blob",
+   "size": 20649
+  },
+  {
+   "path": "Modules/Panels/Network/NetworkPanel.qml",
+   "type": "blob",
+   "size": 44747
+  },
+  {
+   "path": "Modules/Panels/NotificationHistory/NotificationHistoryPanel.qml",
+   "type": "blob",
+   "size": 40827
+  },
+  {
+   "path": "Modules/Panels/Plugins/PluginPanelSlot.qml",
+   "type": "blob",
+   "size": 7994
+  },
+  {
+   "path": "Modules/Panels/SessionMenu/SessionMenu.qml",
+   "type": "blob",
+   "size": 34787
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/BarWidgetSettingsDialog.qml",
+   "type": "blob",
+   "size": 5420
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/MonitorWidgetsConfig.qml",
+   "type": "blob",
+   "size": 9138
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/ActiveWindowSettings.qml",
+   "type": "blob",
+   "size": 5401
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/AudioVisualizerSettings.qml",
+   "type": "blob",
+   "size": 1983
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/BatterySettings.qml",
+   "type": "blob",
+   "size": 4673
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/BluetoothSettings.qml",
+   "type": "blob",
+   "size": 2075
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/BrightnessSettings.qml",
+   "type": "blob",
+   "size": 2818
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/ClockSettings.qml",
+   "type": "blob",
+   "size": 9632
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/ControlCenterSettings.qml",
+   "type": "blob",
+   "size": 4323
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/CustomButtonSettings.qml",
+   "type": "blob",
+   "size": 22759
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/DarkModeSettings.qml",
+   "type": "blob",
+   "size": 850
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/KeepAwakeSettings.qml",
+   "type": "blob",
+   "size": 1223
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/KeyboardLayoutSettings.qml",
+   "type": "blob",
+   "size": 2649
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/LauncherSettings.qml",
+   "type": "blob",
+   "size": 4296
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/LockKeysSettings.qml",
+   "type": "blob",
+   "size": 4737
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/MediaMiniSettings.qml",
+   "type": "blob",
+   "size": 8512
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/MicrophoneSettings.qml",
+   "type": "blob",
+   "size": 2724
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/NetworkSettings.qml",
+   "type": "blob",
+   "size": 2075
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/NightLightSettings.qml",
+   "type": "blob",
+   "size": 850
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/NoctaliaPerformanceSettings.qml",
+   "type": "blob",
+   "size": 850
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/NotificationHistorySettings.qml",
+   "type": "blob",
+   "size": 3310
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/PowerProfileSettings.qml",
+   "type": "blob",
+   "size": 850
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/SessionMenuSettings.qml",
+   "type": "blob",
+   "size": 940
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/SettingsSettings.qml",
+   "type": "blob",
+   "size": 867
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/SpacerSettings.qml",
+   "type": "blob",
+   "size": 879
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/SystemMonitorSettings.qml",
+   "type": "blob",
+   "size": 12314
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/TaskbarSettings.qml",
+   "type": "blob",
+   "size": 7250
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/TraySettings.qml",
+   "type": "blob",
+   "size": 5930
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/VPNSettings.qml",
+   "type": "blob",
+   "size": 1927
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/VolumeSettings.qml",
+   "type": "blob",
+   "size": 2724
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/WallpaperSelectorSettings.qml",
+   "type": "blob",
+   "size": 807
+  },
+  {
+   "path": "Modules/Panels/Settings/Bar/WidgetSettings/WorkspaceSettings.qml",
+   "type": "blob",
+   "size": 11409
+  },
+  {
+   "path": "Modules/Panels/Settings/ControlCenter/ControlCenterWidgetSettingsDialog.qml",
+   "type": "blob",
+   "size": 4129
+  },
+  {
+   "path": "Modules/Panels/Settings/ControlCenter/WidgetSettings/CustomButtonSettings.qml",
+   "type": "blob",
+   "size": 10122
+  },
+  {
+   "path": "Modules/Panels/Settings/DesktopWidgets/DesktopWidgetSettingsDialog.qml",
+   "type": "blob",
+   "size": 8277
+  },
+  {
+   "path": "Modules/Panels/Settings/DesktopWidgets/WidgetSettings/AudioVisualizerSettings.qml",
+   "type": "blob",
+   "size": 5088
+  },
+  {
+   "path": "Modules/Panels/Settings/DesktopWidgets/WidgetSettings/ClockSettings.qml",
+   "type": "blob",
+   "size": 9048
+  },
+  {
+   "path": "Modules/Panels/Settings/DesktopWidgets/WidgetSettings/MediaPlayerSettings.qml",
+   "type": "blob",
+   "size": 5060
+  },
+  {
+   "path": "Modules/Panels/Settings/DesktopWidgets/WidgetSettings/SystemStatSettings.qml",
+   "type": "blob",
+   "size": 4728
+  },
+  {
+   "path": "Modules/Panels/Settings/DesktopWidgets/WidgetSettings/WeatherSettings.qml",
+   "type": "blob",
+   "size": 1611
+  },
+  {
+   "path": "Modules/Panels/Settings/SettingsContent.qml",
+   "type": "blob",
+   "size": 43737
+  },
+  {
+   "path": "Modules/Panels/Settings/SettingsPanel.qml",
+   "type": "blob",
+   "size": 7839
+  },
+  {
+   "path": "Modules/Panels/Settings/SettingsPanelWindow.qml",
+   "type": "blob",
+   "size": 3566
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/About/AboutTab.qml",
+   "type": "blob",
+   "size": 912
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/About/ContributorsSubTab.qml",
+   "type": "blob",
+   "size": 7838
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/About/SupportersSubTab.qml",
+   "type": "blob",
+   "size": 6960
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/About/VersionSubTab.qml",
+   "type": "blob",
+   "size": 30813
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Audio/AudioTab.qml",
+   "type": "blob",
+   "size": 1045
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Audio/DevicesSubTab.qml",
+   "type": "blob",
+   "size": 1571
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Audio/MediaSubTab.qml",
+   "type": "blob",
+   "size": 3258
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Audio/VisualizerSubTab.qml",
+   "type": "blob",
+   "size": 2690
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Audio/VolumesSubTab.qml",
+   "type": "blob",
+   "size": 5552
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Bar/AppearanceSubTab.qml",
+   "type": "blob",
+   "size": 12154
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Bar/BarTab.qml",
+   "type": "blob",
+   "size": 7273
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Bar/BehaviorSubTab.qml",
+   "type": "blob",
+   "size": 6295
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Bar/MonitorsSubTab.qml",
+   "type": "blob",
+   "size": 9685
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Bar/WidgetsSubTab.qml",
+   "type": "blob",
+   "size": 4371
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/ColorScheme/ColorSchemeTab.qml",
+   "type": "blob",
+   "size": 2023
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/ColorScheme/ColorsSubTab.qml",
+   "type": "blob",
+   "size": 13759
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/ColorScheme/SchemeDownloader.qml",
+   "type": "blob",
+   "size": 36110
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/ColorScheme/TemplatesSubTab.qml",
+   "type": "blob",
+   "size": 9430
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Connections/BluetoothSubTab.qml",
+   "type": "blob",
+   "size": 27421
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Connections/ConnectionsTab.qml",
+   "type": "blob",
+   "size": 783
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Connections/WifiSubTab.qml",
+   "type": "blob",
+   "size": 54200
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/ControlCenter/AppearanceSubTab.qml",
+   "type": "blob",
+   "size": 2376
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/ControlCenter/CardsSubTab.qml",
+   "type": "blob",
+   "size": 2294
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/ControlCenter/ControlCenterTab.qml",
+   "type": "blob",
+   "size": 8274
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/ControlCenter/ShortcutsSubTab.qml",
+   "type": "blob",
+   "size": 3787
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/DesktopWidgetsTab.qml",
+   "type": "blob",
+   "size": 11410
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Display/BrightnessSubTab.qml",
+   "type": "blob",
+   "size": 9714
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Display/DisplayTab.qml",
+   "type": "blob",
+   "size": 2138
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Display/NightLightSubTab.qml",
+   "type": "blob",
+   "size": 6561
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Dock/AppearanceSubTab.qml",
+   "type": "blob",
+   "size": 16115
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Dock/DockTab.qml",
+   "type": "blob",
+   "size": 763
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Dock/MonitorsSubTab.qml",
+   "type": "blob",
+   "size": 1788
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/General/BasicsSubTab.qml",
+   "type": "blob",
+   "size": 7195
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/General/KeybindsSubTab.qml",
+   "type": "blob",
+   "size": 2659
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/GeneralTab.qml",
+   "type": "blob",
+   "size": 914
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Hooks/GeneralSubTab.qml",
+   "type": "blob",
+   "size": 746
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Hooks/HookEditPopup.qml",
+   "type": "blob",
+   "size": 2736
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Hooks/HookRow.qml",
+   "type": "blob",
+   "size": 490
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Hooks/HooksListSubTab.qml",
+   "type": "blob",
+   "size": 7074
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Hooks/HooksTab.qml",
+   "type": "blob",
+   "size": 783
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Idle/BehaviorSubTab.qml",
+   "type": "blob",
+   "size": 6558
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Idle/CustomSubTab.qml",
+   "type": "blob",
+   "size": 4489
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Idle/IdleCommandEditPopup.qml",
+   "type": "blob",
+   "size": 3440
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Idle/IdleTab.qml",
+   "type": "blob",
+   "size": 773
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Launcher/ClipboardSubTab.qml",
+   "type": "blob",
+   "size": 3915
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Launcher/ExecuteSubTab.qml",
+   "type": "blob",
+   "size": 1835
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Launcher/GeneralSubTab.qml",
+   "type": "blob",
+   "size": 6155
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Launcher/LauncherTab.qml",
+   "type": "blob",
+   "size": 903
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/LockScreen/AppearanceSubTab.qml",
+   "type": "blob",
+   "size": 4487
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/LockScreen/BehaviorSubTab.qml",
+   "type": "blob",
+   "size": 3233
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/LockScreen/LockScreenTab.qml",
+   "type": "blob",
+   "size": 909
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/LockScreen/MonitorsSubTab.qml",
+   "type": "blob",
+   "size": 1838
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Notifications/DurationSubTab.qml",
+   "type": "blob",
+   "size": 2286
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Notifications/GeneralSubTab.qml",
+   "type": "blob",
+   "size": 4993
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Notifications/HistorySubTab.qml",
+   "type": "blob",
+   "size": 2212
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Notifications/NotificationRuleEditPopup.qml",
+   "type": "blob",
+   "size": 3348
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Notifications/NotificationsTab.qml",
+   "type": "blob",
+   "size": 4447
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Notifications/RulesSubTab.qml",
+   "type": "blob",
+   "size": 3162
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Notifications/SoundSubTab.qml",
+   "type": "blob",
+   "size": 7895
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Notifications/ToastSubTab.qml",
+   "type": "blob",
+   "size": 1166
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Osd/EventsSubTab.qml",
+   "type": "blob",
+   "size": 1293
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Osd/GeneralSubTab.qml",
+   "type": "blob",
+   "size": 4168
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Osd/OsdTab.qml",
+   "type": "blob",
+   "size": 1477
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Plugins/AvailableSubTab.qml",
+   "type": "blob",
+   "size": 12573
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Plugins/InstalledSubTab.qml",
+   "type": "blob",
+   "size": 18548
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Plugins/PluginsTab.qml",
+   "type": "blob",
+   "size": 907
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Plugins/SourcesSubTab.qml",
+   "type": "blob",
+   "size": 4954
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Region/ClockPanelSubTab.qml",
+   "type": "blob",
+   "size": 4824
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Region/DateSubTab.qml",
+   "type": "blob",
+   "size": 1318
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Region/LocationSubTab.qml",
+   "type": "blob",
+   "size": 5848
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Region/RegionTab.qml",
+   "type": "blob",
+   "size": 905
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/SessionMenu/ActionsSubTab.qml",
+   "type": "blob",
+   "size": 8590
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/SessionMenu/GeneralSubTab.qml",
+   "type": "blob",
+   "size": 4077
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/SessionMenu/SessionMenuEntrySettingsDialog.qml",
+   "type": "blob",
+   "size": 5411
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/SessionMenu/SessionMenuTab.qml",
+   "type": "blob",
+   "size": 7702
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/SystemMonitor/GeneralSubTab.qml",
+   "type": "blob",
+   "size": 3667
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/SystemMonitor/PerformanceSubTab.qml",
+   "type": "blob",
+   "size": 1114
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/SystemMonitor/SystemMonitorTab.qml",
+   "type": "blob",
+   "size": 973
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/SystemMonitor/ThresholdsSubTab.qml",
+   "type": "blob",
+   "size": 9603
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/UserInterface/AppearanceSubTab.qml",
+   "type": "blob",
+   "size": 8351
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/UserInterface/PanelsSubTab.qml",
+   "type": "blob",
+   "size": 4244
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/UserInterface/ScreenCornersSubTab.qml",
+   "type": "blob",
+   "size": 1560
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/UserInterface/UserInterfaceTab.qml",
+   "type": "blob",
+   "size": 916
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Wallpaper/AutomationSubTab.qml",
+   "type": "blob",
+   "size": 2136
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Wallpaper/GeneralSubTab.qml",
+   "type": "blob",
+   "size": 8467
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Wallpaper/LookAndFeelSubTab.qml",
+   "type": "blob",
+   "size": 3628
+  },
+  {
+   "path": "Modules/Panels/Settings/Tabs/Wallpaper/WallpaperTab.qml",
+   "type": "blob",
+   "size": 2295
+  },
+  {
+   "path": "Modules/Panels/SetupWizard/SetupAppearanceStep.qml",
+   "type": "blob",
+   "size": 12093
+  },
+  {
+   "path": "Modules/Panels/SetupWizard/SetupCustomizeStep.qml",
+   "type": "blob",
+   "size": 17547
+  },
+  {
+   "path": "Modules/Panels/SetupWizard/SetupDockStep.qml",
+   "type": "blob",
+   "size": 6288
+  },
+  {
+   "path": "Modules/Panels/SetupWizard/SetupWallpaperStep.qml",
+   "type": "blob",
+   "size": 13562
+  },
+  {
+   "path": "Modules/Panels/SetupWizard/SetupWizard.qml",
+   "type": "blob",
+   "size": 15704
+  },
+  {
+   "path": "Modules/Panels/SystemStats/SystemStatsPanel.qml",
+   "type": "blob",
+   "size": 12080
+  },
+  {
+   "path": "Modules/Panels/Tray/TrayDrawerPanel.qml",
+   "type": "blob",
+   "size": 11137
+  },
+  {
+   "path": "Modules/Panels/Wallpaper/WallhavenSettingsPopup.qml",
+   "type": "blob",
+   "size": 30614
+  },
+  {
+   "path": "Modules/Panels/Wallpaper/WallpaperPanel.qml",
+   "type": "blob",
+   "size": 72068
+  },
+  {
+   "path": "Modules/Toast/Toast.qml",
+   "type": "blob",
+   "size": 12009
+  },
+  {
+   "path": "Modules/Toast/ToastOverlay.qml",
+   "type": "blob",
+   "size": 672
+  },
+  {
+   "path": "Modules/Toast/ToastScreen.qml",
+   "type": "blob",
+   "size": 8054
+  },
+  {
+   "path": "Modules/Tooltip/Tooltip.qml",
+   "type": "blob",
+   "size": 21214
+  },
+  {
+   "path": "Services/Compositor/CompositorService.qml",
+   "type": "blob",
+   "size": 19909
+  },
+  {
+   "path": "Services/Compositor/ExtWorkspaceService.qml",
+   "type": "blob",
+   "size": 7887
+  },
+  {
+   "path": "Services/Compositor/HyprlandService.qml",
+   "type": "blob",
+   "size": 21728
+  },
+  {
+   "path": "Services/Compositor/LabwcService.qml",
+   "type": "blob",
+   "size": 8018
+  },
+  {
+   "path": "Services/Compositor/MangoService.qml",
+   "type": "blob",
+   "size": 15075
+  },
+  {
+   "path": "Services/Compositor/NiriService.qml",
+   "type": "blob",
+   "size": 9116
+  },
+  {
+   "path": "Services/Compositor/SwayService.qml",
+   "type": "blob",
+   "size": 16604
+  },
+  {
+   "path": "Services/Control/CurrentScreenDetector.qml",
+   "type": "blob",
+   "size": 6418
+  },
+  {
+   "path": "Services/Control/CustomButtonIPCService.qml",
+   "type": "blob",
+   "size": 11929
+  },
+  {
+   "path": "Services/Control/HooksService.qml",
+   "type": "blob",
+   "size": 9194
+  },
+  {
+   "path": "Services/Control/IPCService.qml",
+   "type": "blob",
+   "size": 33260
+  },
+  {
+   "path": "Services/Hardware/BatteryService.qml",
+   "type": "blob",
+   "size": 12338
+  },
+  {
+   "path": "Services/Hardware/BrightnessService.qml",
+   "type": "blob",
+   "size": 20671
+  },
+  {
+   "path": "Services/Keyboard/ClipboardService.qml",
+   "type": "blob",
+   "size": 17619
+  },
+  {
+   "path": "Services/Keyboard/EmojiService.qml",
+   "type": "blob",
+   "size": 8011
+  },
+  {
+   "path": "Services/Keyboard/KeyboardLayoutService.qml",
+   "type": "blob",
+   "size": 8821
+  },
+  {
+   "path": "Services/Keyboard/LockKeysService.qml",
+   "type": "blob",
+   "size": 4954
+  },
+  {
+   "path": "Services/Location/Calendar/EvolutionDataServer.qml",
+   "type": "blob",
+   "size": 4663
+  },
+  {
+   "path": "Services/Location/Calendar/Khal.qml",
+   "type": "blob",
+   "size": 5615
+  },
+  {
+   "path": "Services/Location/CalendarService.qml",
+   "type": "blob",
+   "size": 3065
+  },
+  {
+   "path": "Services/Location/DarkModeService.qml",
+   "type": "blob",
+   "size": 5714
+  },
+  {
+   "path": "Services/Location/LocationService.qml",
+   "type": "blob",
+   "size": 13138
+  },
+  {
+   "path": "Services/Location/NightLightService.qml",
+   "type": "blob",
+   "size": 8975
+  },
+  {
+   "path": "Services/Media/AudioService.qml",
+   "type": "blob",
+   "size": 35708
+  },
+  {
+   "path": "Services/Media/MediaService.qml",
+   "type": "blob",
+   "size": 12216
+  },
+  {
+   "path": "Services/Media/SpectrumService.qml",
+   "type": "blob",
+   "size": 2487
+  },
+  {
+   "path": "Services/Networking/BluetoothRssi.qml",
+   "type": "blob",
+   "size": 1832
+  },
+  {
+   "path": "Services/Networking/BluetoothService.qml",
+   "type": "blob",
+   "size": 16225
+  },
+  {
+   "path": "Services/Networking/NetworkService.qml",
+   "type": "blob",
+   "size": 36278
+  },
+  {
+   "path": "Services/Networking/VPNService.qml",
+   "type": "blob",
+   "size": 7480
+  },
+  {
+   "path": "Services/Noctalia/GitHubService.qml",
+   "type": "blob",
+   "size": 11151
+  },
+  {
+   "path": "Services/Noctalia/PluginRegistry.qml",
+   "type": "blob",
+   "size": 19166
+  },
+  {
+   "path": "Services/Noctalia/PluginService.qml",
+   "type": "blob",
+   "size": 78833
+  },
+  {
+   "path": "Services/Noctalia/SupporterService.qml",
+   "type": "blob",
+   "size": 4279
+  },
+  {
+   "path": "Services/Noctalia/TelemetryService.qml",
+   "type": "blob",
+   "size": 4261
+  },
+  {
+   "path": "Services/Noctalia/UpdateService.qml",
+   "type": "blob",
+   "size": 13357
+  },
+  {
+   "path": "Services/Power/IdleInhibitorService.qml",
+   "type": "blob",
+   "size": 5712
+  },
+  {
+   "path": "Services/Power/IdleService.qml",
+   "type": "blob",
+   "size": 11780
+  },
+  {
+   "path": "Services/Power/PowerProfileService.qml",
+   "type": "blob",
+   "size": 3662
+  },
+  {
+   "path": "Services/System/FontService.qml",
+   "type": "blob",
+   "size": 5019
+  },
+  {
+   "path": "Services/System/HostService.qml",
+   "type": "blob",
+   "size": 6556
+  },
+  {
+   "path": "Services/System/NotificationRulesService.qml",
+   "type": "blob",
+   "size": 2342
+  },
+  {
+   "path": "Services/System/NotificationService.qml",
+   "type": "blob",
+   "size": 40148
+  },
+  {
+   "path": "Services/System/ProgramCheckerService.qml",
+   "type": "blob",
+   "size": 10743
+  },
+  {
+   "path": "Services/System/SoundService.qml",
+   "type": "blob",
+   "size": 6690
+  },
+  {
+   "path": "Services/System/SystemStatService.qml",
+   "type": "blob",
+   "size": 52105
+  },
+  {
+   "path": "Services/Theming/AppThemeService.qml",
+   "type": "blob",
+   "size": 3215
+  },
+  {
+   "path": "Services/Theming/ColorSchemeService.qml",
+   "type": "blob",
+   "size": 10797
+  },
+  {
+   "path": "Services/Theming/TemplateProcessor.qml",
+   "type": "blob",
+   "size": 23466
+  },
+  {
+   "path": "Services/Theming/TemplateRegistry.qml",
+   "type": "blob",
+   "size": 19057
+  },
+  {
+   "path": "Services/UI/BarService.qml",
+   "type": "blob",
+   "size": 22872
+  },
+  {
+   "path": "Services/UI/BarWidgetRegistry.qml",
+   "type": "blob",
+   "size": 23389
+  },
+  {
+   "path": "Services/UI/ControlCenterWidgetRegistry.qml",
+   "type": "blob",
+   "size": 5047
+  },
+  {
+   "path": "Services/UI/DesktopWidgetRegistry.qml",
+   "type": "blob",
+   "size": 13219
+  },
+  {
+   "path": "Services/UI/ImageCacheService.qml",
+   "type": "blob",
+   "size": 28499
+  },
+  {
+   "path": "Services/UI/LauncherProviderRegistry.qml",
+   "type": "blob",
+   "size": 3290
+  },
+  {
+   "path": "Services/UI/PanelService.qml",
+   "type": "blob",
+   "size": 12553
+  },
+  {
+   "path": "Services/UI/SettingsPanelService.qml",
+   "type": "blob",
+   "size": 3822
+  },
+  {
+   "path": "Services/UI/SettingsSearchService.qml",
+   "type": "blob",
+   "size": 3974
+  },
+  {
+   "path": "Services/UI/ToastService.qml",
+   "type": "blob",
+   "size": 1076
+  },
+  {
+   "path": "Services/UI/TooltipService.qml",
+   "type": "blob",
+   "size": 4392
+  },
+  {
+   "path": "Services/UI/WallhavenService.qml",
+   "type": "blob",
+   "size": 8714
+  },
+  {
+   "path": "Services/UI/WallpaperService.qml",
+   "type": "blob",
+   "size": 58252
+  },
+  {
+   "path": "Widgets/AudioSpectrum/NLinearSpectrum.qml",
+   "type": "blob",
+   "size": 1990
+  },
+  {
+   "path": "Widgets/AudioSpectrum/NMirroredSpectrum.qml",
+   "type": "blob",
+   "size": 1964
+  },
+  {
+   "path": "Widgets/AudioSpectrum/NWaveSpectrum.qml",
+   "type": "blob",
+   "size": 1932
+  },
+  {
+   "path": "Widgets/NBattery.qml",
+   "type": "blob",
+   "size": 6972
+  },
+  {
+   "path": "Widgets/NBox.qml",
+   "type": "blob",
+   "size": 717
+  },
+  {
+   "path": "Widgets/NBusyIndicator.qml",
+   "type": "blob",
+   "size": 1679
+  },
+  {
+   "path": "Widgets/NButton.qml",
+   "type": "blob",
+   "size": 5309
+  },
+  {
+   "path": "Widgets/NCheckbox.qml",
+   "type": "blob",
+   "size": 1992
+  },
+  {
+   "path": "Widgets/NCircleStat.qml",
+   "type": "blob",
+   "size": 4993
+  },
+  {
+   "path": "Widgets/NClock.qml",
+   "type": "blob",
+   "size": 11968
+  },
+  {
+   "path": "Widgets/NCollapsible.qml",
+   "type": "blob",
+   "size": 4920
+  },
+  {
+   "path": "Widgets/NColorChoice.qml",
+   "type": "blob",
+   "size": 2758
+  },
+  {
+   "path": "Widgets/NColorPicker.qml",
+   "type": "blob",
+   "size": 2137
+  },
+  {
+   "path": "Widgets/NColorPickerDialog.qml",
+   "type": "blob",
+   "size": 25795
+  },
+  {
+   "path": "Widgets/NColorSlider.qml",
+   "type": "blob",
+   "size": 6522
+  },
+  {
+   "path": "Widgets/NComboBox.qml",
+   "type": "blob",
+   "size": 10472
+  },
+  {
+   "path": "Widgets/NContextMenu.qml",
+   "type": "blob",
+   "size": 5317
+  },
+  {
+   "path": "Widgets/NDateTimeTokens.qml",
+   "type": "blob",
+   "size": 12765
+  },
+  {
+   "path": "Widgets/NDivider.qml",
+   "type": "blob",
+   "size": 610
+  },
+  {
+   "path": "Widgets/NDropShadow.qml",
+   "type": "blob",
+   "size": 963
+  },
+  {
+   "path": "Widgets/NFilePicker.qml",
+   "type": "blob",
+   "size": 29514
+  },
+  {
+   "path": "Widgets/NGraph.qml",
+   "type": "blob",
+   "size": 6201
+  },
+  {
+   "path": "Widgets/NGridView.qml",
+   "type": "blob",
+   "size": 13680
+  },
+  {
+   "path": "Widgets/NHeader.qml",
+   "type": "blob",
+   "size": 737
+  },
+  {
+   "path": "Widgets/NIcon.qml",
+   "type": "blob",
+   "size": 805
+  },
+  {
+   "path": "Widgets/NIconButton.qml",
+   "type": "blob",
+   "size": 4357
+  },
+  {
+   "path": "Widgets/NIconButtonHot.qml",
+   "type": "blob",
+   "size": 4204
+  },
+  {
+   "path": "Widgets/NIconPicker.qml",
+   "type": "blob",
+   "size": 4300
+  },
+  {
+   "path": "Widgets/NImageRounded.qml",
+   "type": "blob",
+   "size": 2931
+  },
+  {
+   "path": "Widgets/NInputAction.qml",
+   "type": "blob",
+   "size": 1148
+  },
+  {
+   "path": "Widgets/NKeybindRecorder.qml",
+   "type": "blob",
+   "size": 11230
+  },
+  {
+   "path": "Widgets/NLabel.qml",
+   "type": "blob",
+   "size": 1697
+  },
+  {
+   "path": "Widgets/NLinearGauge.qml",
+   "type": "blob",
+   "size": 1022
+  },
+  {
+   "path": "Widgets/NListView.qml",
+   "type": "blob",
+   "size": 11204
+  },
+  {
+   "path": "Widgets/NPluginSettingsPopup.qml",
+   "type": "blob",
+   "size": 4346
+  },
+  {
+   "path": "Widgets/NPopupContextMenu.qml",
+   "type": "blob",
+   "size": 11312
+  },
+  {
+   "path": "Widgets/NRadioButton.qml",
+   "type": "blob",
+   "size": 1319
+  },
+  {
+   "path": "Widgets/NReorderCheckboxes.qml",
+   "type": "blob",
+   "size": 10505
+  },
+  {
+   "path": "Widgets/NScrollText.qml",
+   "type": "blob",
+   "size": 5642
+  },
+  {
+   "path": "Widgets/NScrollView.qml",
+   "type": "blob",
+   "size": 9493
+  },
+  {
+   "path": "Widgets/NSearchableComboBox.qml",
+   "type": "blob",
+   "size": 14753
+  },
+  {
+   "path": "Widgets/NSectionEditor.qml",
+   "type": "blob",
+   "size": 36710
+  },
+  {
+   "path": "Widgets/NSettingsIndicator.qml",
+   "type": "blob",
+   "size": 1150
+  },
+  {
+   "path": "Widgets/NSlideSwapView.qml",
+   "type": "blob",
+   "size": 3340
+  },
+  {
+   "path": "Widgets/NSlider.qml",
+   "type": "blob",
+   "size": 6763
+  },
+  {
+   "path": "Widgets/NSpinBox.qml",
+   "type": "blob",
+   "size": 9404
+  },
+  {
+   "path": "Widgets/NTabBar.qml",
+   "type": "blob",
+   "size": 2333
+  },
+  {
+   "path": "Widgets/NTabButton.qml",
+   "type": "blob",
+   "size": 3484
+  },
+  {
+   "path": "Widgets/NTabView.qml",
+   "type": "blob",
+   "size": 4646
+  },
+  {
+   "path": "Widgets/NTagFilter.qml",
+   "type": "blob",
+   "size": 1301
+  },
+  {
+   "path": "Widgets/NText.qml",
+   "type": "blob",
+   "size": 1100
+  },
+  {
+   "path": "Widgets/NTextInput.qml",
+   "type": "blob",
+   "size": 7696
+  },
+  {
+   "path": "Widgets/NTextInputButton.qml",
+   "type": "blob",
+   "size": 1327
+  },
+  {
+   "path": "Widgets/NToggle.qml",
+   "type": "blob",
+   "size": 3124
+  },
+  {
+   "path": "Widgets/NValueSlider.qml",
+   "type": "blob",
+   "size": 3399
+  },
+  {
+   "path": "shell.qml",
+   "type": "blob",
+   "size": 6893
+  }
+ ]
+}

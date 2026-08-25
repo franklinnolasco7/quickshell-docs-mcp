@@ -1,0 +1,76 @@
+name: Feature request
+description: Suggest something new
+title: "[Feature] "
+labels: [enhancement]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a feature. Before filing, please [search existing issues](../issues) to see if it's already been requested.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: The feature in one sentence.
+      placeholder: Add a tool to search deprecated type warnings across doc versions.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: Pain point it solves or use case. Link a related issue if there is one.
+      placeholder: Agents keep suggesting types that were deprecated in v0.3.0 because nothing surfaces that signal today.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - New tool
+        - Existing tool improvement
+        - New upstream source
+        - Search / indexing
+        - Caching
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: how
+    attributes:
+      label: How it could work
+      description: Rough idea; which tool, which source, new endpoint, etc. Doesn't need to be a full spec.
+      placeholder: |
+        Could live as a flag on `quickshell_get_type` (`include_deprecated=True`), or a
+        standalone `quickshell_list_deprecated` tool. Deprecation notices already exist
+        in the changelog pages, so this might just be a targeted parse of those.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you thought about and why you didn't go with them. "None" is fine.
+
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you be willing to open a PR for this?
+      options:
+        - "Yes"
+        - "Yes, with some guidance"
+        - "No"
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, links, related issues, or anything else that helps explain the request.

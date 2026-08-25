@@ -1,0 +1,1417 @@
+{
+ "repo": "caelestia-dots/shell",
+ "ref": "main",
+ "truncated": false,
+ "tree": [
+  {
+   "path": "components/AnchorAnim.qml",
+   "type": "blob",
+   "size": 1708
+  },
+  {
+   "path": "components/Anim.qml",
+   "type": "blob",
+   "size": 2151
+  },
+  {
+   "path": "components/AnimLoader.qml",
+   "type": "blob",
+   "size": 845
+  },
+  {
+   "path": "components/CAnim.qml",
+   "type": "blob",
+   "size": 163
+  },
+  {
+   "path": "components/Logo.qml",
+   "type": "blob",
+   "size": 3242
+  },
+  {
+   "path": "components/MaterialIcon.qml",
+   "type": "blob",
+   "size": 349
+  },
+  {
+   "path": "components/ScreenState.qml",
+   "type": "blob",
+   "size": 393
+  },
+  {
+   "path": "components/StateLayer.qml",
+   "type": "blob",
+   "size": 6082
+  },
+  {
+   "path": "components/StyledClippingRect.qml",
+   "type": "blob",
+   "size": 151
+  },
+  {
+   "path": "components/StyledRect.qml",
+   "type": "blob",
+   "size": 117
+  },
+  {
+   "path": "components/StyledText.qml",
+   "type": "blob",
+   "size": 789
+  },
+  {
+   "path": "components/containers/StyledFlickable.qml",
+   "type": "blob",
+   "size": 614
+  },
+  {
+   "path": "components/containers/StyledListView.qml",
+   "type": "blob",
+   "size": 613
+  },
+  {
+   "path": "components/containers/StyledWindow.qml",
+   "type": "blob",
+   "size": 356
+  },
+  {
+   "path": "components/containers/VerticalFadeFlickable.qml",
+   "type": "blob",
+   "size": 1918
+  },
+  {
+   "path": "components/containers/VerticalFadeListView.qml",
+   "type": "blob",
+   "size": 1952
+  },
+  {
+   "path": "components/controls/ButtonBase.qml",
+   "type": "blob",
+   "size": 2768
+  },
+  {
+   "path": "components/controls/CircularIndicator.qml",
+   "type": "blob",
+   "size": 2823
+  },
+  {
+   "path": "components/controls/CircularProgress.qml",
+   "type": "blob",
+   "size": 3909
+  },
+  {
+   "path": "components/controls/CustomMouseArea.qml",
+   "type": "blob",
+   "size": 537
+  },
+  {
+   "path": "components/controls/FilledSlider.qml",
+   "type": "blob",
+   "size": 3268
+  },
+  {
+   "path": "components/controls/IconButton.qml",
+   "type": "blob",
+   "size": 1710
+  },
+  {
+   "path": "components/controls/IconTextButton.qml",
+   "type": "blob",
+   "size": 2252
+  },
+  {
+   "path": "components/controls/LoadingIndicator.qml",
+   "type": "blob",
+   "size": 3586
+  },
+  {
+   "path": "components/controls/Menu.qml",
+   "type": "blob",
+   "size": 6887
+  },
+  {
+   "path": "components/controls/MenuItem.qml",
+   "type": "blob",
+   "size": 215
+  },
+  {
+   "path": "components/controls/SearchBar.qml",
+   "type": "blob",
+   "size": 2403
+  },
+  {
+   "path": "components/controls/SplitButton.qml",
+   "type": "blob",
+   "size": 4760
+  },
+  {
+   "path": "components/controls/StyledProgressBar.qml",
+   "type": "blob",
+   "size": 7759
+  },
+  {
+   "path": "components/controls/StyledRadioButton.qml",
+   "type": "blob",
+   "size": 1470
+  },
+  {
+   "path": "components/controls/StyledScrollBar.qml",
+   "type": "blob",
+   "size": 6386
+  },
+  {
+   "path": "components/controls/StyledSlider.qml",
+   "type": "blob",
+   "size": 5525
+  },
+  {
+   "path": "components/controls/StyledSpinBox.qml",
+   "type": "blob",
+   "size": 4725
+  },
+  {
+   "path": "components/controls/StyledSwitch.qml",
+   "type": "blob",
+   "size": 6073
+  },
+  {
+   "path": "components/controls/StyledTextField.qml",
+   "type": "blob",
+   "size": 10596
+  },
+  {
+   "path": "components/controls/TextButton.qml",
+   "type": "blob",
+   "size": 1427
+  },
+  {
+   "path": "components/controls/TextFieldBase.qml",
+   "type": "blob",
+   "size": 2350
+  },
+  {
+   "path": "components/effects/ColouredIcon.qml",
+   "type": "blob",
+   "size": 648
+  },
+  {
+   "path": "components/effects/Colouriser.qml",
+   "type": "blob",
+   "size": 242
+  },
+  {
+   "path": "components/effects/Elevation.qml",
+   "type": "blob",
+   "size": 400
+  },
+  {
+   "path": "components/effects/Mask.qml",
+   "type": "blob",
+   "size": 111
+  },
+  {
+   "path": "components/filedialog/CurrentItem.qml",
+   "type": "blob",
+   "size": 2998
+  },
+  {
+   "path": "components/filedialog/DialogButtons.qml",
+   "type": "blob",
+   "size": 2461
+  },
+  {
+   "path": "components/filedialog/FileDialog.qml",
+   "type": "blob",
+   "size": 2419
+  },
+  {
+   "path": "components/filedialog/FolderContents.qml",
+   "type": "blob",
+   "size": 6487
+  },
+  {
+   "path": "components/filedialog/HeaderBar.qml",
+   "type": "blob",
+   "size": 5017
+  },
+  {
+   "path": "components/filedialog/Sidebar.qml",
+   "type": "blob",
+   "size": 4088
+  },
+  {
+   "path": "components/filedialog/Sizes.qml",
+   "type": "blob",
+   "size": 118
+  },
+  {
+   "path": "components/images/CachingIconImage.qml",
+   "type": "blob",
+   "size": 1014
+  },
+  {
+   "path": "components/images/CachingImage.qml",
+   "type": "blob",
+   "size": 365
+  },
+  {
+   "path": "components/images/FadeImage.qml",
+   "type": "blob",
+   "size": 1862
+  },
+  {
+   "path": "components/misc/CustomShortcut.qml",
+   "type": "blob",
+   "size": 143
+  },
+  {
+   "path": "components/misc/Ref.qml",
+   "type": "blob",
+   "size": 158
+  },
+  {
+   "path": "components/widgets/CoverArt.qml",
+   "type": "blob",
+   "size": 2497
+  },
+  {
+   "path": "components/widgets/ExtraIndicator.qml",
+   "type": "blob",
+   "size": 1090
+  },
+  {
+   "path": "components/widgets/WavyTopRect.qml",
+   "type": "blob",
+   "size": 1185
+  },
+  {
+   "path": "modules/BatteryMonitor.qml",
+   "type": "blob",
+   "size": 2539
+  },
+  {
+   "path": "modules/ConfigToasts.qml",
+   "type": "blob",
+   "size": 1540
+  },
+  {
+   "path": "modules/GSFLoader.qml",
+   "type": "blob",
+   "size": 171
+  },
+  {
+   "path": "modules/IdleMonitors.qml",
+   "type": "blob",
+   "size": 2349
+  },
+  {
+   "path": "modules/ServiceLoader.qml",
+   "type": "blob",
+   "size": 385
+  },
+  {
+   "path": "modules/Shortcuts.qml",
+   "type": "blob",
+   "size": 5147
+  },
+  {
+   "path": "modules/areapicker/AreaPicker.qml",
+   "type": "blob",
+   "size": 3498
+  },
+  {
+   "path": "modules/areapicker/Picker.qml",
+   "type": "blob",
+   "size": 7593
+  },
+  {
+   "path": "modules/background/Background.qml",
+   "type": "blob",
+   "size": 4899
+  },
+  {
+   "path": "modules/background/DesktopClock.qml",
+   "type": "blob",
+   "size": 5856
+  },
+  {
+   "path": "modules/background/Visualiser.qml",
+   "type": "blob",
+   "size": 2742
+  },
+  {
+   "path": "modules/background/Wallpaper.qml",
+   "type": "blob",
+   "size": 3771
+  },
+  {
+   "path": "modules/bar/Bar.qml",
+   "type": "blob",
+   "size": 7425
+  },
+  {
+   "path": "modules/bar/BarWrapper.qml",
+   "type": "blob",
+   "size": 2511
+  },
+  {
+   "path": "modules/bar/components/ActiveWindow.qml",
+   "type": "blob",
+   "size": 4052
+  },
+  {
+   "path": "modules/bar/components/Clock.qml",
+   "type": "blob",
+   "size": 3934
+  },
+  {
+   "path": "modules/bar/components/OsIcon.qml",
+   "type": "blob",
+   "size": 1156
+  },
+  {
+   "path": "modules/bar/components/Power.qml",
+   "type": "blob",
+   "size": 855
+  },
+  {
+   "path": "modules/bar/components/StatusIcons.qml",
+   "type": "blob",
+   "size": 5777
+  },
+  {
+   "path": "modules/bar/components/Tray.qml",
+   "type": "blob",
+   "size": 3568
+  },
+  {
+   "path": "modules/bar/components/TrayItem.qml",
+   "type": "blob",
+   "size": 822
+  },
+  {
+   "path": "modules/bar/components/status/BatteryStatus.qml",
+   "type": "blob",
+   "size": 828
+  },
+  {
+   "path": "modules/bar/components/status/BluetoothStatus.qml",
+   "type": "blob",
+   "size": 2275
+  },
+  {
+   "path": "modules/bar/components/status/LockStatus.qml",
+   "type": "blob",
+   "size": 1969
+  },
+  {
+   "path": "modules/bar/components/workspaces/ActiveIndicator.qml",
+   "type": "blob",
+   "size": 2554
+  },
+  {
+   "path": "modules/bar/components/workspaces/OccupiedBg.qml",
+   "type": "blob",
+   "size": 3011
+  },
+  {
+   "path": "modules/bar/components/workspaces/SpecialWorkspaces.qml",
+   "type": "blob",
+   "size": 10794
+  },
+  {
+   "path": "modules/bar/components/workspaces/Workspace.qml",
+   "type": "blob",
+   "size": 3819
+  },
+  {
+   "path": "modules/bar/components/workspaces/Workspaces.qml",
+   "type": "blob",
+   "size": 4110
+  },
+  {
+   "path": "modules/bar/popouts/ActiveWindow.qml",
+   "type": "blob",
+   "size": 2818
+  },
+  {
+   "path": "modules/bar/popouts/AudioPopout.qml",
+   "type": "blob",
+   "size": 3149
+  },
+  {
+   "path": "modules/bar/popouts/Battery.qml",
+   "type": "blob",
+   "size": 6863
+  },
+  {
+   "path": "modules/bar/popouts/Bluetooth.qml",
+   "type": "blob",
+   "size": 6887
+  },
+  {
+   "path": "modules/bar/popouts/ClipWrapper.qml",
+   "type": "blob",
+   "size": 1627
+  },
+  {
+   "path": "modules/bar/popouts/Content.qml",
+   "type": "blob",
+   "size": 6289
+  },
+  {
+   "path": "modules/bar/popouts/LockStatus.qml",
+   "type": "blob",
+   "size": 343
+  },
+  {
+   "path": "modules/bar/popouts/Network.qml",
+   "type": "blob",
+   "size": 13695
+  },
+  {
+   "path": "modules/bar/popouts/PopoutState.qml",
+   "type": "blob",
+   "size": 132
+  },
+  {
+   "path": "modules/bar/popouts/TrayMenu.qml",
+   "type": "blob",
+   "size": 7224
+  },
+  {
+   "path": "modules/bar/popouts/WirelessPassword.qml",
+   "type": "blob",
+   "size": 22538
+  },
+  {
+   "path": "modules/bar/popouts/Wrapper.qml",
+   "type": "blob",
+   "size": 5997
+  },
+  {
+   "path": "modules/bar/popouts/kblayout/KbLayout.qml",
+   "type": "blob",
+   "size": 5600
+  },
+  {
+   "path": "modules/bar/popouts/kblayout/KbLayoutModel.qml",
+   "type": "blob",
+   "size": 6271
+  },
+  {
+   "path": "modules/dashboard/Content.qml",
+   "type": "blob",
+   "size": 5963
+  },
+  {
+   "path": "modules/dashboard/Dash.qml",
+   "type": "blob",
+   "size": 2127
+  },
+  {
+   "path": "modules/dashboard/Media.qml",
+   "type": "blob",
+   "size": 4597
+  },
+  {
+   "path": "modules/dashboard/Performance.qml",
+   "type": "blob",
+   "size": 4667
+  },
+  {
+   "path": "modules/dashboard/Tabs.qml",
+   "type": "blob",
+   "size": 5245
+  },
+  {
+   "path": "modules/dashboard/WeatherTab.qml",
+   "type": "blob",
+   "size": 9238
+  },
+  {
+   "path": "modules/dashboard/Wrapper.qml",
+   "type": "blob",
+   "size": 1867
+  },
+  {
+   "path": "modules/dashboard/dash/Calendar.qml",
+   "type": "blob",
+   "size": 8408
+  },
+  {
+   "path": "modules/dashboard/dash/DateTime.qml",
+   "type": "blob",
+   "size": 1648
+  },
+  {
+   "path": "modules/dashboard/dash/Media.qml",
+   "type": "blob",
+   "size": 5132
+  },
+  {
+   "path": "modules/dashboard/dash/Resources.qml",
+   "type": "blob",
+   "size": 1572
+  },
+  {
+   "path": "modules/dashboard/dash/SmallWeather.qml",
+   "type": "blob",
+   "size": 1572
+  },
+  {
+   "path": "modules/dashboard/dash/User.qml",
+   "type": "blob",
+   "size": 8249
+  },
+  {
+   "path": "modules/dashboard/media/BackgroundShapes.qml",
+   "type": "blob",
+   "size": 3300
+  },
+  {
+   "path": "modules/dashboard/media/CoverVisualiser.qml",
+   "type": "blob",
+   "size": 2534
+  },
+  {
+   "path": "modules/dashboard/media/Details.qml",
+   "type": "blob",
+   "size": 6381
+  },
+  {
+   "path": "modules/dashboard/media/LyricList.qml",
+   "type": "blob",
+   "size": 9052
+  },
+  {
+   "path": "modules/dashboard/media/LyricsAndSelector.qml",
+   "type": "blob",
+   "size": 2189
+  },
+  {
+   "path": "modules/dashboard/media/LyricsInfo.qml",
+   "type": "blob",
+   "size": 5923
+  },
+  {
+   "path": "modules/dashboard/performance/BatteryTank.qml",
+   "type": "blob",
+   "size": 4451
+  },
+  {
+   "path": "modules/dashboard/performance/HeroCard.qml",
+   "type": "blob",
+   "size": 4389
+  },
+  {
+   "path": "modules/dashboard/performance/MemoryCard.qml",
+   "type": "blob",
+   "size": 2680
+  },
+  {
+   "path": "modules/dashboard/performance/NetworkCard.qml",
+   "type": "blob",
+   "size": 6013
+  },
+  {
+   "path": "modules/dashboard/performance/StorageCard.qml",
+   "type": "blob",
+   "size": 4094
+  },
+  {
+   "path": "modules/drawers/ContentWindow.qml",
+   "type": "blob",
+   "size": 10994
+  },
+  {
+   "path": "modules/drawers/Drawers.qml",
+   "type": "blob",
+   "size": 405
+  },
+  {
+   "path": "modules/drawers/Exclusions.qml",
+   "type": "blob",
+   "size": 768
+  },
+  {
+   "path": "modules/drawers/Interactions.qml",
+   "type": "blob",
+   "size": 13485
+  },
+  {
+   "path": "modules/drawers/Panels.qml",
+   "type": "blob",
+   "size": 4228
+  },
+  {
+   "path": "modules/drawers/Regions.qml",
+   "type": "blob",
+   "size": 2370
+  },
+  {
+   "path": "modules/launcher/AppList.qml",
+   "type": "blob",
+   "size": 6913
+  },
+  {
+   "path": "modules/launcher/Content.qml",
+   "type": "blob",
+   "size": 4332
+  },
+  {
+   "path": "modules/launcher/ContentList.qml",
+   "type": "blob",
+   "size": 4669
+  },
+  {
+   "path": "modules/launcher/WallpaperList.qml",
+   "type": "blob",
+   "size": 2991
+  },
+  {
+   "path": "modules/launcher/Wrapper.qml",
+   "type": "blob",
+   "size": 1631
+  },
+  {
+   "path": "modules/launcher/items/ActionItem.qml",
+   "type": "blob",
+   "size": 1722
+  },
+  {
+   "path": "modules/launcher/items/AppItem.qml",
+   "type": "blob",
+   "size": 2465
+  },
+  {
+   "path": "modules/launcher/items/CalcItem.qml",
+   "type": "blob",
+   "size": 3695
+  },
+  {
+   "path": "modules/launcher/items/SchemeItem.qml",
+   "type": "blob",
+   "size": 2940
+  },
+  {
+   "path": "modules/launcher/items/VariantItem.qml",
+   "type": "blob",
+   "size": 2092
+  },
+  {
+   "path": "modules/launcher/items/WallpaperItem.qml",
+   "type": "blob",
+   "size": 2744
+  },
+  {
+   "path": "modules/launcher/services/Actions.qml",
+   "type": "blob",
+   "size": 1776
+  },
+  {
+   "path": "modules/launcher/services/Apps.qml",
+   "type": "blob",
+   "size": 2402
+  },
+  {
+   "path": "modules/launcher/services/M3Variants.qml",
+   "type": "blob",
+   "size": 2770
+  },
+  {
+   "path": "modules/launcher/services/Schemes.qml",
+   "type": "blob",
+   "size": 2382
+  },
+  {
+   "path": "modules/lock/Center.qml",
+   "type": "blob",
+   "size": 1408
+  },
+  {
+   "path": "modules/lock/Content.qml",
+   "type": "blob",
+   "size": 1171
+  },
+  {
+   "path": "modules/lock/Fetch.qml",
+   "type": "blob",
+   "size": 5603
+  },
+  {
+   "path": "modules/lock/Lock.qml",
+   "type": "blob",
+   "size": 1571
+  },
+  {
+   "path": "modules/lock/LockSurface.qml",
+   "type": "blob",
+   "size": 6505
+  },
+  {
+   "path": "modules/lock/Media.qml",
+   "type": "blob",
+   "size": 3300
+  },
+  {
+   "path": "modules/lock/NotifDock.qml",
+   "type": "blob",
+   "size": 4013
+  },
+  {
+   "path": "modules/lock/NotifGroup.qml",
+   "type": "blob",
+   "size": 12584
+  },
+  {
+   "path": "modules/lock/Pam.qml",
+   "type": "blob",
+   "size": 7585
+  },
+  {
+   "path": "modules/lock/Resources.qml",
+   "type": "blob",
+   "size": 5549
+  },
+  {
+   "path": "modules/lock/WeatherInfo.qml",
+   "type": "blob",
+   "size": 1315
+  },
+  {
+   "path": "modules/lock/center/Clock.qml",
+   "type": "blob",
+   "size": 2604
+  },
+  {
+   "path": "modules/lock/center/InputField.qml",
+   "type": "blob",
+   "size": 7159
+  },
+  {
+   "path": "modules/lock/center/PasswordInput.qml",
+   "type": "blob",
+   "size": 5096
+  },
+  {
+   "path": "modules/lock/center/ProfilePic.qml",
+   "type": "blob",
+   "size": 1244
+  },
+  {
+   "path": "modules/lock/center/StateMessage.qml",
+   "type": "blob",
+   "size": 7269
+  },
+  {
+   "path": "modules/lock/weather/BriefInfo.qml",
+   "type": "blob",
+   "size": 1764
+  },
+  {
+   "path": "modules/lock/weather/Forecast.qml",
+   "type": "blob",
+   "size": 3509
+  },
+  {
+   "path": "modules/nexus/NavPane.qml",
+   "type": "blob",
+   "size": 1199
+  },
+  {
+   "path": "modules/nexus/Nexus.qml",
+   "type": "blob",
+   "size": 2950
+  },
+  {
+   "path": "modules/nexus/NexusState.qml",
+   "type": "blob",
+   "size": 914
+  },
+  {
+   "path": "modules/nexus/PageCompRegistry.qml",
+   "type": "blob",
+   "size": 5581
+  },
+  {
+   "path": "modules/nexus/PageRegistry.qml",
+   "type": "blob",
+   "size": 2455
+  },
+  {
+   "path": "modules/nexus/Pages.qml",
+   "type": "blob",
+   "size": 2459
+  },
+  {
+   "path": "modules/nexus/WindowFactory.qml",
+   "type": "blob",
+   "size": 1355
+  },
+  {
+   "path": "modules/nexus/common/AnimatedLogo.qml",
+   "type": "blob",
+   "size": 16469
+  },
+  {
+   "path": "modules/nexus/common/AudioDeviceList.qml",
+   "type": "blob",
+   "size": 3056
+  },
+  {
+   "path": "modules/nexus/common/BlobPopup.qml",
+   "type": "blob",
+   "size": 3296
+  },
+  {
+   "path": "modules/nexus/common/ConnectedRect.qml",
+   "type": "blob",
+   "size": 528
+  },
+  {
+   "path": "modules/nexus/common/DialogRowButton.qml",
+   "type": "blob",
+   "size": 7685
+  },
+  {
+   "path": "modules/nexus/common/DialogSelectButton.qml",
+   "type": "blob",
+   "size": 3152
+  },
+  {
+   "path": "modules/nexus/common/EthernetSection.qml",
+   "type": "blob",
+   "size": 9071
+  },
+  {
+   "path": "modules/nexus/common/InfoRow.qml",
+   "type": "blob",
+   "size": 2040
+  },
+  {
+   "path": "modules/nexus/common/ItemList.qml",
+   "type": "blob",
+   "size": 2827
+  },
+  {
+   "path": "modules/nexus/common/ListEditor.qml",
+   "type": "blob",
+   "size": 9528
+  },
+  {
+   "path": "modules/nexus/common/NavRow.qml",
+   "type": "blob",
+   "size": 91
+  },
+  {
+   "path": "modules/nexus/common/NetworkList.qml",
+   "type": "blob",
+   "size": 5966
+  },
+  {
+   "path": "modules/nexus/common/PageBase.qml",
+   "type": "blob",
+   "size": 2232
+  },
+  {
+   "path": "modules/nexus/common/PopupRow.qml",
+   "type": "blob",
+   "size": 3550
+  },
+  {
+   "path": "modules/nexus/common/RowButton.qml",
+   "type": "blob",
+   "size": 2273
+  },
+  {
+   "path": "modules/nexus/common/SectionHeader.qml",
+   "type": "blob",
+   "size": 480
+  },
+  {
+   "path": "modules/nexus/common/SelectRow.qml",
+   "type": "blob",
+   "size": 1805
+  },
+  {
+   "path": "modules/nexus/common/SliderRow.qml",
+   "type": "blob",
+   "size": 2526
+  },
+  {
+   "path": "modules/nexus/common/StackPage.qml",
+   "type": "blob",
+   "size": 3073
+  },
+  {
+   "path": "modules/nexus/common/StepperRow.qml",
+   "type": "blob",
+   "size": 1603
+  },
+  {
+   "path": "modules/nexus/common/TextFieldRow.qml",
+   "type": "blob",
+   "size": 2551
+  },
+  {
+   "path": "modules/nexus/common/ToggleRow.qml",
+   "type": "blob",
+   "size": 2173
+  },
+  {
+   "path": "modules/nexus/common/WallItem.qml",
+   "type": "blob",
+   "size": 2996
+  },
+  {
+   "path": "modules/nexus/navpane/NavLocations.qml",
+   "type": "blob",
+   "size": 5253
+  },
+  {
+   "path": "modules/nexus/pages/AboutPage.qml",
+   "type": "blob",
+   "size": 4105
+  },
+  {
+   "path": "modules/nexus/pages/AppsPage.qml",
+   "type": "blob",
+   "size": 5975
+  },
+  {
+   "path": "modules/nexus/pages/AudioPage.qml",
+   "type": "blob",
+   "size": 2584
+  },
+  {
+   "path": "modules/nexus/pages/BluetoothPage.qml",
+   "type": "blob",
+   "size": 7993
+  },
+  {
+   "path": "modules/nexus/pages/LanguageAndRegion.qml",
+   "type": "blob",
+   "size": 5583
+  },
+  {
+   "path": "modules/nexus/pages/NetworkPage.qml",
+   "type": "blob",
+   "size": 13970
+  },
+  {
+   "path": "modules/nexus/pages/PanelsPage.qml",
+   "type": "blob",
+   "size": 1569
+  },
+  {
+   "path": "modules/nexus/pages/ServicesPage.qml",
+   "type": "blob",
+   "size": 7039
+  },
+  {
+   "path": "modules/nexus/pages/WallpaperAndStyle.qml",
+   "type": "blob",
+   "size": 6525
+  },
+  {
+   "path": "modules/nexus/pages/apps/AllApps.qml",
+   "type": "blob",
+   "size": 3343
+  },
+  {
+   "path": "modules/nexus/pages/apps/AppInfo.qml",
+   "type": "blob",
+   "size": 5465
+  },
+  {
+   "path": "modules/nexus/pages/audio/AppVolumes.qml",
+   "type": "blob",
+   "size": 2188
+  },
+  {
+   "path": "modules/nexus/pages/bluetooth/BluetoothPairing.qml",
+   "type": "blob",
+   "size": 6653
+  },
+  {
+   "path": "modules/nexus/pages/bluetooth/BtDeviceInfo.qml",
+   "type": "blob",
+   "size": 8499
+  },
+  {
+   "path": "modules/nexus/pages/network/AddNetworkPage.qml",
+   "type": "blob",
+   "size": 7903
+  },
+  {
+   "path": "modules/nexus/pages/network/AddVpnPage.qml",
+   "type": "blob",
+   "size": 7667
+  },
+  {
+   "path": "modules/nexus/pages/network/AllNetworksPage.qml",
+   "type": "blob",
+   "size": 5351
+  },
+  {
+   "path": "modules/nexus/pages/network/EthernetDetailPage.qml",
+   "type": "blob",
+   "size": 12129
+  },
+  {
+   "path": "modules/nexus/pages/network/NetworkDetailPage.qml",
+   "type": "blob",
+   "size": 16545
+  },
+  {
+   "path": "modules/nexus/pages/network/SavedNetworksPage.qml",
+   "type": "blob",
+   "size": 4530
+  },
+  {
+   "path": "modules/nexus/pages/panels/DashboardPanel.qml",
+   "type": "blob",
+   "size": 3709
+  },
+  {
+   "path": "modules/nexus/pages/panels/LauncherPanel.qml",
+   "type": "blob",
+   "size": 4719
+  },
+  {
+   "path": "modules/nexus/pages/panels/SidebarPanel.qml",
+   "type": "blob",
+   "size": 1027
+  },
+  {
+   "path": "modules/nexus/pages/panels/TaskbarPanel.qml",
+   "type": "blob",
+   "size": 3461
+  },
+  {
+   "path": "modules/nexus/pages/panels/UtilitiesPanel.qml",
+   "type": "blob",
+   "size": 4382
+  },
+  {
+   "path": "modules/nexus/pages/panels/taskbar/BarActiveWindow.qml",
+   "type": "blob",
+   "size": 1365
+  },
+  {
+   "path": "modules/nexus/pages/panels/taskbar/BarClock.qml",
+   "type": "blob",
+   "size": 968
+  },
+  {
+   "path": "modules/nexus/pages/panels/taskbar/BarStatusIcons.qml",
+   "type": "blob",
+   "size": 2921
+  },
+  {
+   "path": "modules/nexus/pages/panels/taskbar/BarTray.qml",
+   "type": "blob",
+   "size": 1212
+  },
+  {
+   "path": "modules/nexus/pages/panels/taskbar/BarWorkspaces.qml",
+   "type": "blob",
+   "size": 2440
+  },
+  {
+   "path": "modules/nexus/pages/services/NotificationsPage.qml",
+   "type": "blob",
+   "size": 6486
+  },
+  {
+   "path": "modules/nexus/pages/wallandstyle/ColourSelect.qml",
+   "type": "blob",
+   "size": 1299
+  },
+  {
+   "path": "modules/nexus/pages/wallandstyle/WallpaperCategory.qml",
+   "type": "blob",
+   "size": 1532
+  },
+  {
+   "path": "modules/nexus/pages/wallandstyle/WallpaperSelect.qml",
+   "type": "blob",
+   "size": 6486
+  },
+  {
+   "path": "modules/notifications/Content.qml",
+   "type": "blob",
+   "size": 6437
+  },
+  {
+   "path": "modules/notifications/Notification.qml",
+   "type": "blob",
+   "size": 19226
+  },
+  {
+   "path": "modules/notifications/Wrapper.qml",
+   "type": "blob",
+   "size": 600
+  },
+  {
+   "path": "modules/osd/Content.qml",
+   "type": "blob",
+   "size": 4219
+  },
+  {
+   "path": "modules/osd/Wrapper.qml",
+   "type": "blob",
+   "size": 2868
+  },
+  {
+   "path": "modules/session/Content.qml",
+   "type": "blob",
+   "size": 3875
+  },
+  {
+   "path": "modules/session/Wrapper.qml",
+   "type": "blob",
+   "size": 1056
+  },
+  {
+   "path": "modules/sidebar/Content.qml",
+   "type": "blob",
+   "size": 914
+  },
+  {
+   "path": "modules/sidebar/Notif.qml",
+   "type": "blob",
+   "size": 5732
+  },
+  {
+   "path": "modules/sidebar/NotifActionList.qml",
+   "type": "blob",
+   "size": 6034
+  },
+  {
+   "path": "modules/sidebar/NotifDock.qml",
+   "type": "blob",
+   "size": 5741
+  },
+  {
+   "path": "modules/sidebar/NotifDockList.qml",
+   "type": "blob",
+   "size": 4381
+  },
+  {
+   "path": "modules/sidebar/NotifGroup.qml",
+   "type": "blob",
+   "size": 9798
+  },
+  {
+   "path": "modules/sidebar/NotifGroupList.qml",
+   "type": "blob",
+   "size": 4703
+  },
+  {
+   "path": "modules/sidebar/Props.qml",
+   "type": "blob",
+   "size": 118
+  },
+  {
+   "path": "modules/sidebar/Wrapper.qml",
+   "type": "blob",
+   "size": 1199
+  },
+  {
+   "path": "modules/utilities/Background.qml",
+   "type": "blob",
+   "size": 1477
+  },
+  {
+   "path": "modules/utilities/Content.qml",
+   "type": "blob",
+   "size": 2052
+  },
+  {
+   "path": "modules/utilities/RecordingDeleteModal.qml",
+   "type": "blob",
+   "size": 7677
+  },
+  {
+   "path": "modules/utilities/Wrapper.qml",
+   "type": "blob",
+   "size": 2788
+  },
+  {
+   "path": "modules/utilities/cards/IdleInhibit.qml",
+   "type": "blob",
+   "size": 3615
+  },
+  {
+   "path": "modules/utilities/cards/Record.qml",
+   "type": "blob",
+   "size": 9811
+  },
+  {
+   "path": "modules/utilities/cards/RecordingList.qml",
+   "type": "blob",
+   "size": 7260
+  },
+  {
+   "path": "modules/utilities/cards/Toggles.qml",
+   "type": "blob",
+   "size": 5362
+  },
+  {
+   "path": "modules/utilities/toasts/ToastItem.qml",
+   "type": "blob",
+   "size": 4522
+  },
+  {
+   "path": "modules/utilities/toasts/Toasts.qml",
+   "type": "blob",
+   "size": 4160
+  },
+  {
+   "path": "modules/windowinfo/Buttons.qml",
+   "type": "blob",
+   "size": 5628
+  },
+  {
+   "path": "modules/windowinfo/Details.qml",
+   "type": "blob",
+   "size": 4529
+  },
+  {
+   "path": "modules/windowinfo/Preview.qml",
+   "type": "blob",
+   "size": 2914
+  },
+  {
+   "path": "modules/windowinfo/WindowInfo.qml",
+   "type": "blob",
+   "size": 1498
+  },
+  {
+   "path": "services/Audio.qml",
+   "type": "blob",
+   "size": 5940
+  },
+  {
+   "path": "services/Brightness.qml",
+   "type": "blob",
+   "size": 8365
+  },
+  {
+   "path": "services/Colours.qml",
+   "type": "blob",
+   "size": 14410
+  },
+  {
+   "path": "services/GameMode.qml",
+   "type": "blob",
+   "size": 1870
+  },
+  {
+   "path": "services/Hypr.qml",
+   "type": "blob",
+   "size": 9108
+  },
+  {
+   "path": "services/IdleInhibitor.qml",
+   "type": "blob",
+   "size": 1074
+  },
+  {
+   "path": "services/Nmcli.qml",
+   "type": "blob",
+   "size": 67931
+  },
+  {
+   "path": "services/NotifData.qml",
+   "type": "blob",
+   "size": 8086
+  },
+  {
+   "path": "services/Notifs.qml",
+   "type": "blob",
+   "size": 4600
+  },
+  {
+   "path": "services/Players.qml",
+   "type": "blob",
+   "size": 5158
+  },
+  {
+   "path": "services/Recorder.qml",
+   "type": "blob",
+   "size": 2172
+  },
+  {
+   "path": "services/Screens.qml",
+   "type": "blob",
+   "size": 330
+  },
+  {
+   "path": "services/ShellState.qml",
+   "type": "blob",
+   "size": 2541
+  },
+  {
+   "path": "services/Time.qml",
+   "type": "blob",
+   "size": 871
+  },
+  {
+   "path": "services/VPN.qml",
+   "type": "blob",
+   "size": 35350
+  },
+  {
+   "path": "services/Wallpapers.qml",
+   "type": "blob",
+   "size": 3476
+  },
+  {
+   "path": "services/Weather.qml",
+   "type": "blob",
+   "size": 14304
+  },
+  {
+   "path": "shell.qml",
+   "type": "blob",
+   "size": 867
+  },
+  {
+   "path": "utils/Icons.qml",
+   "type": "blob",
+   "size": 8497
+  },
+  {
+   "path": "utils/Images.qml",
+   "type": "blob",
+   "size": 384
+  },
+  {
+   "path": "utils/NetworkConnection.qml",
+   "type": "blob",
+   "size": 4501
+  },
+  {
+   "path": "utils/Paths.qml",
+   "type": "blob",
+   "size": 1641
+  },
+  {
+   "path": "utils/Searcher.qml",
+   "type": "blob",
+   "size": 1582
+  },
+  {
+   "path": "utils/Strings.qml",
+   "type": "blob",
+   "size": 690
+  },
+  {
+   "path": "utils/SysInfo.qml",
+   "type": "blob",
+   "size": 4302
+  }
+ ]
+}

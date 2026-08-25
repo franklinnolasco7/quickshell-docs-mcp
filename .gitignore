@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+
+# Tool caches
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Nix
+result
+result-*
+.direnv/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

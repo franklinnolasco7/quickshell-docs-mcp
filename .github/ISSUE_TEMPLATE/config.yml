@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Quickshell documentation
+    url: https://quickshell.org
+    about: Official Quickshell docs, not this project's issue tracker.
+  - name: Quickshell examples
+    url: https://git.outfoxxed.me/quickshell/quickshell-examples
+    about: Official example configs maintained upstream.
+  - name: MCP Inspector
+    url: https://github.com/modelcontextprotocol/inspector
+    about: Debug this server interactively before filing a bug. See the README for steps.

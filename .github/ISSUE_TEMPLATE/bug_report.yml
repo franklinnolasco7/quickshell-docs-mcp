@@ -1,0 +1,122 @@
+name: Bug report
+description: Report something broken
+title: "[Bug] "
+labels: [bug]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Fill in what you can; the more, the faster the fix.
+        If you can reproduce this with the [MCP Inspector](https://github.com/modelcontextprotocol/inspector), that isolates whether it's this server or your client config.
+
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install?
+      options:
+        - pip
+        - uvx
+        - From source
+        - Nix
+        - Docker
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: quickshell-docs-mcp version
+      description: Output of `quickshell-docs-mcp --version` or `pip show quickshell-docs-mcp`
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      description: Output of `python --version`
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: "e.g. NixOS 24.11, macOS 15, Ubuntu 24.04"
+    validations:
+      required: true
+
+  - type: input
+    id: transport
+    attributes:
+      label: Transport
+      description: stdio or http?
+      placeholder: stdio
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source
+    attributes:
+      label: Which source is affected?
+      options:
+        - quickshell.org (types/guide)
+        - doc.qt.io (Qt types)
+        - quickshell-examples
+        - Caelestia/Noctalia implementations
+        - General / not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Call tool `quickshell_get_type` with ...
+        2. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Error output
+      description: Paste stderr, traceback, or MCP error here. Set `QUICKSHELL_DOCS_MCP_LOG=DEBUG` for more detail.
+      render: text
+
+  - type: dropdown
+    id: cache
+    attributes:
+      label: Did clearing the disk cache change anything?
+      description: Try `refresh=True` on the affected tool, or clear `~/.cache/quickshell-docs-mcp`.
+      options:
+        - Not tried
+        - "Yes, it fixed the issue"
+        - "No, same result after clearing"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: regression
+    attributes:
+      label: Regression?
+      options:
+        - label: This used to work in a previous version
+          required: false

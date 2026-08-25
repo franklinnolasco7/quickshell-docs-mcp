@@ -1,0 +1,70 @@
+name: Setup help
+description: Getting started or configuring the MCP server
+title: "[Help] "
+labels: [question]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing, try the [MCP Inspector](https://github.com/modelcontextprotocol/inspector) to debug interactively. It often surfaces the issue faster than trial and error in your client.
+
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install?
+      options:
+        - pip
+        - uvx
+        - From source
+        - Nix
+        - Docker
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Run `pip show quickshell-docs-mcp` (or check `quickshell_about`) to find this.
+      placeholder: "0.4.1"
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: OS and Python version
+      placeholder: "e.g. NixOS 24.11, Python 3.12"
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What you're trying to do
+      description: Which client (opencode, Claude Desktop, etc.) and what setup?
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you tried
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Your config
+      description: Paste your MCP client config (redact paths or tokens if needed).
+      render: json
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Output / errors
+      description: Any error messages or unexpected behavior. Set `QUICKSHELL_DOCS_MCP_LOG=DEBUG` for more detail.
+      render: text

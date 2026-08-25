@@ -1,0 +1,89 @@
+name: Semantic release
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing vX.Y.Z tag to build and publish"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: semantic-release
+
+jobs:
+  semantic-release:
+    runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.sr.outputs.released }}
+      version: ${{ steps.sr.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install semantic-release and plugins
+        if: github.event_name == 'push'
+        run: |
+          npm install --no-save \
+            semantic-release@^25 \
+            @semantic-release/git@^11 \
+            @semantic-release/exec@^7 \
+            "@google/semantic-release-replace-plugin@^1.2.7"
+
+      - name: Release
+        id: sr
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+  publish:
+    needs: semantic-release
+    runs-on: ubuntu-latest
+    environment: pypi
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      needs.semantic-release.outputs.released == 'true'
+    steps:
+      - name: Resolve version
+        id: meta
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          SR_VERSION: ${{ needs.semantic-release.outputs.version }}
+        run: echo "version=${INPUT_TAG:-$SR_VERSION}" | sed 's/^v//' >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v6
+        with:
+          ref: "v${{ steps.meta.outputs.version }}"
+          persist-credentials: false
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Build Python distribution
+        run: |
+          nix develop --command python -m build --no-isolation
+          ls -la dist/
+
+      - name: Validate package metadata
+        run: nix develop --command twine check dist/*
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

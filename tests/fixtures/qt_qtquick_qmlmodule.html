@@ -1,0 +1,451 @@
+
+  <html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta content="Provides graphical QML types." name="description"/>
+  <title>Qt Quick QML Types | Qt Quick | Qt 6.11.2</title>
+  <link rel="stylesheet" type="text/css" href="/style/online2.css" />
+  <link rel="stylesheet" href="https://www.qt.io/hubfs/qt-design-system/qt-design-system-1.1.0.css" />
+  <link rel="stylesheet" type="text/css" href="/style/font-awesome.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.17/themes/default/style.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.17/themes/default-dark/style.min.css" />
+  <link href="images/htmltabs.css" rel="stylesheet" type="text/css"/>
+  <link rel="shortcut icon" href="//d33sqmjvzgs8hq.cloudfront.net/wp-content/themes/oneqt/assets/images/favicon.ico.gzip" />
+  <link rel="icon" type="image/png" href="//d33sqmjvzgs8hq.cloudfront.net/wp-content/themes/oneqt/assets/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" href="//d33sqmjvzgs8hq.cloudfront.net/wp-content/themes/oneqt/assets/images/favicon-16x16.png" />
+  <script type="text/javascript" src="//d33sqmjvzgs8hq.cloudfront.net/wp-includes/js/jquery/jquery.js.gzip"></script>
+  <script type="text/javascript" src="//d33sqmjvzgs8hq.cloudfront.net/wp-includes/js/jquery/jquery-migrate.min.js.gzip"></script>
+  <script type="text/javascript" src="//d33sqmjvzgs8hq.cloudfront.net/wp-content/themes/oneqt/js/combo.js.gzip"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.17/jstree.min.js"></script>
+  <script type="text/javascript" src="/scripts/popper.min.js"></script>
+  <script type="text/javascript" src="/scripts/tippy.min.js"></script>
+  <script type="text/javascript" src="/scripts/qtds-extras.js"></script>
+  <script type="text/javascript"> wpThemeFolder = 'https://qt.io/wp-content/themes/oneqt'; </script>
+  <script type="text/javascript">
+ $(document).ready(function(){
+   $("input[type=radio]").on("click", function() {
+   var lbl = $(this).next().text();
+   $("input[type=radio]:not(checked)").filter(function() {
+     if ($(this).next().text() == lbl)
+         $(this).prop("checked", true);
+   });
+   });
+ });
+  </script>
+  <script type="text/javascript">
+    $(function () {
+      if (document.documentElement.getAttribute('data-theme') === 'dark')
+        $('input#th-toggle').prop('checked', true);
+      $('input#th-toggle').change(function() {
+        var theme = this.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+        $('#sidebar-toctree').jstree(true).set_theme('default' + `${theme === 'dark' ? '-dark' : ''}`);
+      });
+    });
+  </script>
+  <script type="text/javascript" src="/scripts/init-tree.js"></script>
+  <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5QQXBTC');</script>
+  <!-- End Google Tag Manager -->
+  <script type="text/javascript" src="/scripts/qt-design-system-1.1.0-doc.js"></script>
+  <script src="/scripts/prettify.js" type="text/javascript"></script>
+</head>
+<body class="qt-design-system" style="background:var(--content-bg-color)" onload="prettyPrint()">
+<div class="qds-page-header" id="qds-page-header">
+<header class="b-header" data-float="true">
+    <div class="b-header__container">
+
+        <div class="b-header__secondary-level">
+            <div class="b-header__secondary-level__back">
+                <a class="c-link c-link--left" href="https://www.qt.io/">Back to Qt.io</a>
+            </div>
+            <div class="b-header__secondary-level__right">
+                <a href="https://www.qt.io/contact-us/" target="_blank">Contact Us</a>
+                <a href="https://blog.qt.io/" target="_blank">Blog</a>
+                <a href="https://www.qt.io/download/" target="_blank" class="c-button c-button--small">Download Q&#116;</a>
+            </div>
+        </div>
+
+        <div class="b-header__primary-level">
+            <div class="b-header__primary-level__left">
+                <a class="b-header__logo" href="/">
+                    <img src="/style/qt-logo-documentation.png" srcset="/style/qt-logo-documentation.png 1x, /style/qt-logo-documentation-2x.png 2x" alt="Qt documentation">
+                </a>
+            </div>
+            <div class="b-header__primary-level__navigation">
+            <ul class="c-navigation-header">
+                <li id="qds-trans" role="menu" class="has-children" style="display: none; margin: 0 20px 5px 0;top:7px">
+                <div class="lang-icon theme-icon"><a></a></div>
+                    <ul id="qds-trans-ul">
+                        <li class="tr-lang active" data-lang="en"><a>English</a></li>
+                    </ul>
+                </li>
+                <li role="menu" style="margin: 0 5px 5px 0;top:7px">
+                  <div title="Toggle light/dark theme" class="theme-switch-wrapper">
+                    <label class="theme-switch" for="th-toggle">
+                        <input type="checkbox" id="th-toggle" />
+                        <div class="theme-icon"></div>
+                    </label>
+                  </div>
+                </li>
+                <li role="menu">
+                    <a href="https://www.qt.io/academy" aria-haspopup="true" aria-expanded="false">Qt Academy</a>
+                </li>
+                <li role="menu">
+                    <a href="/archives" aria-haspopup="true" aria-expanded="false">Archives</a>
+                </li>
+                <li role="menu">
+                    <a href="https://doc-snapshots.qt.io/" aria-haspopup="true" aria-expanded="false">Snapshots</a>
+                </li>
+            </ul>
+            </div>
+            <div class="b-header__primary-level__hamburger">
+                <div class="c-hamburger"></div>
+            </div>
+        </div>
+    </div>
+</header>
+</div>
+<div data-global-resource-path="qt-design-system/components/b-sidebar.html">
+    <div class="b-sidebar b-sidebar--full-width">
+        <aside class="b-sidebar__sidebar">
+            <div id="qds-sbhandle"></div>
+            <div class="b-sidebar__sidebar__mobile-close"><div class="c-mobile-close"></div></div>
+            <div class="b-sidebar__sidebar__mobile-toggle" data-mobile-title="Topics"></div>
+                        <div class="b-sidebar__sidebar__content">
+                <div data-margin-bottom="md">
+                                        <select id="qds-vdropdown" class="c-form-select c-form-select--dark js-versioncontrol" style="visibility:hidden">
+                                            </select>
+                                    </div>
+                <div id="qds-ec-toggle" title="Expand/collapse all"></div>
+                <nav>
+                    <div id="sidebar-toctree"></div>
+                    <ul class="c-sidebar-navigation">
+                                                
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <div class="b-sidebar__content">
+            <div class="b-sidebar__topbar" data-margin-bottom="sm">
+                <div class="b-topbar">
+                    <div class="b-topbar__search">
+                        <form id="site-search" role="search" style="width: 535px; max-width: 100%" autocomplete="off">
+                            <input accesskey="f" class="c-form-input-field c-form-input-field--search" placeholder="Search" id="search" name="search" onclick="(function(w,d,i){i.removeAttribute('on'+w.event.type);var j=d.createElement('script'),c=d.createElement('link');j.async=true;j.onload=function(){qtSearchInit(i,w.qtSearchNavigation)};j.src='//www.qt.io/hubfs/qt-design-system/qt-search-component-v2/qt-search-component-v2.js';c.rel='stylesheet';c.onload=function(){try{w.qtscs=1;qtSearchStyle(i)}catch(e){}};c.href='//www.qt.io/hubfs/qt-design-system/qt-search-component-v2/qt-search-component-v2.css';d.head.appendChild(c);d.head.appendChild(j)})(window,document,this)" required type="text">
+                            <button type="submit" style="display:none;">Search</button>
+                            <style>.js-qt-search-component{z-index:1000;}</style>
+                        </form>
+                    </div>                    <div class="b-topbar__breadcrump" translate="no">
+                        <ul class="c-breadcrump">
+                            <li><a href="index.html">Qt 6.11</a></li>
+                            <li><a href="qtquick-index.html">Qt Quick</a></li>
+                            <li><a>Qt Quick QML Types</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="b-sidebar__content__wrapper">
+                <article class="b-sidebar__content__left">
+                    <div id="qds-toc-menu">On this page</div>
+                    <div class="context mainContent" style="margin: 0;padding: 0; background: 0;">
+                    
+
+<div class="context">
+<h1 class="title" translate="no">Qt Quick QML Types</h1>
+<!-- $$$QtQuick-description -->
+<div class="descr" id="details">
+<p>The <a href="qtquick-index.html">Qt Quick</a> module provides graphical primitive types. These types are only available in a QML document if that document imports the <code translate="no">QtQuick</code> namespace.</p>
+<p>To use the module, import the <code translate="no">QtQuick</code> module with the following statement:</p>
+<div class="pre"><pre class="qml prettyprint" translate="no">import QtQuick</pre></div>
+<p>Visit the <a href="qtquick-index.html">Qt Quick</a> module documentation for more information about the concepts that are central to <code translate="no">QtQuick</code>.</p>
+<h2 id="submodules">Submodules<a class="plink" href="#submodules" title="Direct link to this headline"></a></h2>
+<p>Qt Quick includes several submodules that contain additional types:</p>
+<ul>
+<li><a href="qtquick-localstorage-qmlmodule.html" translate="no">Local Storage</a> - a submodule containing a JavaScript interface for an SQLite database</li>
+<li><a href="qtquick-particles-qmlmodule.html" translate="no">Particles</a> - provides a particle system for QML applications</li>
+<li><a href="qtquick-controls-qmlmodule.html" translate="no">Controls</a> - provides a set of reusable UI components</li>
+<li><a href="qtquick-layouts-qmlmodule.html" translate="no">Layouts</a> - contains types that are used to arrange items in the user interface</li>
+<li><a href="qttest-qmlmodule.html" translate="no">Tests</a> - types for testing QML applications.</li>
+<li><a href="qtquick-effects-qmlmodule.html" translate="no">Effects</a> - provides types for applying one or more simple graphical effects to Qt Quick items.</li>
+<li><a href="qtquick-shapes-qmlmodule.html" translate="no">Shapes</a> - provides types for rendering vector shapes in a Qt Quick scene.</li>
+<li><a href="qtquick-vectorimage-qmlmodule.html" translate="no">Vector Image</a> - provides types for displaying vector image files.</li>
+</ul>
+<span id="value-types"></span><h2 id="value-types">Value Types<a class="plink" href="#value-types" title="Direct link to this headline"></a></h2>
+<p>There are a number of value types that are <a href="qtqml-typesystem-valuetypes.html">supported by default in the QML language</a>.</p>
+<p>In addition, the <code translate="no">QtQuick</code> import provides the following value types: </p><div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-color.html">color</a></p></td><td class="tblDescr"><p>An ARGB color value</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-font.html">font</a></p></td><td class="tblDescr"><p>Font value with the properties of QFont.  The font type refers to a font value with the properties of QFont</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-matrix4x4.html">matrix4x4</a></p></td><td class="tblDescr"><p>A matrix4x4 type is a 4-row and 4-column matrix</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-quaternion.html">quaternion</a></p></td><td class="tblDescr"><p>A quaternion type has scalar, x, y, and z attributes</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-vector2d.html">vector2d</a></p></td><td class="tblDescr"><p>A vector2d type has x and y attributes</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-vector3d.html">vector3d</a></p></td><td class="tblDescr"><p>Value with x, y, and z attributes</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-vector4d.html">vector4d</a></p></td><td class="tblDescr"><p>A vector4d type has x, y, z and w attributes</p></td></tr>
+</table></div>
+<h2 id="object-types">Object Types<a class="plink" href="#object-types" title="Direct link to this headline"></a></h2>
+<p>Most object types provided by the <code translate="no">QtQuick</code> import are based on the <a href="qml-qtquick-item.html" translate="no">Item</a> type, which itself derives from <a href="qml-qtqml-qtobject.html" translate="no">QtObject</a>. <a href="qtqml-qmlmodule.html#object-types" translate="no">QML object types</a> provided by the Qt QML module (such as <a href="qml-qtqml-qtobject.html" translate="no">QtObject</a> and <a href="qml-qtqml-component.html" translate="no">Component</a>) are also available when you import <code translate="no">QtQuick</code>.</p>
+</div>
+<!-- @@@QtQuick -->
+<div class="table"><table class="annotated">
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-accessible.html">Accessible</a></p></td><td class="tblDescr"><p>Enables accessibility of QML items</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-anchoranimation.html">AnchorAnimation</a></p></td><td class="tblDescr"><p>Animates changes in anchor values</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-anchorchanges.html">AnchorChanges</a></p></td><td class="tblDescr"><p>Specifies how to change the anchors of an item in a state</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-animatedimage.html">AnimatedImage</a></p></td><td class="tblDescr"><p>Plays animations stored as a series of images</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-animatedsprite.html">AnimatedSprite</a></p></td><td class="tblDescr"><p>Draws a sprite animation</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-animation.html">Animation</a></p></td><td class="tblDescr"><p>Is the base of all QML animations</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-animationcontroller.html">AnimationController</a></p></td><td class="tblDescr"><p>Enables manual control of animations</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-animator.html">Animator</a></p></td><td class="tblDescr"><p>Is the base of all QML animators</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-application.html">Application</a></p></td><td class="tblDescr"><p>Provides access to global application state properties shared by many QML components</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-behavior.html">Behavior</a></p></td><td class="tblDescr"><p>Defines a default animation for a property change</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-borderimage.html">BorderImage</a></p></td><td class="tblDescr"><p>Paints a border based on an image</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-borderimagemesh.html">BorderImageMesh</a></p></td><td class="tblDescr"><p>Defines a mesh with vertices arranged like those of a BorderImage</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-canvas.html">Canvas</a></p></td><td class="tblDescr"><p>Provides a 2D canvas item enabling drawing via JavaScript</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-canvasgradient.html">CanvasGradient</a></p></td><td class="tblDescr"><p>Provides an opaque CanvasGradient interface</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-canvasimagedata.html">CanvasImageData</a></p></td><td class="tblDescr"><p>Contains image pixel data in RGBA order</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-canvaspixelarray.html">CanvasPixelArray</a></p></td><td class="tblDescr"><p>Provides ordered and indexed access to the components of each pixel in image data</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-closeevent.html">CloseEvent</a></p></td><td class="tblDescr"><p>Notification that a Window is about to be closed</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-coloranimation.html">ColorAnimation</a></p></td><td class="tblDescr"><p>Animates changes in color values</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-colorgroup.html">ColorGroup</a></p></td><td class="tblDescr"><p>Set of colors by roles</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-column.html">Column</a></p></td><td class="tblDescr"><p>Positions its children in a column</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-context2d.html">Context2D</a></p></td><td class="tblDescr"><p>Provides 2D context for shapes on a Canvas item</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-doublevalidator.html">DoubleValidator</a></p></td><td class="tblDescr"><p>Defines a validator for non-integer numbers</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-drag.html">Drag</a></p></td><td class="tblDescr"><p>For specifying drag and drop events for moved Items</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-dragevent.html">DragEvent</a></p></td><td class="tblDescr"><p>Provides information about a drag event</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-draghandler.html">DragHandler</a></p></td><td class="tblDescr"><p>Handler for dragging</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-droparea.html">DropArea</a></p></td><td class="tblDescr"><p>For specifying drag and drop handling in an area</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-enterkey.html">EnterKey</a></p></td><td class="tblDescr"><p>Provides a property to manipulate the appearance of Enter key on an on-screen keyboard</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-flickable.html">Flickable</a></p></td><td class="tblDescr"><p>Provides a surface that can be "flicked"</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-flipable.html">Flipable</a></p></td><td class="tblDescr"><p>Provides a surface that can be flipped</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-flow.html">Flow</a></p></td><td class="tblDescr"><p>Positions its children side by side, wrapping as necessary</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-focusscope.html">FocusScope</a></p></td><td class="tblDescr"><p>Explicitly creates a focus scope</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-fontinfo.html">FontInfo</a></p></td><td class="tblDescr"><p>Provides info about how a given font query is resolved</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-fontloader.html">FontLoader</a></p></td><td class="tblDescr"><p>Allows fonts to be loaded by URL</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-fontmetrics.html">FontMetrics</a></p></td><td class="tblDescr"><p>Provides metrics for a given font</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-frameanimation.html">FrameAnimation</a></p></td><td class="tblDescr"><p>Triggers a handler at every animation frame update</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-gestureevent.html">GestureEvent</a></p></td><td class="tblDescr"><p>Parameter given with the gestureStarted signal</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-gradient.html">Gradient</a></p></td><td class="tblDescr"><p>Defines a gradient fill</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-gradientstop.html">GradientStop</a></p></td><td class="tblDescr"><p>Defines the color at a position in a Gradient</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-graphicsinfo.html">GraphicsInfo</a></p></td><td class="tblDescr"><p>Provides information about the scenegraph backend and the graphics API used by Qt Quick</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-grid.html">Grid</a></p></td><td class="tblDescr"><p>Positions its children in grid formation</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-gridmesh.html">GridMesh</a></p></td><td class="tblDescr"><p>Defines a mesh with vertices arranged in a grid</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-gridview.html">GridView</a></p></td><td class="tblDescr"><p>For specifying a grid view of items provided by a model</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-hoverhandler.html">HoverHandler</a></p></td><td class="tblDescr"><p>Handler for mouse and tablet hover</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-image.html">Image</a></p></td><td class="tblDescr"><p>Displays an image</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-inputmethod.html">InputMethod</a></p></td><td class="tblDescr"><p>Provides access to QInputMethod for QML applications</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-intvalidator.html">IntValidator</a></p></td><td class="tblDescr"><p>Defines a validator for integer values</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-item.html">Item</a></p></td><td class="tblDescr"><p>A basic visual QML type</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-itemgrabresult.html">ItemGrabResult</a></p></td><td class="tblDescr"><p>Contains the results from a call to Item::grabToImage()</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-keyevent.html">KeyEvent</a></p></td><td class="tblDescr"><p>Provides information about a key event</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-keynavigation.html">KeyNavigation</a></p></td><td class="tblDescr"><p>Supports key navigation by arrow keys</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-keys.html">Keys</a></p></td><td class="tblDescr"><p>Provides key handling to Items</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-layoutmirroring.html">LayoutMirroring</a></p></td><td class="tblDescr"><p>Property used to mirror layout behavior</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-listview.html">ListView</a></p></td><td class="tblDescr"><p>Provides a list view of items provided by a model</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-loader.html">Loader</a></p></td><td class="tblDescr"><p>Allows dynamic loading of a subtree from a URL or Component</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-matrix4x4.html">Matrix4x4</a></p></td><td class="tblDescr"><p>Provides a way to apply a 4x4 tranformation matrix to an Item</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-mousearea.html">MouseArea</a></p></td><td class="tblDescr"><p>Enables simple mouse handling</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-mouseevent.html">MouseEvent</a></p></td><td class="tblDescr"><p>Provides information about a mouse event</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-multipointhandler.html">MultiPointHandler</a></p></td><td class="tblDescr"><p>Abstract handler for multi-point Pointer Events</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-multipointtoucharea.html">MultiPointTouchArea</a></p></td><td class="tblDescr"><p>Enables handling of multiple touch points</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-numberanimation.html">NumberAnimation</a></p></td><td class="tblDescr"><p>Animates changes in qreal-type values</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-opacityanimator.html">OpacityAnimator</a></p></td><td class="tblDescr"><p>Type animates the opacity of an Item</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-palette.html">Palette</a></p></td><td class="tblDescr"><p>Contains color groups for each QML item state</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-parallelanimation.html">ParallelAnimation</a></p></td><td class="tblDescr"><p>Enables animations to be run in parallel</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-parentanimation.html">ParentAnimation</a></p></td><td class="tblDescr"><p>Animates changes in parent values</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-parentchange.html">ParentChange</a></p></td><td class="tblDescr"><p>Specifies how to reparent an Item in a state change</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-path.html">Path</a></p></td><td class="tblDescr"><p>Defines a path for use by PathView and Shape</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathanglearc.html">PathAngleArc</a></p></td><td class="tblDescr"><p>Defines an arc with the given radii and center</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathanimation.html">PathAnimation</a></p></td><td class="tblDescr"><p>Animates an item along a path</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-patharc.html">PathArc</a></p></td><td class="tblDescr"><p>Defines an arc with the given radius</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathattribute.html">PathAttribute</a></p></td><td class="tblDescr"><p>Specifies how to set an attribute at a given position in a Path</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathcubic.html">PathCubic</a></p></td><td class="tblDescr"><p>Defines a cubic Bezier curve with two control points</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathcurve.html">PathCurve</a></p></td><td class="tblDescr"><p>Defines a point on a Catmull-Rom curve</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathelement.html">PathElement</a></p></td><td class="tblDescr"><p>The base path type</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathinterpolator.html">PathInterpolator</a></p></td><td class="tblDescr"><p>Specifies how to manually animate along a path</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathline.html">PathLine</a></p></td><td class="tblDescr"><p>Defines a straight line</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathmove.html">PathMove</a></p></td><td class="tblDescr"><p>Moves the Path's position</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathmultiline.html">PathMultiline</a></p></td><td class="tblDescr"><p>Defines a set of polylines through a list of lists of coordinates</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathpercent.html">PathPercent</a></p></td><td class="tblDescr"><p>Manipulates the way a path is interpreted</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathpolyline.html">PathPolyline</a></p></td><td class="tblDescr"><p>Defines a polyline through a list of coordinates</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathquad.html">PathQuad</a></p></td><td class="tblDescr"><p>Defines a quadratic Bezier curve with a control point</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathrectangle.html">PathRectangle</a></p></td><td class="tblDescr"><p>Defines a rectangle with optionally rounded corners</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathsvg.html">PathSvg</a></p></td><td class="tblDescr"><p>Defines a path using an SVG path data string</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathtext.html">PathText</a></p></td><td class="tblDescr"><p>Defines a string in a specified font</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pathview.html">PathView</a></p></td><td class="tblDescr"><p>Lays out model-provided items on a path</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pauseanimation.html">PauseAnimation</a></p></td><td class="tblDescr"><p>Provides a pause for an animation</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pincharea.html">PinchArea</a></p></td><td class="tblDescr"><p>Enables simple pinch gesture handling</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pinchevent.html">PinchEvent</a></p></td><td class="tblDescr"><p>For specifying information about a pinch event</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pinchhandler.html">PinchHandler</a></p></td><td class="tblDescr"><p>Handler for pinch gestures</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-planartransform.html">PlanarTransform</a></p></td><td class="tblDescr"><p>Provides utility functions for matrix4x4 when used for 2D transforms</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pointhandler.html">PointHandler</a></p></td><td class="tblDescr"><p>Handler for reacting to a single touchpoint</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pointerdevice.html">PointerDevice</a></p></td><td class="tblDescr"><p>QML equivalent for QPointingDevice</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pointerdevicehandler.html">PointerDeviceHandler</a></p></td><td class="tblDescr"><p>Abstract handler for pointer events with device-specific constraints</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pointerevent.html">PointerEvent</a></p></td><td class="tblDescr"><p>QML equivalent for QPointerEvent</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pointerhandler.html">PointerHandler</a></p></td><td class="tblDescr"><p>Abstract handler for pointer events</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-positioner.html">Positioner</a></p></td><td class="tblDescr"><p>Provides attached properties that contain details on where an item exists in a positioner</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-propertyaction.html">PropertyAction</a></p></td><td class="tblDescr"><p>Specifies immediate property changes during animation</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-propertyanimation.html">PropertyAnimation</a></p></td><td class="tblDescr"><p>Animates changes in property values</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-propertychanges.html">PropertyChanges</a></p></td><td class="tblDescr"><p>Describes new property bindings or values for a state</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-rectangle.html">Rectangle</a></p></td><td class="tblDescr"><p>Paints a filled rectangle with an optional border</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-regularexpressionvalidator.html">RegularExpressionValidator</a></p></td><td class="tblDescr"><p>Provides a string validator</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-repeater.html">Repeater</a></p></td><td class="tblDescr"><p>Instantiates a number of Item-based components using a provided model</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-rotation.html">Rotation</a></p></td><td class="tblDescr"><p>Provides a way to rotate an Item</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-rotationanimation.html">RotationAnimation</a></p></td><td class="tblDescr"><p>Animates changes in rotation values</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-rotationanimator.html">RotationAnimator</a></p></td><td class="tblDescr"><p>Type animates the rotation of an Item</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-row.html">Row</a></p></td><td class="tblDescr"><p>Positions its children in a row</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-safearea.html">SafeArea</a></p></td><td class="tblDescr"><p>Provides access to the safe area properties of the item or window</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-scale.html">Scale</a></p></td><td class="tblDescr"><p>Provides a way to scale an Item</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-scaleanimator.html">ScaleAnimator</a></p></td><td class="tblDescr"><p>Type animates the scale factor of an Item</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-screen.html">Screen</a></p></td><td class="tblDescr"><p>Attached object provides information about the Screen an Item or Window is displayed on</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-scriptaction.html">ScriptAction</a></p></td><td class="tblDescr"><p>Defines scripts to be run during an animation</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-sequentialanimation.html">SequentialAnimation</a></p></td><td class="tblDescr"><p>Allows animations to be run sequentially</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shadereffect.html">ShaderEffect</a></p></td><td class="tblDescr"><p>Applies custom shaders to a rectangle</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shadereffectsource.html">ShaderEffectSource</a></p></td><td class="tblDescr"><p>Renders a Qt Quick item into a texture and displays it</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shear.html">Shear</a></p></td><td class="tblDescr"><p>Provides a way to shear an Item</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-shortcut.html">Shortcut</a></p></td><td class="tblDescr"><p>Provides keyboard shortcuts</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-singlepointhandler.html">SinglePointHandler</a></p></td><td class="tblDescr"><p>Abstract handler for single-point Pointer Events</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-smoothedanimation.html">SmoothedAnimation</a></p></td><td class="tblDescr"><p>Allows a property to smoothly track a value</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-springanimation.html">SpringAnimation</a></p></td><td class="tblDescr"><p>Allows a property to track a value in a spring-like motion</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-sprite.html">Sprite</a></p></td><td class="tblDescr"><p>Specifies sprite animations</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-spritesequence.html">SpriteSequence</a></p></td><td class="tblDescr"><p>Draws a sprite animation</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-state.html">State</a></p></td><td class="tblDescr"><p>Defines configurations of objects and properties</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-statechangescript.html">StateChangeScript</a></p></td><td class="tblDescr"><p>Specifies how to run a script in a state</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-stategroup.html">StateGroup</a></p></td><td class="tblDescr"><p>Provides built-in state support for non-Item types</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-systempalette.html">SystemPalette</a></p></td><td class="tblDescr"><p>Provides access to the Qt palettes</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-tableview.html">TableView</a></p></td><td class="tblDescr"><p>Provides a table view of items to display data from a model</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-taphandler.html">TapHandler</a></p></td><td class="tblDescr"><p>Handler for taps and clicks</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-text.html">Text</a></p></td><td class="tblDescr"><p>Specifies how to add formatted text to a scene</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-textdocument.html">TextDocument</a></p></td><td class="tblDescr"><p>A wrapper around TextEdit's backing QTextDocument</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-textedit.html">TextEdit</a></p></td><td class="tblDescr"><p>Displays multiple lines of editable formatted text</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-textinput.html">TextInput</a></p></td><td class="tblDescr"><p>Displays an editable line of text</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-textmetrics.html">TextMetrics</a></p></td><td class="tblDescr"><p>Provides metrics for a given font and text</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-textselection.html">TextSelection</a></p></td><td class="tblDescr"><p>Represents a contiguous selection of text and its properties</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-touchpoint.html">TouchPoint</a></p></td><td class="tblDescr"><p>Describes a touch point in a MultiPointTouchArea</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-transform.html">Transform</a></p></td><td class="tblDescr"><p>For specifying advanced transformations on Items</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-transition.html">Transition</a></p></td><td class="tblDescr"><p>Defines animated transitions that occur on state changes</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-translate.html">Translate</a></p></td><td class="tblDescr"><p>Provides a way to move an Item without changing its x or y properties</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-treeview.html">TreeView</a></p></td><td class="tblDescr"><p>Provides a tree view to display data from a QAbstractItemModel</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-uniformanimator.html">UniformAnimator</a></p></td><td class="tblDescr"><p>Type animates a uniform of a ShaderEffect</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-vector3danimation.html">Vector3dAnimation</a></p></td><td class="tblDescr"><p>Animates changes in QVector3d values</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-viewtransition.html">ViewTransition</a></p></td><td class="tblDescr"><p>Specifies items under transition in a view</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-wheelevent.html">WheelEvent</a></p></td><td class="tblDescr"><p>Provides information about a mouse wheel event</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-wheelhandler.html">WheelHandler</a></p></td><td class="tblDescr"><p>Handler for the mouse wheel</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-window.html">Window</a></p></td><td class="tblDescr"><p>Creates a new top-level window</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-windowcontainer.html">WindowContainer</a></p></td><td class="tblDescr"><p>Allows embedding arbitrary QWindows into a Qt Quick scene</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-xanimator.html">XAnimator</a></p></td><td class="tblDescr"><p>Type animates the x position of an Item</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-yanimator.html">YAnimator</a></p></td><td class="tblDescr"><p>Type animates the y position of an Item</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-eventpoint.html">eventPoint</a></p></td><td class="tblDescr"><p>Qml equivalent for QEventPoint</p></td></tr>
+<tr class="even topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-handlerpoint.html">handlerPoint</a></p></td><td class="tblDescr"><p>An event point</p></td></tr>
+<tr class="odd topAlign"><td class="tblName" translate="no"><p><a href="qml-qtquick-pointingdeviceuniqueid.html">pointingDeviceUniqueId</a></p></td><td class="tblDescr"><p>QML equivalent for QPointingDeviceUniqueId</p></td></tr>
+</table></div>
+</div>
+<p class="copy-notice">
+<abbr title="Copyright">©</abbr> 2026 The Qt Company Ltd.
+   Documentation contributions included herein are the copyrights of
+   their respective owners.     The documentation provided herein is licensed under the terms of the    <a href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation    License version 1.3</a> as published by the Free Software Foundation.     Qt and respective logos are <a href="https://doc.qt.io/qt/trademarks.html">    trademarks</a> of The Qt Company Ltd. in Finland and/or other countries
+   worldwide. All other trademarks are property of their respective owners. </p>
+
+                    </div>
+                </article>
+                <aside class="b-sidebar__content__right">
+                    <div class="h-wysiwyg-html" data-scheme>
+                                                <h6><strong>Contents</strong></h6>
+                        <nav>
+                            <ul class="c-tableofcontents js-c-tableofcontents" data-tableofcontents-id="wrapperid" data-margin-top="sm">
+<li class="level1"><p><a href="#submodules">Submodules</a></p></li>
+<li class="level1"><p><a href="#value-types">Value Types</a></p></li>
+<li class="level1"><p><a href="#object-types">Object Types</a></p></li>
+</ul>
+                        </nav>
+                                            </div>
+                                    </aside>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer">
+<div class="l-footer">
+    <div class="l-footer__container">
+        <div class="l-footer__row l-footer__row--no-padding-bottom">
+            <div class="l-footer__column l-footer__company">
+                <div class="l-footer__logo">
+                    <a href="https://www.qt.io/?hsLang=en" class="c-logo-footer">
+                    <img src="/images/qtgroup.svg">
+                    </a>
+                </div>
+                <div class="c-social-media-links">
+                    <a href="https://twitter.com/qtproject" target="_blank" rel="noopener" class="fm_button fm_twitter"><span></span></a>
+                    <a href="https://www.facebook.com/qt/" target="_blank" rel="noopener" class="fm_button fm_facebook"><span></span></a>
+                    <a href="https://www.youtube.com/user/QtStudios" target="_blank" rel="noopener" class="fm_button fm_youtube"><span></span></a>
+                    <a href="https://www.linkedin.com/company/qtgroup/" target="_blank" rel="noopener" class="fm_button fm_linkedin"><span></span></a>
+                </div>
+                <div class="l-footer__contact">
+                        <a class="c-btn " href="https://www.qt.io/contact-us?hsLang=en">Contact Us</a>
+                </div>
+
+            </div>
+            <div class="l-footer__column l-footer__navigation">
+                <div class="c-footer-navigation">
+
+                        <span><div class="hs-menu-wrapper" role="navigation" aria-label="Navigation Menu">
+<ul role="menu">
+  <li class="hs-menu-item hs-menu-depth-1 hs-item-has-children" role="none"><a href="javascript:;" aria-haspopup="true" aria-expanded="false" role="menuitem">Qt Group</a>
+   <ul role="menu" class="hs-menu-children-wrapper">
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/group" role="menuitem">Our Story</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/brand" role="menuitem">Brand</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/newsroom" role="menuitem">News</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/careers" role="menuitem">Careers</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/investors" role="menuitem">Investors</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/product" role="menuitem">Qt Products</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/product/quality-assurance" role="menuitem">Software Quality Products</a></li>
+   </ul></li>
+  <li class="hs-menu-item hs-menu-depth-1 hs-item-has-children" role="none"><a href="javascript:;" aria-haspopup="true" aria-expanded="false" role="menuitem">Licensing</a>
+   <ul role="menu" class="hs-menu-children-wrapper">
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/terms-conditions" role="menuitem">License Agreement</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/licensing/open-source-lgpl-obligations" role="menuitem">Open Source</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/pricing" role="menuitem">Plans and pricing</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/download" role="menuitem">Download</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/faq/overview" role="menuitem">FAQ</a></li>
+   </ul></li>
+  <li class="hs-menu-item hs-menu-depth-1 hs-item-has-children" role="none"><a href="javascript:;" aria-haspopup="true" aria-expanded="false" role="menuitem">Learn Qt</a>
+   <ul role="menu" class="hs-menu-children-wrapper">
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/academy" role="menuitem">For Learners</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/qt-educational-license" role="menuitem">For Students and Teachers</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://doc.qt.io/" role="menuitem" target="_blank" rel="noopener">Qt Documentation</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://forum.qt.io/" role="menuitem" target="_blank" rel="noopener">Qt Forum</a></li>
+   </ul></li>
+  <li class="hs-menu-item hs-menu-depth-1 hs-item-has-children" role="none"><a href="javascript:;" aria-haspopup="true" aria-expanded="false" role="menuitem">Support &amp; Services</a>
+   <ul role="menu" class="hs-menu-children-wrapper">
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/qt-professional-services" role="menuitem">Professional Services</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/customer-success" role="menuitem">Customer Success</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/qt-support/" role="menuitem">Support Services</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/contact-us/partners" role="menuitem">Partners</a></li>
+    <li class="hs-menu-item hs-menu-depth-2" role="none"><a href="https://www.qt.io/qt-world" role="menuitem" target="_blank" rel="noopener">Qt World</a></li>
+   </ul></li>
+ </ul>
+</div></span>
+      </div>
+   </div>
+</div>
+        <div class="l-footer__row">
+            <div class="l-footer__column l-footer__legal">
+                <div class="c-footer-secondary-navigation">
+                    <span><div class="hs-menu-wrapper" role="navigation"  aria-label="Navigation Menu">
+ <ul role="menu">
+  <li class="hs-menu-item hs-menu-depth-1" role="none"><a href="javascript:;" role="menuitem">© 2026 The Qt Company</a></li>
+  <li class="hs-menu-item hs-menu-depth-1" role="none"><a href="mailto:feedback@qt.io?Subject=Feedback%20about%20doc.qt.io%20site">Feedback</a></li>
+ </ul>
+</div></span>
+                    <p class="c-footer-secondary-navigation__group-notice">Qt Group includes The Qt Company Oy and its global subsidiaries and affiliates.</p>
+                </div>
+            </div>
+            <div class="l-footer__column l-footer__some-links">
+            </div>
+        </div>
+    </div>
+</div>
+</div></body></html>
