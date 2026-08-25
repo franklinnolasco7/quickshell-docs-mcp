@@ -62,7 +62,13 @@ jobs:
         env:
           INPUT_TAG: ${{ inputs.tag }}
           SR_VERSION: ${{ needs.semantic-release.outputs.version }}
-        run: echo "version=${INPUT_TAG:-$SR_VERSION}" | sed 's/^v//' >> "$GITHUB_OUTPUT"
+        run: |
+          TAG="${INPUT_TAG:-$SR_VERSION}"
+          if [ -z "$TAG" ]; then
+            echo "::error::No version resolved. On workflow_dispatch you must pass the tag input (e.g. v1.0.0); push triggers get it from semantic-release."
+            exit 1
+          fi
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v6
         with:
