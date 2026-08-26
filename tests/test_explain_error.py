@@ -390,7 +390,18 @@ def test_existing_method_detected(monkeypatch, docs_fixture_urls):
 # ---------------------------------------------------------------------------
 
 
-def test_missing_import():
+def test_missing_import(monkeypatch, docs_fixture_urls):
+    mapping = _build_type_page_mapping(docs_fixture_urls)
+    mapping[srv.BASE + "/about/"] = load_fixture("about.html")
+
+    def fake_fetch(url: str) -> str:
+        for prefix, html in mapping.items():
+            if url.startswith(prefix):
+                return html
+        raise AssertionError(f"unexpected fetch: {url}")
+
+    monkeypatch.setattr(utils, "_fetch_raw", fake_fetch)
+
     result = srv._explain_error(
         error="namespace 'Quickshell.Services.Pipewire' is not installed",
         version="v0.3.1",
@@ -432,7 +443,18 @@ def test_component_not_found(monkeypatch, docs_fixture_urls):
 # ---------------------------------------------------------------------------
 
 
-def test_binding_error():
+def test_binding_error(monkeypatch, docs_fixture_urls):
+    mapping = _build_type_page_mapping(docs_fixture_urls)
+    mapping[srv.BASE + "/about/"] = load_fixture("about.html")
+
+    def fake_fetch(url: str) -> str:
+        for prefix, html in mapping.items():
+            if url.startswith(prefix):
+                return html
+        raise AssertionError(f"unexpected fetch: {url}")
+
+    monkeypatch.setattr(utils, "_fetch_raw", fake_fetch)
+
     result = srv._explain_error(
         error="Cannot apply binding to value property 'width'",
         version="v0.3.1",
@@ -447,7 +469,18 @@ def test_binding_error():
 # ---------------------------------------------------------------------------
 
 
-def test_type_mismatch():
+def test_type_mismatch(monkeypatch, docs_fixture_urls):
+    mapping = _build_type_page_mapping(docs_fixture_urls)
+    mapping[srv.BASE + "/about/"] = load_fixture("about.html")
+
+    def fake_fetch(url: str) -> str:
+        for prefix, html in mapping.items():
+            if url.startswith(prefix):
+                return html
+        raise AssertionError(f"unexpected fetch: {url}")
+
+    monkeypatch.setattr(utils, "_fetch_raw", fake_fetch)
+
     result = srv._explain_error(
         error="Invalid assignment: Cannot assign string to int",
         version="v0.3.1",
@@ -481,6 +514,80 @@ def test_uncertain_diagnosis(monkeypatch, docs_fixture_urls):
 
     assert result["error_category"] == "unknown"
     assert result["confidence"] == "low"
+
+
+# ---------------------------------------------------------------------------
+# Unverified target (no type docs available): fix must not be empty
+# ---------------------------------------------------------------------------
+
+
+def test_non_existent_property_no_type_provides_fix(monkeypatch, docs_fixture_urls):
+    mapping = _build_type_page_mapping(docs_fixture_urls)
+    mapping[srv.BASE + "/about/"] = load_fixture("about.html")
+
+    def fake_fetch(url: str) -> str:
+        for prefix, html in mapping.items():
+            if url.startswith(prefix):
+                return html
+        raise AssertionError(f"unexpected fetch: {url}")
+
+    monkeypatch.setattr(utils, "_fetch_raw", fake_fetch)
+
+    result = srv._explain_error(
+        error="Cannot assign to non-existent property 'foo'",
+        version="v0.3.1",
+    )
+
+    assert result["error_category"] == "non_existent_property"
+    assert result["fix"], "fix must not be empty when type docs are unavailable"
+    assert "foo" in result["fix"]
+    assert result["confidence"] != "high"
+
+
+def test_unknown_signal_no_type_provides_fix(monkeypatch, docs_fixture_urls):
+    mapping = _build_type_page_mapping(docs_fixture_urls)
+    mapping[srv.BASE + "/about/"] = load_fixture("about.html")
+
+    def fake_fetch(url: str) -> str:
+        for prefix, html in mapping.items():
+            if url.startswith(prefix):
+                return html
+        raise AssertionError(f"unexpected fetch: {url}")
+
+    monkeypatch.setattr(utils, "_fetch_raw", fake_fetch)
+
+    result = srv._explain_error(
+        error="Cannot connect to non-existent signal 'clickled'",
+        version="v0.3.1",
+    )
+
+    assert result["error_category"] == "unknown_signal"
+    assert result["fix"], "fix must not be empty when type docs are unavailable"
+    assert "clickled" in result["fix"]
+    assert result["confidence"] != "high"
+
+
+def test_unknown_method_no_type_provides_fix(monkeypatch, docs_fixture_urls):
+    mapping = _build_type_page_mapping(docs_fixture_urls)
+    mapping[srv.BASE + "/about/"] = load_fixture("about.html")
+
+    def fake_fetch(url: str) -> str:
+        for prefix, html in mapping.items():
+            if url.startswith(prefix):
+                return html
+        raise AssertionError(f"unexpected fetch: {url}")
+
+    monkeypatch.setattr(utils, "_fetch_raw", fake_fetch)
+
+    result = srv._explain_error(
+        error="destroyAll is not a function",
+        version="v0.3.1",
+    )
+
+    assert result["error_category"] == "unknown_method"
+    assert result["fix"], "fix must not be empty when type docs are unavailable"
+    assert "destroyAll" in result["fix"]
+    assert result["confidence"] != "high"
 
 
 # ---------------------------------------------------------------------------

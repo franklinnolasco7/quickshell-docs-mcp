@@ -407,6 +407,14 @@ def _build_diagnosis(
         else:
             fix = f"Property '{prop_name}' exists. Check the value type and assignment syntax."
 
+    elif category == "non_existent_property" and prop_name:
+        # Type documentation is unavailable, so the property cannot be verified.
+        fix = (
+            f"Property '{prop_name}' could not be verified: the target type's "
+            "documentation is unavailable. Check the property name and the "
+            "type's declared properties."
+        )
+
     elif category == "unknown_signal" and signal_name and markdown:
         exists = _search_type_page_for(markdown, signal_name)
         api_exists = exists
@@ -419,6 +427,14 @@ def _build_diagnosis(
         else:
             fix = f"Signal '{signal_name}' exists. Check the connection syntax."
 
+    elif category == "unknown_signal" and signal_name:
+        # Type documentation is unavailable, so the signal cannot be verified.
+        fix = (
+            f"Signal '{signal_name}' could not be verified: the target type's "
+            "documentation is unavailable. Check the signal name and the "
+            "type's declared signals."
+        )
+
     elif category == "unknown_method" and method_name and markdown:
         exists = _search_type_page_for(markdown, method_name)
         api_exists = exists
@@ -430,6 +446,14 @@ def _build_diagnosis(
             )
         else:
             fix = f"Method '{method_name}' exists. Check the call arguments."
+
+    elif category == "unknown_method" and method_name:
+        # Type documentation is unavailable, so the method cannot be verified.
+        fix = (
+            f"Method '{method_name}' could not be verified: the target type's "
+            "documentation is unavailable. Check the method name and the "
+            "type's declared methods."
+        )
 
     elif category == "unknown_type" or category == "component_not_found":
         if not relevant_type:
@@ -561,15 +585,11 @@ def _explain_error(
 
     # Step 7: determine confidence
     _NO_TYPE_CONFIDENCE = ("missing_import", "binding_error", "type_mismatch")
-    confidence = "high"
+    confidence = "medium"
     if category == "unknown":
         confidence = "low"
-    elif (
-        (not target_type or markdown is None)
-        and target_type is not None
-        and category not in _NO_TYPE_CONFIDENCE
-    ):
-        confidence = "medium"
+    elif category in _NO_TYPE_CONFIDENCE or markdown is not None:
+        confidence = "high"
 
     # Step 8: search for related docs
     related_docs = _search_related_docs(target_type, category, resolved_version)
