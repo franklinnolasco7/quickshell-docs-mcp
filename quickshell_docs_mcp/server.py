@@ -58,6 +58,12 @@ from .sources.docs import (  # noqa: F401
     _search_type_content,
     _type_page,
 )
+from .sources.errors import (  # noqa: F401
+    _classify_error,
+    _explain_error,
+    _extract_quoted,
+    _extract_type_from_code,
+)
 from .sources.examples import (  # noqa: F401
     _example_file,
     _examples_branch,
@@ -469,6 +475,53 @@ def quickshell_get_implementation(
     _record_tool("quickshell_get_implementation")
 
     return _impl_file(source, path, find, max_chars)
+
+
+@mcp.tool()
+def quickshell_explain_error(
+    error: str,
+    code: str | None = None,
+    version: str = "latest",
+    filename: str | None = None,
+    line_number: int | None = None,
+    component: str | None = None,
+) -> dict:
+    """Explain a Quickshell/QML error grounded in live docs.
+
+    Help AI coding agents understand and fix Quickshell/QML errors by
+    grounding the answer in this MCP's actual Quickshell and Qt/QML
+    documentation and source knowledge.
+
+    Args:
+        error: The QML error message (e.g. "Cannot assign to non-existent property 'foo'").
+        code: Optional QML snippet around the error for context.
+        version: Quickshell version to check against (default "latest", e.g. "v0.3.1").
+        filename: Optional source file name for code_context echo.
+        line_number: Optional line number for code_context echo.
+        component: Optional explicit type name (e.g. "PanelWindow"); preferred over code parsing
+                   when you already know the enclosing type. Simple regex parses code otherwise.
+
+    Returns a rich dict with: error_type, meaning, likely_cause, relevant_api,
+    exists (whether the named property/type/method exists), alternative (correct
+    API when a close match exists in the indexes), documentation (grounded URLs/snippets),
+    fix (concise edit), version_notes, confidence, and code_context.
+
+    Grounding: existence is verified via _build_index / _build_qt_index and, for
+    properties/signals/methods, by fetching the real type page. No API is
+    invented. When uncertain, confidence is "low" and this is stated explicitly.
+    Searches Qt docs when the error is Qt-related and implementation examples
+    when they clarify correct usage. Supports non-existent property, unknown type,
+    missing import, unknown signal/method, type mismatch, binding errors, etc.
+    """
+    _record_tool("quickshell_explain_error")
+    return _explain_error(
+        error=error,
+        code=code,
+        version=version,
+        filename=filename,
+        line_number=line_number,
+        component=component,
+    )
 
 
 @mcp.tool()

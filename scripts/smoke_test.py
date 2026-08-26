@@ -102,6 +102,7 @@ def main() -> int:
         "quickshell_get_example",
         "quickshell_search_implementations",
         "quickshell_get_implementation",
+        "quickshell_explain_error",
         "quickshell_stats",
     }
     missing = expected - names
@@ -139,6 +140,19 @@ def main() -> int:
     text = page["result"]["content"][0]["text"]
     assert "*Source:" in text and "PamContext" in text
     print(f"[ok] PamContext page fetched ({len(text)} chars, cited)")
+
+    err_args = {
+        "error": "Cannot assign to non-existent property 'foo'",
+        "code": "PanelWindow { foo: 123 }",
+    }
+    explain = _tool_json(c, "quickshell_explain_error", err_args)
+    assert explain.get("error_type") == "non-existent property"
+    assert "exists" in explain
+    msg = (
+        f"[ok] explain_error classified: {explain['error_type']}"
+        f" confidence={explain.get('confidence')}"
+    )
+    print(msg)
 
     stats = _tool_json(c, "quickshell_stats")
     assert stats["tool_calls"].get("quickshell_stats", 0) >= 1
