@@ -1055,6 +1055,11 @@ def _resolve_members_concurrently(refs: list[_TypeRef], version: str) -> None:
             if base_ref.namespace is None:
                 base_ref.module = _qt_module_for_type(base_name)
             if base_ref.namespace or base_ref.module:
+                base_url = _type_source_url(
+                    base_ref.namespace, base_ref.module, base_ref.base_name, version
+                )
+                if base_url is not None and base_url not in markdown_by_url:
+                    fetch_one(base_url)
                 base_members = members_for(base_ref, depth + 1, seen + (url,))
                 return _Members(
                     properties={**base_members.properties, **members.properties},

@@ -537,3 +537,106 @@ PopupAnchor { y: 3 }"""
     assert sev["version_incompatible"] == "error"
     assert sev["unknown_property"] == "warning"
     assert sev["unknown_type"] == "warning"
+
+
+def test_custom_property_declaration_known_type(monkeypatch, docs_fixture_urls):
+    # Drives the `property` branch of the declaration parser and the
+    # known-type `continue` path of _validate_declarations.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\nPanelWindow { property int myProp }", version=_VERSION
+    )
+    assert _diagnostics_for(result, "unknown_type") == []
+    assert _codes(result) == []
+
+
+def test_custom_property_declaration_unknown_type(monkeypatch, docs_fixture_urls):
+    # Drives the unknown-type diagnostic branch of _validate_declarations.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\nPanelWindow { property NotAType bad }", version=_VERSION
+    )
+    diags = _diagnostics_for(result, "unknown_type")
+    assert len(diags) == 1
+    assert diags[0]["severity"] == "warning"
+    assert diags[0]["could_not_verify"] is True
+    assert diags[0]["type"] == "NotAType"
+    assert diags[0]["alternatives"]
+
+
+def test_readonly_and_required_property_declarations(monkeypatch, docs_fixture_urls):
+    # Drives the readonly/required + property branch of the declaration parser.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\n"
+        "PanelWindow {\n"
+        "    readonly property int a\n"
+        "    required property string b\n"
+        "}",
+        version=_VERSION,
+    )
+    assert _codes(result) == []
+
+
+def test_signal_and_function_declarations(monkeypatch, docs_fixture_urls):
+    # Drives the signal + function branches of the declaration parser and the
+    # `function` classifier branch of _classify_open.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\n"
+        "PanelWindow {\n"
+        "    signal mySignal()\n"
+        "    function helper() { return 1 }\n"
+        "}",
+        version=_VERSION,
+    )
+    assert _codes(result) == []
+
+
+def test_import_alias(monkeypatch, docs_fixture_urls):
+    # Drives the `as` alias branch of _parse_import and alias resolution.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        'import Quickshell.Hyprland as Hyp\nHyp.HyprlandMonitor { name: "DP-1" }',
+        version=_VERSION,
+    )
+    assert _diagnostics_for(result, "missing_import") == []
+    assert _diagnostics_for(result, "unknown_type") == []
+
+
+def test_tokenizer_edge_literals(monkeypatch, docs_fixture_urls):
+    # Drives the `#` color literal, `=>` arrow, and `/* */` block comment
+    # branches of _tokenize without triggering property validation.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    source = """\
+import Quickshell
+
+PanelWindow {
+    color: #ff0000
+    /* a block comment with { and } inside */
+    onClosed: {
+        let f = (a) => a + 1
+    }
+}"""
+    result = srv._validate(source, version=_VERSION)
+    assert _codes(result) == []
+
+
+def test_property_alias_has_no_type_to_validate(monkeypatch, docs_fixture_urls):
+    # Drives the `property alias` branch: an alias has no type to validate.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\nPanelWindow { property alias target: otherThing }",
+        version=_VERSION,
+    )
+    assert _diagnostics_for(result, "unknown_type") == []
+    assert _codes(result) == []
+
+
+def test_import_with_explicit_version(monkeypatch, docs_fixture_urls):
+    # Drives the version-number branch of _parse_import.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell 1.0\nPanelWindow { exclusiveZone: 1 }", version=_VERSION
+    )
+    assert _codes(result) == []
