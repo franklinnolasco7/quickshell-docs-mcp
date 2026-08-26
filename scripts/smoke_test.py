@@ -102,6 +102,7 @@ def main() -> int:
         "quickshell_get_example",
         "quickshell_search_implementations",
         "quickshell_get_implementation",
+        "quickshell_explain_error",
         "quickshell_stats",
     }
     missing = expected - names

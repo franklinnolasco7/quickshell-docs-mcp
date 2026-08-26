@@ -102,6 +102,7 @@ docker run --rm -i quickshell-docs-mcp     # speaks MCP over stdio
 | `quickshell_list_examples` / `quickshell_get_example` | Official example configs |
 | `quickshell_search_implementations` | Find bar/OSD/IPC/... patterns in Caelestia or Noctalia |
 | `quickshell_get_implementation` | Read those files, narrowed via `find=` |
+| `quickshell_explain_error` | Explain a QML/Quickshell error and suggest a fix, grounded in actual docs |
 | `quickshell_stats` | Session call counts and cache-hit ratio |
 
 Page-fetching tools accept `version="latest"` (default) or an explicit version like `"v0.3.0"`. Cache-backed tools accept `refresh=True` to bypass the 30-minute cache.
