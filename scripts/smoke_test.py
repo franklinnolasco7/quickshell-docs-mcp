@@ -95,6 +95,7 @@ def main() -> int:
         "quickshell_get_type",
         "quickshell_search",
         "quickshell_search_all",
+        "quickshell_find_pattern",
         "quickshell_list_qt_types",
         "quickshell_get_qt_type",
         "quickshell_list_examples",
@@ -119,6 +120,14 @@ def main() -> int:
     assert isinstance(search_all.get("section_order"), list)
     assert isinstance(search_all.get("results"), dict)
     print(f"[ok] search_all sections: {search_all['section_order']}")
+
+    find_pattern = _tool_json(c, "quickshell_find_pattern", {"query": "volume OSD"})
+    assert isinstance(find_pattern.get("implementations"), list)
+    assert isinstance(find_pattern.get("cross_project_patterns"), list)
+    print(
+        f"[ok] find_pattern interpreted as: "
+        f"{[entry['pattern'] for entry in find_pattern['interpreted_as']]}"
+    )
 
     page = c.call(
         "tools/call",
