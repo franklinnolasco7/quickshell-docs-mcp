@@ -83,6 +83,61 @@ def test_ranking_respects_cap(monkeypatch, docs_fixture_urls):
     assert len(default["implementations"]) <= 5
 
 
+def test_limit_one_keeps_the_top_hit(monkeypatch, docs_fixture_urls):
+    """The cross-project swap trades the last slot; at limit=1 that slot is
+    the best result, so it must survive untouched."""
+    from quickshell_docs_mcp.sources import find_pattern as fp
+
+    def fake_impl(source, query, tokens, limit):
+        if source == "caelestia":
+            return [
+                {
+                    "source": "caelestia",
+                    "path": "a/Top.qml",
+                    "relevance": 95,
+                    "topics": ["workspaces"],
+                    "kind": "real-world implementation",
+                    "url": "https://github.com/caelestia-dots/shell/blob/main/a/Top.qml",
+                }
+            ]
+        return [
+            {
+                "source": "noctalia",
+                "path": "z/Lower.qml",
+                "relevance": 40,
+                "topics": [],
+                "kind": "real-world implementation",
+                "url": "https://github.com/noctalia-dev/noctalia/blob/legacy-v4/z/Lower.qml",
+            }
+        ]
+
+    monkeypatch.setattr(fp, "_search_impl_source", fake_impl)
+    out = srv._find_pattern("workspace indicator", "v0.3.1", limit=1)
+    assert [entry["path"] for entry in out["implementations"]] == ["a/Top.qml"]
+
+    wider = srv._find_pattern("workspace indicator", "v0.3.1", limit=5)
+    assert {entry["source"] for entry in wider["implementations"]} == {
+        "caelestia",
+        "noctalia",
+    }
+
+
+def test_grouping_survives_result_capping(monkeypatch, docs_fixture_urls):
+    """cross_project_patterns reads the uncapped collection, so a tight
+    implementation cap must not hide that both shells ship the pattern."""
+    install_search_fixtures(monkeypatch, docs_fixture_urls)
+    out = srv._find_pattern("workspace indicator", "v0.3.1", limit=1)
+
+    assert len(out["implementations"]) == 1
+    impl_sources = {entry["source"] for entry in out["implementations"]}
+    assert "caelestia" not in impl_sources  # capped away entirely
+
+    groups = {group["pattern"]: group for group in out["cross_project_patterns"]}
+    assert "workspaces" in groups
+    assert set(groups["workspaces"]["projects"]) == {"caelestia", "noctalia"}
+    assert groups["workspaces"]["projects"]["caelestia"]
+
+
 def test_version_is_echoed(monkeypatch, docs_fixture_urls):
     install_search_fixtures(monkeypatch, docs_fixture_urls)
     assert srv._find_pattern("system tray", "v0.3.1")["version"] == "v0.3.1"

@@ -154,8 +154,9 @@ def _find_pattern(query: str, version: str, limit: int = 5) -> dict:
     implementations = merged[:limit]
     # Comparing approaches is the point of this tool: if a second project
     # scored anything, trade the last slot so it shows up instead of letting
-    # one repo monopolize the cap.
-    if len(merged) > limit:
+    # one repo monopolize the cap. With a single slot there is nothing to
+    # trade; the highest-ranked entry always wins.
+    if len(merged) > limit > 1:
         included = {entry["source"] for entry in implementations}
         for entry in merged[limit:]:
             if entry["source"] not in included:
@@ -188,10 +189,13 @@ def _find_pattern(query: str, version: str, limit: int = 5) -> dict:
 
     cross_project_patterns: list[dict] = []
     for pattern in pattern_records:
+        # Group from the uncapped collection: capping exists to keep the
+        # implementation list small, not to hide that both projects ship
+        # this pattern.
         projects = {
             source: sorted(
                 entry["path"]
-                for entry in implementations
+                for entry in merged
                 if entry["source"] == source and pattern["key"] in (entry.get("topics") or [])
             )
             for source in IMPLEMENTATION_REPOS
