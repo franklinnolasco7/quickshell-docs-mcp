@@ -182,6 +182,18 @@ def test_interpret_query_units():
     assert "notifications" in nested
 
 
+def test_alias_matching_respects_word_boundaries(monkeypatch, docs_fixture_urls):
+    """Near misses sharing a substring with an alias must not activate it."""
+    assert {pattern["key"] for pattern, _ in _interpret_query("fix my toaster")} == set()
+    assert {pattern["key"] for pattern, _ in _interpret_query("reanimated sprite")} == set()
+
+    # Real boundary matches keep working, hyphens included.
+    assert "notifications" in {pattern["key"] for pattern, _ in _interpret_query("a toast popup")}
+    assert "animations" in {pattern["key"] for pattern, _ in _interpret_query("animated popup")}
+    assert "bar" in {pattern["key"] for pattern, _ in _interpret_query("menu bar module")}
+    assert "launcher" in {pattern["key"] for pattern, _ in _interpret_query("spotlight search")}
+
+
 def test_every_curated_api_hint_exists_in_the_docs_index():
     html = load_fixture("guide_index.html")
     real_types = {name for _, _, name in TYPE_LINK_RE.findall(html)}

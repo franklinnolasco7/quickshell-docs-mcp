@@ -6,6 +6,8 @@ test suite, so curation cannot invent types."""
 
 from __future__ import annotations
 
+import re
+
 from ..config import IMPLEMENTATION_REPOS
 from .docs import _build_index
 from .implementations import _impl_topics_for_query
@@ -74,6 +76,18 @@ _PATTERNS: list[dict] = [
 
 _PATTERN_BY_KEY = {pattern["key"]: pattern for pattern in _PATTERNS}
 
+# Longest alias first, so "notification center" wins over shorter overlaps and
+# the dedup dict records the most specific reason. \b keeps near misses like
+# "toaster"/"toast" apart while hyphens still count as boundaries.
+_ALIAS_MATCHERS: list[tuple[re.Pattern[str], str, dict]] = sorted(
+    (
+        (re.compile(rf"\b{re.escape(alias)}\b"), alias, pattern)
+        for pattern in _PATTERNS
+        for alias in pattern["aliases"]
+    ),
+    key=lambda matcher: -len(matcher[1]),
+)
+
 
 def _interpret_query(query: str) -> list[tuple[dict, str]]:
     """Map a build request onto pattern records, most specific first.
@@ -84,12 +98,10 @@ def _interpret_query(query: str) -> list[tuple[dict, str]]:
     query_lower = query.lower()
     matched: dict[str, tuple[dict, str]] = {}
 
-    aliases = sorted(
-        ((alias, pattern) for pattern in _PATTERNS for alias in pattern["aliases"]),
-        key=lambda pair: -len(pair[0]),
-    )
-    for alias, pattern in aliases:
-        if alias in query_lower and pattern["key"] not in matched:
+    for alias_re, alias, pattern in _ALIAS_MATCHERS:
+        if pattern["key"] in matched:
+            continue
+        if alias_re.search(query_lower):
             matched[pattern["key"]] = (pattern, f"alias '{alias}'")
 
     for topic_key, _, _ in _impl_topics_for_query(query):
