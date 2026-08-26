@@ -23,6 +23,7 @@ Every result carries its source URL. When implementations disagree with the docs
 - [Install](#install)
 - [Configure](#configure)
 - [Tools](#tools)
+- [Static validation](#static-validation)
 - [Source Hierarchy](#source-hierarchy)
 - [References](#references)
 - [Development](#development)
@@ -112,7 +113,7 @@ Page-fetching tools accept `version="latest"` (default) or an explicit version l
 
 `quickshell_validate_qml` statically checks a QML snippet before you run it: unknown Quickshell/Qt types, properties, signals, missing `import Quickshell.*` statements, obvious scalar type mismatches, and types absent from the requested Quickshell version. It returns structured diagnostics (severity, line/column, confidence, suggested alternatives, and a docs source URL per finding).
 
-It is a lightweight heuristic that complements `qmlls`, not a replacement: it validates against the same live docs index the other tools use, treats JavaScript bodies as opaque, and reports anything it cannot resolve as an `info` diagnostic instead of a false error. Local component files (a root type matching the filename stem) are skipped rather than flagged.
+It is a lightweight heuristic that complements `qmlls`, not a replacement: it validates against the same live docs index the other tools use, treats JavaScript bodies as opaque, and reports anything it cannot verify as an `info` or `warning` diagnostic rather than a false error. Local component files (a root type matching the filename stem) are skipped rather than flagged.
 
 ```json
 {"source": "PanelWindow { foo: 123 }", "version": "latest", "filename": "panel.qml"}

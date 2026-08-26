@@ -385,8 +385,9 @@ def _tokenize(source: str) -> list[_Token]:
                 if source[j] == quote:
                     break
                 j += 1
+            val = source[i : j + 1]
             advance(j + 1 - i)
-            tokens.append(_Token("string", source[i : i + (j + 1 - i)], start_line, start_col))
+            tokens.append(_Token("string", val, start_line, start_col))
             continue
         if char.isalpha() or char in "_$":
             j = i
@@ -401,16 +402,18 @@ def _tokenize(source: str) -> list[_Token]:
             j = i
             while j < length and (source[j].isalnum() or source[j] in "._-"):
                 j += 1
+            val = source[i:j]
             advance(j - i)
-            tokens.append(_Token("number", source[i:j], start_line, start_col))
+            tokens.append(_Token("number", val, start_line, start_col))
             continue
         # A #-prefixed value is a color literal; opaque to validation.
         if char == "#":
             j = i + 1
             while j < length and (source[j].isalnum() or source[j] in "#_"):
                 j += 1
+            val = source[i:j]
             advance(j - i)
-            tokens.append(_Token("string", source[i:j], start_line, start_col))
+            tokens.append(_Token("string", val, start_line, start_col))
             continue
         if char in "{}()[]:;,.":
             advance(1)
@@ -530,11 +533,56 @@ def _literal_kind_of_value(tokens: list[_Token], index: int) -> str | None:
         return None
     if index + 1 < len(tokens):
         nxt = tokens[index + 1]
-        if nxt.kind == "ident" or (
+        if (nxt.kind == "ident" and nxt.line == tok.line) or (
             nxt.kind == "punct" and nxt.value not in (",", ";", ")", "]", "}")
         ):
             return None
     return kind
+
+
+def _consume_binding_value(tokens: list[_Token], index: int) -> int:
+    """Scan past a binding's value expression, stopping before the first token
+    that begins a new sibling binding or a ``{`` / ``[`` / ``}`` block (the main
+    brace-stack walker handles those).  Ternary ``?`` / ``:`` pairs are consumed
+    as part of the value so a value colon is not misread as a binding colon.
+    """
+    depth = 0
+    i = index
+    n = len(tokens)
+    ternary = False
+    while i < n:
+        tok = tokens[i]
+        if depth == 0 and tok.value in ("{", "[", "}"):
+            break
+        if tok.value == "(":
+            depth += 1
+            i += 1
+            continue
+        if tok.value == ")":
+            depth = max(0, depth - 1)
+            i += 1
+            continue
+        if depth == 0 and tok.kind == "punct" and tok.value == "?":
+            ternary = True
+            i += 1
+            continue
+        if depth == 0 and tok.kind == "punct" and tok.value == ":":
+            ternary = False
+            i += 1
+            continue
+        if (
+            depth == 0
+            and not ternary
+            and tok.kind == "ident"
+            and i + 1 < n
+            and tokens[i + 1].value == ":"
+        ):
+            break
+        if depth == 0 and tok.value in (";", ","):
+            i += 1
+            break
+        i += 1
+    return i
 
 
 def _parse_structure(tokens: list[_Token]) -> _ParsedCode:
@@ -676,7 +724,7 @@ def _parse_structure(tokens: list[_Token]) -> _ParsedCode:
                     start_tok = tokens[start]
                     if _is_handler_name(owner) or owner in _DECLARATION_KEYWORDS:
                         # Attached handler like `Component.onCompleted`; skip.
-                        i += 1
+                        i = _consume_binding_value(tokens, i + 2)
                         continue
                     parsed.bindings.append(
                         _PropertyBinding(
@@ -687,7 +735,7 @@ def _parse_structure(tokens: list[_Token]) -> _ParsedCode:
                             literal_kind=_literal_kind_of_value(tokens, i + 2),
                         )
                     )
-                    i += 1
+                    i = _consume_binding_value(tokens, i + 2)
                     continue
                 if _is_handler_name(tok.value):
                     parsed.handlers.append(
@@ -698,6 +746,8 @@ def _parse_structure(tokens: list[_Token]) -> _ParsedCode:
                             col=tok.col,
                         )
                     )
+                    i = _consume_binding_value(tokens, i + 2)
+                    continue
                 else:
                     parsed.bindings.append(
                         _PropertyBinding(
@@ -708,6 +758,8 @@ def _parse_structure(tokens: list[_Token]) -> _ParsedCode:
                             literal_kind=_literal_kind_of_value(tokens, i + 2),
                         )
                     )
+                    i = _consume_binding_value(tokens, i + 2)
+                    continue
         i += 1
 
     if len(stack) > 1:
@@ -1175,10 +1227,9 @@ def _validate_handlers(
         # handler capitalizes the first letter of the property name.
         if signal_name.endswith("Changed"):
             property_name = signal_name[: -len("Changed")].lower()
-            if (
-                property_name in {p.lower() for p in ref.members.properties}
-                or property_name in _COMMON_QML_MEMBERS
-            ):
+            if property_name in {p.lower() for p in ref.members.properties} or property_name in {
+                m.lower() for m in _COMMON_QML_MEMBERS
+            }:
                 continue
         diagnostics.append(
             _diag(

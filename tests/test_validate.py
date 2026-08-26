@@ -640,3 +640,74 @@ def test_import_with_explicit_version(monkeypatch, docs_fixture_urls):
         "import Quickshell 1.0\nPanelWindow { exclusiveZone: 1 }", version=_VERSION
     )
     assert _codes(result) == []
+
+
+def test_tokenizer_populates_literal_values():
+    # The string, number, and # color-literal branches must populate _Token.value
+    # (the source slice was previously read after advance() moved i).
+    toks = srv._tokenize('PanelWindow { foo: "hi"; bar: 42; col: #ff0000 }')
+    values = [t.value for t in toks if t.kind in ("string", "number")]
+    assert '"hi"' in values
+    assert "42" in values
+    assert "#ff0000" in values
+
+
+def test_import_version_captured_from_number_token():
+    parsed = srv._parse_structure(srv._tokenize("import Quickshell 1.0\nPanelWindow {}"))
+    assert parsed.imports[0].version == "1.0"
+
+
+def test_multi_line_bindings_preserve_literal_kind(monkeypatch, docs_fixture_urls):
+    # The ident on the next line belongs to a sibling binding; it must not
+    # strip the literal kind of `enabled: 1` (a number into a bool).
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        'import Quickshell\nPanelWindow {\n    enabled: 1\n    layer: "x"\n}',
+        version=_VERSION,
+    )
+    diags = _diagnostics_for(result, "type_mismatch")
+    assert len(diags) == 1
+    assert diags[0]["api"] == "enabled"
+
+
+def test_ternary_binding_not_reinterpreted(monkeypatch, docs_fixture_urls):
+    # The ternary colon in `a ? b : c` is a value colon, not a binding colon;
+    # it must not produce a spurious binding for `a`.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\nPanelWindow { exclusiveZone: true ? a : b }", version=_VERSION
+    )
+    assert _diagnostics_for(result, "unknown_property") == []
+
+
+def test_ternary_binding_in_nested_object(monkeypatch, docs_fixture_urls):
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\n"
+        "import Quickshell.Hyprland\n"
+        "PanelWindow {\n"
+        "    Hyprland.HyprlandMonitor {\n"
+        '        name: cond ? a : "b"\n'
+        "    }\n"
+        "}",
+        version=_VERSION,
+    )
+    assert _diagnostics_for(result, "unknown_property") == []
+
+
+def test_inherited_base_property_resolves(monkeypatch, docs_fixture_urls):
+    # color is inherited from QsWindow; it must resolve through the base merge,
+    # not be flagged as unknown.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate('import Quickshell\nPanelWindow { color: "red" }', version=_VERSION)
+    assert _diagnostics_for(result, "unknown_property") == []
+
+
+def test_camel_case_common_member_change_handler(monkeypatch, docs_fixture_urls):
+    # onHoverEnabledChanged: hoverEnabled is a camelCase common QML member; the
+    # change-handler comparison must be case-insensitive.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\nPanelWindow { onHoverEnabledChanged: { } }", version=_VERSION
+    )
+    assert _diagnostics_for(result, "unknown_signal") == []
