@@ -540,19 +540,44 @@ def _literal_kind_of_value(tokens: list[_Token], index: int) -> str | None:
     return kind
 
 
+def _skip_array(tokens: list[_Token], index: int) -> int:
+    """Return the index just past the closing ``]`` of the array opener at
+    ``tokens[index]``.  Nested ``[]``, ``{}`` and ``()`` are matched so array
+    contents are never interpreted as direct QML bindings.  Returns ``len`` if
+    the array is unbalanced."""
+    depth = 1
+    i = index + 1
+    n = len(tokens)
+    while i < n:
+        v = tokens[i].value
+        if v in ("[", "{", "("):
+            depth += 1
+        elif v in ("]", "}", ")"):
+            depth -= 1
+            if depth == 0:
+                return i + 1
+        i += 1
+    return n
+
+
 def _consume_binding_value(tokens: list[_Token], index: int) -> int:
     """Scan past a binding's value expression, stopping before the first token
-    that begins a new sibling binding or a ``{`` / ``[`` / ``}`` block (the main
-    brace-stack walker handles those).  Ternary ``?`` / ``:`` pairs are consumed
-    as part of the value so a value colon is not misread as a binding colon.
+    that begins a new sibling binding or a ``{`` / ``}`` block (the main
+    brace-stack walker handles those).  Parenthesised and bracketed expressions
+    are consumed whole (``_skip_array``), and ternary ``?`` / ``:`` pairs are
+    counted so a value colon - including one inside a nested ternary - is not
+    misread as a binding colon.
     """
     depth = 0
     i = index
     n = len(tokens)
-    ternary = False
+    ternary_depth = 0
     while i < n:
         tok = tokens[i]
-        if depth == 0 and tok.value in ("{", "[", "}"):
+        if depth == 0 and tok.value == "[":
+            i = _skip_array(tokens, i)
+            continue
+        if depth == 0 and tok.value in ("{", "}"):
             break
         if tok.value == "(":
             depth += 1
@@ -563,16 +588,16 @@ def _consume_binding_value(tokens: list[_Token], index: int) -> int:
             i += 1
             continue
         if depth == 0 and tok.kind == "punct" and tok.value == "?":
-            ternary = True
+            ternary_depth += 1
             i += 1
             continue
-        if depth == 0 and tok.kind == "punct" and tok.value == ":":
-            ternary = False
+        if depth == 0 and tok.kind == "punct" and tok.value == ":" and ternary_depth > 0:
+            ternary_depth -= 1
             i += 1
             continue
         if (
             depth == 0
-            and not ternary
+            and ternary_depth == 0
             and tok.kind == "ident"
             and i + 1 < n
             and tokens[i + 1].value == ":"

@@ -695,6 +695,46 @@ def test_ternary_binding_in_nested_object(monkeypatch, docs_fixture_urls):
     assert _diagnostics_for(result, "unknown_property") == []
 
 
+def test_nested_ternary_not_reinterpreted(monkeypatch, docs_fixture_urls):
+    # `a ? b ? c : d : e`: the inner colon must not clear the outer ternary,
+    # or `c` would be misread as a sibling binding.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\nPanelWindow { exclusiveZone: true ? a ? b : c : d }",
+        version=_VERSION,
+    )
+    assert _diagnostics_for(result, "unknown_property") == []
+
+
+def test_array_contents_not_parsed_as_bindings(monkeypatch, docs_fixture_urls):
+    # Array contents are opaque; `[bar: 1]` must not register `bar` as a binding.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\nPanelWindow { exclusiveZone: [bar: 1] }", version=_VERSION
+    )
+    assert _diagnostics_for(result, "unknown_property") == []
+
+
+def test_ternary_inside_array_value(monkeypatch, docs_fixture_urls):
+    # A ternary inside an array value must not leak its idents as bindings.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        "import Quickshell\nPanelWindow { exclusiveZone: [true ? a : b] }", version=_VERSION
+    )
+    assert _diagnostics_for(result, "unknown_property") == []
+
+
+def test_sibling_binding_after_ternary_still_detected(monkeypatch, docs_fixture_urls):
+    # Guard against over-skipping: a sibling binding following a ternary value
+    # must still be registered and validated.
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._validate(
+        'import Quickshell\nPanelWindow { exclusiveZone: true ? a : b; layer: "x" }',
+        version=_VERSION,
+    )
+    assert _diagnostics_for(result, "unknown_property") == []
+
+
 def test_inherited_base_property_resolves(monkeypatch, docs_fixture_urls):
     # color is inherited from QsWindow; it must resolve through the base merge,
     # not be flagged as unknown.
