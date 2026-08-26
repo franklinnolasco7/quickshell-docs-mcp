@@ -94,6 +94,7 @@ def main() -> int:
         "quickshell_list_types",
         "quickshell_get_type",
         "quickshell_search",
+        "quickshell_search_all",
         "quickshell_list_qt_types",
         "quickshell_get_qt_type",
         "quickshell_list_examples",
@@ -113,6 +114,11 @@ def main() -> int:
     search = _tool_json(c, "quickshell_search", {"query": "pam"})
     assert search["namespace_matches"] == ["Quickshell.Services.Pam"], search["namespace_matches"]
     print("[ok] search 'pam' -> Quickshell.Services.Pam")
+
+    search_all = _tool_json(c, "quickshell_search_all", {"query": "volume OSD"})
+    assert isinstance(search_all.get("section_order"), list)
+    assert isinstance(search_all.get("results"), dict)
+    print(f"[ok] search_all sections: {search_all['section_order']}")
 
     page = c.call(
         "tools/call",

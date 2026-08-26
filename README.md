@@ -92,6 +92,7 @@ docker run --rm -i quickshell-docs-mcp     # speaks MCP over stdio
 | Tool | What it does |
 |---|---|
 | `quickshell_search` | Search type names, guide slugs, optionally full text including deep search over type pages. Call this before writing QML from memory. |
+| `quickshell_search_all` | One-call unified search across Quickshell docs/types, Qt types, official examples, and Caelestia/Noctalia implementations; grouped by source, ranked by relevance |
 | `quickshell_list_versions` | Published doc versions and the latest |
 | `quickshell_list_types` / `quickshell_get_type` | Browse and fetch Quickshell QML type docs |
 | `quickshell_list_guide_pages` / `quickshell_get_guide_page` | Usage Guide pages as Markdown |

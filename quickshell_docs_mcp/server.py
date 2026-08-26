@@ -87,6 +87,7 @@ from .sources.qt_docs import (  # noqa: F401
     _qt_type_page,
     _resolve_qt_slug,
 )
+from .sources.search_all import _search_everything  # noqa: F401
 from .utils import (  # noqa: F401
     _FETCH_STATS,
     _STATS_STARTED,
@@ -278,6 +279,46 @@ def quickshell_search(
     if include_type_pages:
         result["type_page_matches"] = _search_type_content(query, resolved_version, refresh=refresh)
     return result
+
+
+@mcp.tool()
+def quickshell_search_all(
+    query: str,
+    version: str = "latest",
+    include_content: bool = False,
+    limit_per_source: int = 4,
+    refresh: bool = False,
+) -> dict:
+    """Search ALL sources at once with one natural-language query: Quickshell
+    docs (type names, guide pages), Qt/QML types on doc.qt.io, official
+    example configs, and real-world Caelestia/Noctalia implementations.
+    Results come back grouped by source, most relevant group first; every
+    entry carries a relevance score, a why-it-matched reason, and a URL or
+    repo path.
+
+    Use this when you don't know which specialized tool fits ("how do I make
+    a workspace bar?", "create a volume OSD") or as a first pass before
+    drilling in. API-shaped queries ("PanelWindow", "exclusive zones") rank
+    exact type matches first; feature requests rank working implementations
+    first.
+
+    This is breadth over depth: follow up with quickshell_get_type /
+    quickshell_get_guide_page / quickshell_get_qt_type / quickshell_get_example /
+    quickshell_get_implementation for full content. include_content=True also
+    full-text-searches guide-page bodies (slower on first call, then cached).
+    limit_per_source caps entries per source (default 4, max 10). version pins
+    a Quickshell release ('latest' resolves at runtime); refresh=True bypasses
+    the cache."""
+    _record_tool("quickshell_search_all")
+    resolved_version = _resolve_version(version)
+    if refresh:
+        _cache.clear()
+    return _search_everything(
+        query,
+        resolved_version,
+        include_content=include_content,
+        limit_per_source=limit_per_source,
+    )
 
 
 @mcp.tool()
