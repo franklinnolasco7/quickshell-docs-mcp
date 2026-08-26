@@ -279,3 +279,83 @@ def test_empty_error():
     res = srv._explain_error("")
     assert res["confidence"] == "low"
     assert res["error_type"] == "unknown"
+
+
+def test_unquoted_unknown_type_without_code(monkeypatch):
+    monkeypatch.setattr("quickshell_docs_mcp.sources.errors._build_index", lambda v: _qs_index())
+    monkeypatch.setattr(
+        "quickshell_docs_mcp.sources.errors._build_qt_index", lambda **_: _qt_index()
+    )
+    res = srv._explain_error("Foo is not a type")
+    assert res["error_type"] == "unknown type"
+    assert res["relevant_api"] == "Foo"
+    # should attempt search and provide low/high confidence, not crash
+    assert res["confidence"] in ("high", "medium", "low")
+
+
+def test_reference_error_without_code(monkeypatch):
+    monkeypatch.setattr("quickshell_docs_mcp.sources.errors._build_index", lambda v: _qs_index())
+    monkeypatch.setattr(
+        "quickshell_docs_mcp.sources.errors._build_qt_index", lambda **_: _qt_index()
+    )
+    res = srv._explain_error("ReferenceError: MyType is not defined")
+    assert res["error_type"] == "unknown type"
+    assert res["relevant_api"] == "MyType"
+
+
+def test_full_namespace_preserved_for_deep_type(monkeypatch):
+    monkeypatch.setattr("quickshell_docs_mcp.sources.errors._build_index", lambda v: _qs_index())
+    monkeypatch.setattr(
+        "quickshell_docs_mcp.sources.errors._build_qt_index", lambda **_: _qt_index()
+    )
+    # typo should suggest PwNode and docs should point to full namespace
+    res = srv._explain_error("Unknown type 'PwNod'")
+    assert res["alternative"] == "PwNode"
+    assert any("Quickshell.Services.Pipewire" in d["url"] for d in res["documentation"])
+    # when type exists but missing import, fix must preserve full 3-segment ns
+    res2 = srv._explain_error("Unknown type 'PwNode'")
+    assert res2["exists"] is True
+    assert "Quickshell.Services.Pipewire" in res2["fix"]
+
+
+def test_exact_equality_no_case_insensitive_false_positive(monkeypatch):
+    monkeypatch.setattr("quickshell_docs_mcp.sources.errors._build_index", lambda v: _qs_index())
+    monkeypatch.setattr(
+        "quickshell_docs_mcp.sources.errors._build_qt_index", lambda **_: _qt_index()
+    )
+    # lower-case should not be found, but should suggest correct casing
+    res = srv._explain_error("Unknown type 'panelwindow'")
+    assert res["exists"] is False
+    assert res["alternative"] == "PanelWindow"
+
+
+def test_index_unavailable_graceful(monkeypatch):
+    def fail_qs(v):
+        raise RuntimeError("index fail")
+
+    monkeypatch.setattr("quickshell_docs_mcp.sources.errors._build_index", fail_qs)
+    monkeypatch.setattr(
+        "quickshell_docs_mcp.sources.errors._build_qt_index", lambda **_: _qt_index()
+    )
+    res = srv._explain_error("Unknown type 'Foo'")
+    # should not abort, should be low confidence with Qt fallback
+    assert res["confidence"] == "low" or res["exists"] is None or res["exists"] is False
+
+
+def test_qt_property_verified(monkeypatch):
+    monkeypatch.setattr("quickshell_docs_mcp.sources.errors._build_index", lambda v: _qs_index())
+    monkeypatch.setattr(
+        "quickshell_docs_mcp.sources.errors._build_qt_index", lambda **_: _qt_index()
+    )
+    monkeypatch.setattr(
+        "quickshell_docs_mcp.sources.errors._fetch_qt_page_markdown",
+        lambda url: "Rectangle props: width, height",
+    )
+    res = srv._explain_error(
+        "Cannot assign to non-existent property 'width'", code="Rectangle { width: 1 }"
+    )
+    assert res["exists"] is True
+    res2 = srv._explain_error(
+        "Cannot assign to non-existent property 'foo'", code="Rectangle { foo: 1 }"
+    )
+    assert res2["exists"] is False

@@ -12,7 +12,7 @@ import difflib
 import re
 
 from ..config import BASE
-from ..extraction import _fetch_page_markdown
+from ..extraction import _fetch_page_markdown, _fetch_qt_page_markdown
 from ..versions import _resolve_version
 
 try:
@@ -28,6 +28,38 @@ except ImportError:
 
 _QUOTED_RE = re.compile(r"[\"'`]([^\"'`]+)[\"'`]")
 _CODE_TYPE_RE = re.compile(r"^\s*([A-Za-z_][\w\.]*)\s*\{", re.MULTILINE)
+
+
+def _qt_module_uri(mod: str) -> str:
+    """Convert internal module key (qtquick-controls) to QML URI (QtQuick.Controls)."""
+    if mod == "value-types":
+        return "QtQuick"
+    # mapping for known segments
+    segment_map = {
+        "qtquick": "QtQuick",
+        "controls": "Controls",
+        "layouts": "Layouts",
+        "effects": "Effects",
+        "templates": "Templates",
+        "shapes": "Shapes",
+        "particles": "Particles",
+        "test": "Test",
+        "qml": "Qml",
+        "quick": "Quick",
+        "localstorage": "LocalStorage",
+        "vectorimage": "VectorImage",
+    }
+    parts = mod.split("-")
+    uri_parts: list[str] = []
+    for part in parts:
+        if part in segment_map:
+            uri_parts.append(segment_map[part])
+        elif part.startswith("qt"):
+            uri_parts.append("Qt" + part[2:].capitalize())
+        else:
+            uri_parts.append(part.capitalize())
+    return ".".join(uri_parts)
+
 
 # Common QML/Qt base names — hint to check Qt index first.
 _QT_HINT_NAMES = {
@@ -65,6 +97,22 @@ def _extract_type_from_code(code: str | None, component: str | None) -> str | No
     if match:
         # keep the raw type name (e.g. PanelWindow, Rectangle)
         return match.group(1).split(".")[-1].strip()
+    return None
+
+
+_UNQUOTED_TYPE_RE = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)\s+is not a type\b", re.IGNORECASE)
+_REFERENCE_ERROR_RE = re.compile(
+    r"ReferenceError:\s*([A-Za-z_][A-Za-z0-9_]*)\s+is not defined", re.IGNORECASE
+)
+
+
+def _extract_unquoted_type(error: str) -> str | None:
+    m = _UNQUOTED_TYPE_RE.search(error)
+    if m:
+        return m.group(1).strip()
+    m = _REFERENCE_ERROR_RE.search(error)
+    if m:
+        return m.group(1).strip()
     return None
 
 
@@ -106,21 +154,26 @@ def _classify_error(error: str) -> tuple[str, list[str]]:
     return "unknown", quoted
 
 
-def _all_quickshell_types(version: str) -> dict[str, list[str]]:
+def _all_quickshell_types(version: str) -> dict[str, list[str]] | None:
     if _build_index is None:
         return {}
-    index = _build_index(version)
+    try:
+        index = _build_index(version)
+    except Exception:
+        return None
     return index.get("types_by_namespace", {})
 
 
-def _find_quickshell_type(name: str, version: str) -> tuple[bool, str | None, list[str]]:
-    """Return (found, namespace, close_matches)."""
+def _find_quickshell_type(name: str, version: str) -> tuple[bool | None, str | None, list[str]]:
+    """Return (found, namespace, close_matches). None means index unavailable."""
     types_by_ns = _all_quickshell_types(version)
-    lower = name.lower()
+    if types_by_ns is None:
+        return None, None, []
     for ns, names in types_by_ns.items():
         for n in names:
-            if n.lower() == lower:
+            if n == name:
                 return True, ns, []
+    lower = name.lower()
     # not found — collect close matches
     all_names: list[str] = []
     ns_for_name: dict[str, str] = {}
@@ -145,19 +198,19 @@ def _find_quickshell_type(name: str, version: str) -> tuple[bool, str | None, li
     return False, None, merged[:5]
 
 
-def _find_qt_type(name: str) -> tuple[bool, str | None, list[str]]:
+def _find_qt_type(name: str) -> tuple[bool | None, str | None, list[str]]:
     if _build_qt_index is None:
         return False, None, []
     try:
         index = _build_qt_index()
     except Exception:
-        return False, None, []
+        return None, None, []
     modules = index.get("modules", {})
-    lower = name.lower()
     for mod, names in modules.items():
         for n in names:
-            if n.lower() == lower:
+            if n == name:
                 return True, mod, []
+    lower = name.lower()
     all_names: list[str] = [n for names in modules.values() for n in names]
     substr = [n for n in all_names if lower in n.lower()]
     close = difflib.get_close_matches(name, all_names, n=5, cutoff=0.6)
@@ -170,8 +223,10 @@ def _find_qt_type(name: str) -> tuple[bool, str | None, list[str]]:
     return False, None, merged[:5]
 
 
-def _find_namespace(name: str, version: str) -> tuple[bool, list[str]]:
+def _find_namespace(name: str, version: str) -> tuple[bool | None, list[str]]:
     types_by_ns = _all_quickshell_types(version)
+    if types_by_ns is None:
+        return None, []
     if name in types_by_ns:
         return True, []
     lower = name.lower()
@@ -282,6 +337,10 @@ def _explain_error(
     category, quoted = _classify_error(error)
     code_type = _extract_type_from_code(code, component)
     target = quoted[0] if quoted else None
+    if target is None and category == "unknown type":
+        unquoted = _extract_unquoted_type(error)
+        if unquoted:
+            target = unquoted
 
     # defaults
     meaning = ""
@@ -359,19 +418,45 @@ def _explain_error(
                         )
                         confidence = "medium"
                 elif qt_found and qt_mod:
-                    # Qt type property check via qt page markdown length heuristic not implemented;
-                    # mark as Qt-related
-                    relevant_api = f"{qt_mod}.{code_type}.{prop}"
-                    exists = None
-                    likely_cause = f"Qt type {code_type} does not have property '{prop}' (checked Qt index for type, property not verified without page fetch)."
-                    confidence = "medium"
+                    relevant_api = f"{_qt_module_uri(qt_mod)}.{code_type}.{prop}"
+                    # verify via Qt type page when possible
+                    qt_md: str | None = None
+                    try:
+                        qt_url = f"https://doc.qt.io/qt-6/qml-{qt_mod}-{code_type.lower()}.html"
+                        qt_md = _fetch_qt_page_markdown(qt_url)
+                    except Exception:
+                        qt_md = None
+                    if qt_md is not None:
+                        has = re.search(rf"\b{re.escape(prop)}\b", qt_md, re.IGNORECASE) is not None
+                        exists = has
+                        if has:
+                            meaning = f"Property '{prop}' found on Qt type {_qt_module_uri(qt_mod)}.{code_type}."
+                            likely_cause = (
+                                "Property exists but may be unavailable in this context or version."
+                            )
+                            fix = f"Check {_qt_module_uri(qt_mod)}.{code_type} docs for when '{prop}' is available."
+                            confidence = "high"
+                        else:
+                            likely_cause = f"'{prop}' not found on Qt type {_qt_module_uri(qt_mod)}.{code_type}."
+                            alt = _suggest_property_alternative(prop, qt_md)
+                            alternative = alt
+                            fix = f"Remove or rename '{prop}' on {code_type}."
+                            if alt:
+                                fix += f" Did you mean '{alt}'?"
+                            confidence = "high"
+                    else:
+                        exists = None
+                        likely_cause = f"Could not verify property '{prop}' on Qt type {code_type}; docs unavailable."
+                        confidence = "low"
+                        fix = (
+                            f"Check Qt docs for {code_type} properties; '{prop}' may be misspelled."
+                        )
                     docs.append(
                         {
                             "url": f"https://doc.qt.io/qt-6/qml-{qt_mod}-{code_type.lower()}.html",
                             "snippet": "Qt type reference",
                         }
                     )
-                    fix = f"Check Qt docs for {code_type} properties; '{prop}' may be misspelled."
                 else:
                     exists = None
                     likely_cause = f"Type '{code_type}' not found in Quickshell or Qt indexes, so property '{prop}' cannot be verified."
@@ -412,7 +497,7 @@ def _explain_error(
         if qs_found and qs_ns:
             exists = True
             likely_cause = f"Type '{tname}' exists as {qs_ns}.{tname} but may be missing an import."
-            fix = f"Add 'import Quickshell{'.' + qs_ns.split('.')[-1] if '.' in qs_ns else ''}' or use fully qualified {qs_ns}.{tname}."
+            fix = f"Add 'import {qs_ns}' or use fully qualified {qs_ns}.{tname}."
             docs.append(
                 {
                     "url": f"{BASE}/docs/{resolved_version}/types/{qs_ns}/{tname}/",
@@ -421,14 +506,21 @@ def _explain_error(
             )
         elif qt_found and qt_mod:
             exists = True
-            likely_cause = f"'{tname}' is a Qt type ({qt_mod}.{tname}); missing QtQuick import."
-            fix = f"Add 'import QtQuick' (or {qt_mod}) and check casing: '{tname}'."
+            likely_cause = (
+                f"'{tname}' is a Qt type ({_qt_module_uri(qt_mod)}.{tname}); missing Qt import."
+            )
+            fix = f"Add 'import {_qt_module_uri(qt_mod)}' and check casing: '{tname}'."
             docs.append(
                 {
                     "url": f"https://doc.qt.io/qt-6/qml-{qt_mod}-{tname.lower()}.html",
                     "snippet": "Qt type",
                 }
             )
+        elif qs_found is None and qt_found is None:
+            exists = None
+            likely_cause = f"Could not verify type '{tname}'; indexes unavailable."
+            fix = "Check network and version, then verify spelling."
+            confidence = "low"
         else:
             exists = False
             likely_cause = f"Type '{tname}' not found in Quickshell or Qt indexes."
@@ -470,25 +562,29 @@ def _explain_error(
         if mod:
             # check if namespace exists
             found_ns, sugg = _find_namespace(mod, resolved_version)
-            qt_found = False
+            qt_found_imp: bool | None = False
+            qt_unavailable = False
             if not found_ns:
                 # also check qt modules
                 try:
                     qt_index = _build_qt_index() if _build_qt_index is not None else None
-                    if qt_index:
+                    if qt_index is None:
+                        qt_unavailable = True
+                    elif qt_index:
                         mods = qt_index.get("modules", {})
                         norm = (
                             _normalize_qt_module(mod)
                             if _normalize_qt_module is not None
                             else mod.lower()
                         )
-                        qt_found = (
+                        qt_found_imp = (
                             any(_normalize_qt_module(m) == norm for m in mods)
                             if _normalize_qt_module is not None
                             else False
                         )
                 except Exception:
-                    pass
+                    qt_unavailable = True
+                    qt_found_imp = None
             if found_ns:
                 exists = True
                 likely_cause = f"Namespace '{mod}' exists but import statement may be wrong."
@@ -496,10 +592,25 @@ def _explain_error(
                 docs.append(
                     {"url": f"{BASE}/docs/{resolved_version}/types/{mod}/", "snippet": "namespace"}
                 )
-            elif qt_found:
+            elif qt_found_imp:
                 exists = True
                 likely_cause = f"'{mod}' is a Qt module, not Quickshell."
-                fix = "Use Qt import, e.g. 'import QtQuick'."
+                # canonical URI via normalized form
+                try:
+                    norm_uri = (
+                        _normalize_qt_module(mod)
+                        if _normalize_qt_module is not None
+                        else mod.lower()
+                    )
+                    uri = _qt_module_uri(norm_uri)
+                except Exception:
+                    uri = "QtQuick"
+                fix = f"Use Qt import, e.g. 'import {uri}'."
+            elif found_ns is None or qt_unavailable:
+                exists = None
+                likely_cause = f"Could not verify import '{mod}'; indexes unavailable."
+                fix = "Check network and version."
+                confidence = "low"
             else:
                 exists = False
                 likely_cause = f"Module '{mod}' not found in Quickshell or Qt indexes."
