@@ -200,6 +200,11 @@ def test_every_curated_api_hint_exists_in_the_docs_index():
     for pattern in _PATTERNS:
         unknown = set(pattern["api_hints"]) - real_types
         assert not unknown, f"{pattern['key']} hints at types missing from the index: {unknown}"
+        # Catalog order is the single source of truth for every output field
+        # (entries, interpreted_as, cross_project_patterns); keep it uniform.
+        assert pattern["api_hints"] == sorted(pattern["api_hints"]), (
+            f"{pattern['key']} api_hints are not alphabetized"
+        )
 
 
 def test_partial_failure_is_isolated(monkeypatch, docs_fixture_urls):
