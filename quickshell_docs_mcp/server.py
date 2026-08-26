@@ -64,6 +64,11 @@ from .sources.examples import (  # noqa: F401
     _examples_known_paths,
     _examples_listing,
 )
+from .sources.explain_error import (  # noqa: F401
+    _categorize_error,
+    _explain_error,
+    _extract_type_from_code,
+)
 from .sources.find_pattern import _find_pattern, _interpret_query  # noqa: F401
 from .sources.implementations import (  # noqa: F401
     _GITHUB_API,
@@ -469,6 +474,44 @@ def quickshell_get_implementation(
     _record_tool("quickshell_get_implementation")
 
     return _impl_file(source, path, find, max_chars)
+
+
+@mcp.tool()
+def quickshell_explain_error(
+    error: str,
+    code: str | None = None,
+    version: str = "latest",
+    filename: str | None = None,
+    line_number: int | None = None,
+    component: str | None = None,
+) -> dict:
+    """Explain a Quickshell/QML error and suggest a fix, grounded in the
+    actual documentation. Pass the error message; optionally include QML code,
+    the filename, line number, component/type name, or Quickshell version for
+    a more precise diagnosis.
+
+    The tool verifies reported properties, methods, and signals against the
+    Quickshell and Qt type indexes before suggesting fixes, so it never
+    recommends APIs that don't exist.
+
+    Use this when you encounter errors like:
+    - "Cannot assign to non-existent property"
+    - "Type 'X' is not accessible"
+    - "X is not a function"
+    - "Cannot connect to non-existent signal"
+    - "module 'X' is not installed"
+    - "Invalid assignment"
+    - "Could not find or load the component"
+    - binding errors or type mismatches"""
+    _record_tool("quickshell_explain_error")
+    return _explain_error(
+        error=error,
+        code=code,
+        version=version,
+        filename=filename,
+        line_number=line_number,
+        component=component,
+    )
 
 
 @mcp.tool()
