@@ -103,9 +103,20 @@ docker run --rm -i quickshell-docs-mcp     # speaks MCP over stdio
 | `quickshell_search_implementations` | Find bar/OSD/IPC/... patterns in Caelestia or Noctalia |
 | `quickshell_get_implementation` | Read those files, narrowed via `find=` |
 | `quickshell_explain_error` | Explain a QML/Quickshell error and suggest a fix, grounded in actual docs |
+| `quickshell_validate_qml` | Statically validate QML source: unknown types, properties, signals, imports, and version-incompatible APIs |
 | `quickshell_stats` | Session call counts and cache-hit ratio |
 
 Page-fetching tools accept `version="latest"` (default) or an explicit version like `"v0.3.0"`. Cache-backed tools accept `refresh=True` to bypass the 30-minute cache.
+
+## Static validation
+
+`quickshell_validate_qml` statically checks a QML snippet before you run it: unknown Quickshell/Qt types, properties, signals, missing `import Quickshell.*` statements, obvious scalar type mismatches, and types absent from the requested Quickshell version. It returns structured diagnostics (severity, line/column, confidence, suggested alternatives, and a docs source URL per finding).
+
+It is a lightweight heuristic that complements `qmlls`, not a replacement: it validates against the same live docs index the other tools use, treats JavaScript bodies as opaque, and reports anything it cannot resolve as an `info` diagnostic instead of a false error. Local component files (a root type matching the filename stem) are skipped rather than flagged.
+
+```json
+{"source": "PanelWindow { foo: 123 }", "version": "latest", "filename": "panel.qml"}
+```
 
 ## Source Hierarchy
 
@@ -133,6 +144,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, workflow, and how to submit ch
 
 - Deep type-page search (`include_type_pages=True`) fetches every type page once per machine (~15s cold, then cached on disk for 30 days across sessions; `refresh=True` forces a refetch). Plain name search stays instant.
 - Example configs may target a different Quickshell version than yours; listings include a `last_modified` date so you can judge their age.
+- `quickshell_validate_qml` is heuristic static analysis; it cannot see local components or dynamic JavaScript and does not replace `qmlls`. Property-level checks fetch the type's docs page (cached), so the first validation of a new type is network-bound.
 
 ## License
 
