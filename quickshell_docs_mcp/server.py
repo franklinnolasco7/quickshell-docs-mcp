@@ -64,6 +64,7 @@ from .sources.examples import (  # noqa: F401
     _examples_known_paths,
     _examples_listing,
 )
+from .sources.find_pattern import _find_pattern, _interpret_query  # noqa: F401
 from .sources.implementations import (  # noqa: F401
     _GITHUB_API,
     _IMPL_QUERY_STOPWORDS,
@@ -319,6 +320,34 @@ def quickshell_search_all(
         include_content=include_content,
         limit_per_source=limit_per_source,
     )
+
+
+@mcp.tool()
+def quickshell_find_pattern(
+    query: str, version: str = "latest", limit: int = 5, refresh: bool = False
+) -> dict:
+    """Find real implementations of a FEATURE you want to build, described in
+    plain words instead of exact type names: 'Hyprland workspace indicator',
+    'macOS-style control center', 'volume OSD', 'system tray', 'animated
+    popup', 'floating notification', 'top bar with workspaces', 'launcher
+    like Spotlight', 'power menu'. Searches Caelestia and Noctalia (real-world
+    shells) plus the official examples repo, interprets aliases ('Spotlight'
+    means launcher, 'hud' means OSD), and returns a small ranked set where
+    every entry carries source project, file path, why it matched, and the
+    Quickshell APIs that pattern typically needs. When several projects solve
+    the same pattern they are grouped so you can compare approaches.
+
+    For API/type lookups by name use quickshell_search or
+    quickshell_search_all instead; for browsing one repo use
+    quickshell_search_implementations. Read matched files via
+    quickshell_get_implementation / quickshell_get_example. limit caps total
+    implementations (default 5, max 10); version pins a Quickshell release;
+    refresh=True bypasses the cache."""
+    _record_tool("quickshell_find_pattern")
+    resolved_version = _resolve_version(version)
+    if refresh:
+        _cache.clear()
+    return _find_pattern(query, resolved_version, limit=limit)
 
 
 @mcp.tool()
