@@ -103,6 +103,7 @@ def main() -> int:
         "quickshell_search_implementations",
         "quickshell_get_implementation",
         "quickshell_explain_error",
+        "quickshell_validate_qml",
         "quickshell_stats",
     }
     missing = expected - names
@@ -144,6 +145,12 @@ def main() -> int:
     stats = _tool_json(c, "quickshell_stats")
     assert stats["tool_calls"].get("quickshell_stats", 0) >= 1
     print(f"[ok] stats tracked: {stats['tool_calls']}")
+
+    validate = _tool_json(c, "quickshell_validate_qml", {"source": "PanelWindow { foo: 1 }"})
+    assert isinstance(validate.get("diagnostics"), list)
+    assert isinstance(validate.get("summary"), dict)
+    assert "version" in validate
+    print(f"[ok] validate_qml returned {len(validate['diagnostics'])} diagnostic(s)")
 
     c.proc.terminate()
     print("\nALL SMOKE CHECKS PASSED")

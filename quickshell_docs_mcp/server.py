@@ -94,6 +94,12 @@ from .sources.qt_docs import (  # noqa: F401
     _resolve_qt_slug,
 )
 from .sources.search_all import _search_everything  # noqa: F401
+from .sources.validate import (
+    _parse_members,  # noqa: F401
+    _parse_structure,  # noqa: F401
+    _tokenize,  # noqa: F401
+    _validate,
+)
 from .utils import (  # noqa: F401
     _FETCH_STATS,
     _STATS_STARTED,
@@ -512,6 +518,36 @@ def quickshell_explain_error(
         line_number=line_number,
         component=component,
     )
+
+
+@mcp.tool()
+def quickshell_validate_qml(
+    source: str, version: str = "latest", filename: str | None = None
+) -> dict:
+    """Statically validate Quickshell/QML source before you run it: unknown
+    types, unknown properties, unknown signals, missing imports, obvious type
+    mismatches, and APIs not available in the requested Quickshell version.
+
+    Pass the QML source; optionally pin a Quickshell version (defaults to the
+    latest) and give a filename so a root type matching the file stem is
+    treated as a local component instead of an unknown type.
+
+    The check is a lightweight heuristic that complements qmlls, not a
+    replacement: it validates types/properties/signals against the Quickshell
+    and Qt docs, skips JavaScript bodies, and reports things it cannot resolve
+    as info diagnostics rather than errors. Returns structured diagnostics
+    with line/column, severity, confidence, and a docs source URL for each
+    finding.
+
+    Use this while writing a config (e.g. after noticing 'Cannot assign to
+    non-existent property' in your logs) to catch typos early:
+    - unknown type or namespace
+    - property/signal/method not documented on a type
+    - invalid assignment to a scalar-typed property
+    - missing 'import Quickshell.X' for a used namespace
+    - type not present in the requested Quickshell version"""
+    _record_tool("quickshell_validate_qml")
+    return _validate(source=source, version=version, filename=filename)
 
 
 @mcp.tool()
