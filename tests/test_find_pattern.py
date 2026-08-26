@@ -138,6 +138,20 @@ def test_grouping_survives_result_capping(monkeypatch, docs_fixture_urls):
     assert groups["workspaces"]["projects"]["caelestia"]
 
 
+def test_multi_pattern_grouping_at_limit_one(monkeypatch, docs_fixture_urls):
+    """Grouping data must not depend on the per-source cap: with limit=1 each
+    source's top file is OSD-pure, yet audio is implemented in both shells and
+    still has to group."""
+    install_search_fixtures(monkeypatch, docs_fixture_urls)
+    out = srv._find_pattern("volume OSD", "v0.3.1", limit=1)
+
+    assert len(out["implementations"]) == 1
+    groups = {group["pattern"]: group for group in out["cross_project_patterns"]}
+    assert {"osd", "audio"} <= set(groups)
+    for key in ("osd", "audio"):
+        assert set(groups[key]["projects"]) == {"caelestia", "noctalia"}
+
+
 def test_version_is_echoed(monkeypatch, docs_fixture_urls):
     install_search_fixtures(monkeypatch, docs_fixture_urls)
     assert srv._find_pattern("system tray", "v0.3.1")["version"] == "v0.3.1"

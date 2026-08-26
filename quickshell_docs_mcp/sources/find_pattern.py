@@ -18,6 +18,11 @@ from .search_all import (
     _search_quickshell_types,
 )
 
+# Grouping and global ranking must see every scored file, not just the top N
+# per source, so the per-source scan runs uncapped and the requested limit is
+# applied afterwards. The bound sits far above any tracked repo's QML count.
+_IMPL_SCAN_LIMIT = 10_000
+
 # Curated pattern records keyed to _IMPL_TOPICS keys. `aliases` are phrases
 # that should activate the topic even though they share no substring with it;
 # `api_hints` are type names a builder of this pattern will likely need.
@@ -142,7 +147,7 @@ def _find_pattern(query: str, version: str, limit: int = 5) -> dict:
     merged: list[dict] = []
     for source in IMPLEMENTATION_REPOS:
         try:
-            entries = _search_impl_source(source, effective_query, tokens, limit)
+            entries = _search_impl_source(source, effective_query, tokens, _IMPL_SCAN_LIMIT)
         except Exception as error:  # noqa: BLE001 - isolate per source
             errors[f"{source}_implementations"] = str(error)
             continue
