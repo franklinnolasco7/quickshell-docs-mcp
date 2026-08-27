@@ -169,7 +169,7 @@ def main() -> int:
         c,
         "quickshell_migrate",
         {
-            "code": "Quickshell { shellRoot: \"/tmp\" }",
+            "code": 'Quickshell { shellRoot: "/tmp" }',
             "from_version": "v0.1.0",
             "to_version": versions["latest"],
         },
