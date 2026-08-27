@@ -181,7 +181,7 @@ def _type_members(type_name: str, namespace: str, version: str) -> dict[str, Any
     url = f"{BASE}/docs/{version}/types/{namespace}/{type_name}/"
     try:
         markdown = _fetch_page_markdown(url)
-    except (httpx.HTTPStatusError, RuntimeError):
+    except (httpx.HTTPError, RuntimeError):
         return None
     members = _parse_members(markdown, source_url=url)
     return {
@@ -216,6 +216,10 @@ def _api_in_version(
 
     Returns a result dict, or ``None`` when the version's index is unreachable.
     """
+    if member is not None and member.endswith("()"):
+        # "Type.method()" is how agents write method calls; strip the call
+        # syntax so the lookup matches the documented method name.
+        member = member[:-2]
     try:
         _build_index(version)
     except (httpx.HTTPError, RuntimeError):
@@ -819,15 +823,27 @@ def _compat_from_code(code: str, version: str) -> dict[str, Any]:
             "explanation": f"Could not parse the code snippet: {parsed.malformed}",
         }
 
-    checks: list[tuple[str, str | None]] = []
-    seen: set[tuple[str, str | None]] = set()
+    checks: list[tuple[str, str | None, str | None]] = []
+    seen: set[tuple[str, str | None, str | None]] = set()
     for obj in parsed.objects:
-        key: tuple[str, str | None] = (obj.base_name, None)
+        # Types may be written qualified (Quickshell.Hyprland.HyprlandMonitor);
+        # resolve to the base type name plus its namespace so lookups succeed.
+        parts = obj.raw.split(".")
+        key: tuple[str, str | None, str | None] = (
+            parts[-1],
+            None,
+            ".".join(parts[:-1]) if len(parts) > 1 else None,
+        )
         if key not in seen:
             seen.add(key)
             checks.append(key)
     for binding in parsed.bindings:
-        key = (binding.object_type, binding.name)
+        parts = binding.object_type.split(".")
+        key = (
+            parts[-1],
+            binding.name,
+            ".".join(parts[:-1]) if len(parts) > 1 else None,
+        )
         if key not in seen:
             seen.add(key)
             checks.append(key)
@@ -835,7 +851,12 @@ def _compat_from_code(code: str, version: str) -> dict[str, Any]:
         signal = handler.signal_name
         # QML handler names capitalize the first letter after "on" (onClosed
         # -> signal_name "Closed"), but the documented signal is lowercase.
-        key = (handler.object_type, signal[0].lower() + signal[1:] if signal else signal)
+        parts = handler.object_type.split(".")
+        key = (
+            parts[-1],
+            signal[0].lower() + signal[1:] if signal else signal,
+            ".".join(parts[:-1]) if len(parts) > 1 else None,
+        )
         if key not in seen:
             seen.add(key)
             checks.append(key)
@@ -854,7 +875,10 @@ def _compat_from_code(code: str, version: str) -> dict[str, Any]:
             "explanation": "No QML objects or property bindings found in the code snippet.",
         }
 
-    findings = [_compat_at(type_name, member, version) for type_name, member in checks]
+    findings = [
+        _compat_at(type_name, member, version, namespace_hint=namespace_hint)
+        for type_name, member, namespace_hint in checks
+    ]
 
     verdicts = [f["compatibility"] for f in findings]
     if all(v == "compatible" for v in verdicts):
@@ -895,7 +919,12 @@ def _incorporate_range(
     from_result: dict[str, Any],
     label: str,
 ) -> None:
-    """Merge a lower-bound range check into *result*."""
+    """Merge a lower-bound range check into *result*.
+
+    Only an ``incompatible`` verdict counts as proof that the API was absent
+    in a version; an ``uncertain`` one is not evidence of introduction or
+    removal, so it never downgrades the target verdict.
+    """
     to_compat = result["compatibility"]
     from_compat = from_result["compatibility"]
 
@@ -903,7 +932,7 @@ def _incorporate_range(
         result["explanation"] = (
             f"'{label}' is compatible with both {from_version} and {target_version}."
         )
-    elif to_compat == "compatible" and from_compat != "compatible":
+    elif to_compat == "compatible" and from_compat == "incompatible":
         result["compatibility"] = "incompatible"
         result["explanation"] = (
             f"'{label}' is not compatible with {from_version} but is with {target_version}; "
@@ -915,7 +944,7 @@ def _incorporate_range(
             "detail": f"'{label}' was introduced between {from_version} and {target_version}.",
             "likely_replacement": None,
         }
-    elif to_compat != "compatible" and from_compat == "compatible":
+    elif to_compat == "incompatible" and from_compat == "compatible":
         result["compatibility"] = "incompatible"
         result["explanation"] = (
             f"'{label}' is compatible with {from_version} but not with {target_version}."
@@ -928,6 +957,13 @@ def _incorporate_range(
             ),
             "likely_replacement": None,
         }
+    elif to_compat == "compatible" and from_compat == "uncertain":
+        # The lower bound couldn't be verified, so introduction cannot be
+        # claimed; the target verdict stands.
+        result["explanation"] = (
+            f"'{label}' is compatible with {target_version} but its presence in "
+            f"{from_version} could not be verified."
+        )
 
 
 def _check_compatibility(

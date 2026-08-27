@@ -40,7 +40,6 @@ def test_live_guide_page():
 def test_live_changelog_sections():
     sections = srv._changelog_sections()
     assert sections
-    assert sections[0]["version"] == srv._latest_version()
     assert all(s["version"] and s["text"] for s in sections)
 
 

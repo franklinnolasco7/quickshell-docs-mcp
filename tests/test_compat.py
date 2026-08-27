@@ -260,10 +260,9 @@ def _build_mapping(docs_fixture_urls: dict[str, str]) -> dict[str, str]:
 
 def _install_fetch(monkeypatch, mapping: dict[str, str]) -> None:
     def fake_fetch(url: str) -> str:
-        for prefix, html in mapping.items():
-            if url.startswith(prefix):
-                return html
-        raise AssertionError(f"unexpected fetch: {url}")
+        if url not in mapping:
+            raise AssertionError(f"unexpected fetch: {url}")
+        return mapping[url]
 
     monkeypatch.setattr(utils, "_fetch_raw", fake_fetch)
 
@@ -530,6 +529,64 @@ def test_range_from_to_introduced(monkeypatch, docs_fixture_urls):
     )
     assert result["compatibility"] == "incompatible"
     assert "introduced" in result["explanation"]
+
+
+def test_incorporate_range_uncertain_from_not_claimed_introduced():
+    result = {
+        "compatibility": "compatible",
+        "explanation": "'X.y' exists in v0.3.1.",
+        "change_info": None,
+    }
+    from_result = {"compatibility": "uncertain"}
+    srv._incorporate_range(result, "v0.3.1", "v0.1.0", from_result, "X.y")
+    assert result["compatibility"] == "compatible"
+    assert result["change_info"] is None
+    assert "could not be verified" in result["explanation"]
+
+
+def test_incorporate_range_uncertain_target_not_claimed_removed():
+    result = {
+        "compatibility": "uncertain",
+        "explanation": "'X.y' could not be verified.",
+        "change_info": None,
+    }
+    from_result = {"compatibility": "compatible"}
+    srv._incorporate_range(result, "v0.3.1", "v0.1.0", from_result, "X.y")
+    assert result["compatibility"] == "uncertain"
+    assert result["change_info"] is None
+
+
+def test_incorporate_range_incompatible_target_with_uncertain_from_keeps_verdict():
+    result = {
+        "compatibility": "incompatible",
+        "explanation": "'X.y' was removed.",
+        "change_info": {"status": "removed"},
+    }
+    from_result = {"compatibility": "uncertain"}
+    srv._incorporate_range(result, "v0.3.1", "v0.1.0", from_result, "X.y")
+    assert result["compatibility"] == "incompatible"
+    assert result["explanation"] == "'X.y' was removed."
+    assert result["change_info"]["status"] == "removed"
+
+
+def test_method_call_syntax_resolves(monkeypatch, docs_fixture_urls):
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._check_compatibility(api="PanelWindow.mapFromGlobal()", version="v0.3.1")
+    assert result["compatibility"] == "compatible"
+
+
+def test_code_snippet_with_namespace_qualified_object(monkeypatch, docs_fixture_urls):
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    source = """\
+import Quickshell
+import Quickshell.Hyprland
+
+Quickshell.Hyprland.HyprlandMonitor {
+    name: "HDMI-A-1"
+}
+"""
+    result = srv._check_compatibility(code=source, version="v0.3.1")
+    assert result["compatibility"] == "compatible"
 
 
 def test_unknown_version_raises(monkeypatch, docs_fixture_urls):
