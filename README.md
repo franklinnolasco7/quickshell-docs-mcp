@@ -6,6 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/quickshell-mcp?logo=pypi&logoColor=white)](https://pypi.org/project/quickshell-mcp/)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-active-blue)](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.franklinnolasco7%2Fquickshell-mcp/versions/latest)
 [![Python](https://img.shields.io/pypi/pyversions/quickshell-mcp?logo=python&logoColor=white)](https://github.com/franklinnolasco7/quickshell-mcp/blob/main/pyproject.toml)
 [![codecov](https://codecov.io/gh/franklinnolasco7/quickshell-mcp/graph/badge.svg)](https://codecov.io/gh/franklinnolasco7/quickshell-mcp)
 [![Tests](https://img.shields.io/github/actions/workflow/status/franklinnolasco7/quickshell-mcp/ci.yml?label=Tests&logo=github)](https://github.com/franklinnolasco7/quickshell-mcp/actions/workflows/ci.yml)
@@ -43,6 +44,8 @@ pip install quickshell-mcp        # or: uvx quickshell-mcp
 ```
 
 Then point your MCP client at it (see [Configure](#configure) below).
+
+Also installable via the [Model Context Protocol Registry](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.franklinnolasco7%2Fquickshell-mcp/versions/latest).
 
 <details>
 <summary>Install from source</summary>
