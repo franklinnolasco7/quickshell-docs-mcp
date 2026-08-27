@@ -81,8 +81,8 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 Examples:
 
 ```
-feat(search): add fuzzy matching for type names
-fix(docs): handle 404 on missing guide pages
+feat: blablabla
+fix: handle 404 on missing guide pages
 chore(ci): update ruff to v0.8
 ```
 
