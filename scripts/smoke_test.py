@@ -104,6 +104,7 @@ def main() -> int:
         "quickshell_get_implementation",
         "quickshell_explain_error",
         "quickshell_validate_qml",
+        "quickshell_check_compatibility",
         "quickshell_stats",
     }
     missing = expected - names
@@ -151,6 +152,17 @@ def main() -> int:
     assert isinstance(validate.get("summary"), dict)
     assert "version" in validate
     print(f"[ok] validate_qml returned {len(validate['diagnostics'])} diagnostic(s)")
+
+    compat = _tool_json(
+        c,
+        "quickshell_check_compatibility",
+        {"api": "PanelWindow.exclusiveZone", "version": "latest"},
+    )
+    assert compat["compatibility"] in ("compatible", "uncertain")
+    assert compat["target_version"] == versions["latest"]
+    print(
+        f"[ok] check_compatibility: {compat['compatibility']} for {compat['detected_api']['type']}"
+    )
 
     c.proc.terminate()
     print("\nALL SMOKE CHECKS PASSED")

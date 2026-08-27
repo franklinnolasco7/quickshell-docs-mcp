@@ -82,6 +82,7 @@ docker run --rm -i quickshell-mcp     # speaks MCP over stdio
 | **Real-world implementations** | Searchable Caelestia and Noctalia patterns |
 | **Error explanations** | Grounded diagnosis of QML and Quickshell errors |
 | **QML validation** | Static checks for types, properties, signals, imports, and version compatibility |
+| **Version compatibility** | Whether an API or QML snippet works on a specific Quickshell release |
 | **Unified search** | Search across multiple sources in one call |
 
 ## Knowledge sources
@@ -180,6 +181,7 @@ For HTTP transport, set `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (plus optional `HOS
 | Tool | What it does |
 |---|---|
 | `quickshell_explain_error` | Explain a QML/Quickshell error and suggest a fix, grounded in actual docs |
+| `quickshell_check_compatibility` | Check whether an API, type, or QML snippet is compatible with a specific Quickshell version |
 | `quickshell_stats` | Session call counts and cache-hit ratio |
 
 > Page-fetching tools accept `version="latest"` (default) or an explicit version like `"v0.3.0"`. Cache-backed tools accept `refresh=True` to bypass the 30-minute cache.
@@ -246,6 +248,20 @@ flowchart LR
 ```json
 {"source": "PanelWindow { foo: 123 }", "version": "latest", "filename": "panel.qml"}
 ```
+
+## Version compatibility
+
+`quickshell_check_compatibility` tells you whether a Quickshell API, QML property/method/signal, type, or whole snippet works on a specific release. Pass exactly one of `api`, `type`, or `code`; pin the release with `version` (or `from_version`/`to_version` for a range).
+
+It never concludes from the latest docs page alone: it cross-references the requested version's type index and pages plus the changelog, and returns `uncertain` rather than guessing when the evidence is insufficient. Qt/QML types (Rectangle, Item, ...) come back as `compatible` with `origin: "qt"`, because their availability is set by your Qt version, not the Quickshell one.
+
+```json
+{"api": "PanelWindow.exclusiveZone", "version": "v0.2.0"}
+{"api": "Quickshell.shellRoot", "version": "v0.3.1"}
+{"code": "PanelWindow { exclusiveZone: 1 }", "version": "v0.1.0"}
+```
+
+The result includes the verdict, the version evidence (earliest/latest known), any change or rename with a likely replacement, the matching changelog entry, and cited documentation URLs.
 
 ## Source priority
 
