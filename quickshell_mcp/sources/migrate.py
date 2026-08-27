@@ -577,8 +577,31 @@ def _behavioral_scan(
 
 def _import_diff(parsed: Any, from_version: str, to_version: str) -> list[_MigrationIssue]:
     """Imports that referenced a Quickshell namespace dropped by the target."""
-    from_namespaces = set(_build_index(from_version)["types_by_namespace"])
-    to_namespaces = set(_build_index(to_version)["types_by_namespace"])
+
+    def _index_namespaces(version: str) -> set[str] | None:
+        try:
+            return set(_build_index(version)["types_by_namespace"])
+        except RuntimeError:
+            return None
+
+    from_namespaces = _index_namespaces(from_version)
+    to_namespaces = _index_namespaces(to_version)
+    if from_namespaces is None or to_namespaces is None:
+        return [
+            _issue(
+                location=None,
+                severity="info",
+                classification="manual_review",
+                confidence="low",
+                status="cannot_verify",
+                old_api="",
+                new_api=None,
+                reason="Could not load the docs index for one or both versions.",
+                suggestion="Ensure the versions exist and their docs indexes are reachable.",
+                changed_in_version=None,
+                source=None,
+            )
+        ]
     findings: list[_MigrationIssue] = []
     seen: set[str] = set()
     for imp in parsed.imports:

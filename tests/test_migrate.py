@@ -22,6 +22,7 @@ import pytest
 from conftest import load_fixture
 
 import quickshell_mcp.server as srv
+import quickshell_mcp.sources.migrate as _migrate_mod
 from quickshell_mcp import utils  # noqa: E402
 
 QT = srv.QT_DOCS_BASE
@@ -212,12 +213,12 @@ def _guide_index_html(version: str, types_by_ns: dict[str, list[str]]) -> str:
 
 
 def _type_pages(version: str) -> dict[str, str]:
-    pages = {
+    pages: dict[str, str] = {
         "Quickshell/PanelWindow": _panel_window_page(version),
         "Quickshell.Hyprland/HyprlandMonitor": _hyprland_monitor_page(),
-        "Quickshell/LegacyThing": _legacy_page(),
     }
     if version == "v0.1.0":
+        pages["Quickshell/LegacyThing"] = _legacy_page()
         pages["Quickshell/Quickshell"] = _quickshell_old_page()
     else:
         pages["Quickshell/Quickshell"] = _quickshell_page()
@@ -585,6 +586,20 @@ def test_unknown_version_raises(monkeypatch, docs_fixture_urls):
             from_version="v0.1.0",
             to_version="v9.9.9",
         )
+
+
+def test_import_diff_index_error_returns_cannot_verify(monkeypatch, docs_fixture_urls):
+    parsed = srv._parse_structure(srv._tokenize("import Quickshell"))
+    monkeypatch.setattr(
+        _migrate_mod,
+        "_build_index",
+        lambda v: (_ for _ in ()).throw(RuntimeError("index unavailable")),
+    )
+    issues = srv._import_diff(parsed, "v0.1.0", "v0.3.1")
+    assert len(issues) == 1
+    assert issues[0]["status"] == "cannot_verify"
+    assert issues[0]["classification"] == "manual_review"
+    assert issues[0]["confidence"] == "low"
 
 
 def test_stats_recorded_through_tool(monkeypatch, docs_fixture_urls):
