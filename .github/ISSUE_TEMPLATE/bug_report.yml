@@ -27,8 +27,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: quickshell-docs-mcp version
-      description: Output of `quickshell-docs-mcp --version` or `pip show quickshell-docs-mcp`
+      label: quickshell-mcp version
+      description: Output of `quickshell-mcp --version` or `pip show quickshell-mcp`
     validations:
       required: true
 
@@ -105,7 +105,7 @@ body:
     id: cache
     attributes:
       label: Did clearing the disk cache change anything?
-      description: Try `refresh=True` on the affected tool, or clear `~/.cache/quickshell-docs-mcp`.
+      description: Try `refresh=True` on the affected tool, or clear `~/.cache/quickshell-mcp`.
       options:
         - Not tried
         - "Yes, it fixed the issue"

@@ -6,8 +6,8 @@ import httpx
 import pytest
 from conftest import http_404
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp import utils  # noqa: E402
+import quickshell_mcp.server as srv
+from quickshell_mcp import utils  # noqa: E402
 
 
 def make_fetch_404_elsewhere(monkeypatch, docs_fixture_urls):

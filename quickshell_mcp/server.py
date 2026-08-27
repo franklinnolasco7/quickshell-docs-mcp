@@ -1,4 +1,4 @@
-"""quickshell-docs-mcp
+"""quickshell-mcp
 
 An MCP server that gives an LLM live, grounded access to the Quickshell
 documentation at https://quickshell.org, so it reads real docs instead of
@@ -117,7 +117,7 @@ from .versions import (  # noqa: F401
     list_versions,
 )
 
-mcp = FastMCP("quickshell-docs")
+mcp = FastMCP("quickshell-mcp")
 
 
 @mcp.tool()

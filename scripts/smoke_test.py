@@ -15,7 +15,7 @@ import subprocess
 import sys
 import threading
 
-DEFAULT_SERVER = [".venv/bin/quickshell-docs-mcp"]
+DEFAULT_SERVER = [".venv/bin/quickshell-mcp"]
 TIMEOUT = 90
 
 

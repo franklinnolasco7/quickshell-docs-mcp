@@ -27,7 +27,7 @@ body:
     id: version
     attributes:
       label: Version
-      description: Run `pip show quickshell-docs-mcp` (or check `quickshell_about`) to find this.
+      description: Run `pip show quickshell-mcp` (or check `quickshell_about`) to find this.
       placeholder: "0.4.1"
     validations:
       required: true

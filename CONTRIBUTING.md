@@ -1,4 +1,4 @@
-# Contributing to quickshell-docs-mcp
+# Contributing to quickshell-mcp
 
 Thanks for your interest in contributing. This document covers the basics.
 
@@ -26,8 +26,8 @@ Thanks for your interest in contributing. This document covers the basics.
 pip install -e '.[dev]'
 pytest                                      # offline suite (fixtures, no network)
 ruff check . && ruff format --check .       # lint + formatting
-mypy quickshell_docs_mcp                    # typecheck
-QUICKSHELL_DOCS_LIVE_TEST=1 pytest -m live  # opt-in live tests
+mypy quickshell_mcp                    # typecheck
+QUICKSHELL_LIVE_TEST=1 pytest -m live  # opt-in live tests
 .venv/bin/python scripts/smoke_test.py      # end-to-end stdio vs live sites
 nix develop                                 # dev shell with everything CI uses
 ```
@@ -35,7 +35,7 @@ nix develop                                 # dev shell with everything CI uses
 Debug interactively with the official MCP Inspector:
 
 ```bash
-npx @modelcontextprotocol/inspector quickshell-docs-mcp
+npx @modelcontextprotocol/inspector quickshell-mcp
 ```
 
 > Agents working on this repo should read [`AGENTS.md`](./AGENTS.md). To make an agent *using* this server reach for it reliably, add a rule to that project's instructions telling it to verify QML types here before writing any from memory.
@@ -45,7 +45,7 @@ npx @modelcontextprotocol/inspector quickshell-docs-mcp
 ## Project Structure
 
 ```
-quickshell_docs_mcp/
+quickshell_mcp/
   sources/       one module per upstream source
   server.py      MCP tool definitions
   config.py      URLs, constants

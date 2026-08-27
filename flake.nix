@@ -18,8 +18,8 @@
       packages = forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
         in rec {
-          quickshell-docs-mcp = pkgs.python3Packages.buildPythonApplication {
-            pname = "quickshell-docs-mcp";
+          quickshell-mcp = pkgs.python3Packages.buildPythonApplication {
+            pname = "quickshell-mcp";
             version = pkgVersion;
             pyproject = true;
             src = self;
@@ -33,14 +33,14 @@
             # Offline unit suite lives in ./tests; run via devShell instead.
             doCheck = false;
           };
-          default = quickshell-docs-mcp;
+          default = quickshell-mcp;
         });
 
       apps = forAllSystems (system: {
         default = {
           type = "app";
           program =
-            "${self.packages.${system}.default}/bin/quickshell-docs-mcp";
+            "${self.packages.${system}.default}/bin/quickshell-mcp";
         };
       });
 

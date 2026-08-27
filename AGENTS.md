@@ -4,7 +4,7 @@ Guidance for AI agents (Claude Code, opencode, etc.) working on this repository.
 
 ## Scope
 
-Governs agent behavior within `quickshell-docs-mcp` only. This is a single-author personal tool, so keep changes proportional: no release automation, no features without a stated consumer, no dependencies without a reason.
+Governs agent behavior within `quickshell-mcp` only. This is a single-author personal tool, so keep changes proportional: no release automation, no features without a stated consumer, no dependencies without a reason.
 
 ## Project overview
 
@@ -12,7 +12,7 @@ An MCP server that serves live Quickshell documentation from quickshell.org so L
 
 ## Project structure
 
-- `quickshell_docs_mcp/`, the package itself:
+- `quickshell_mcp/`, the package itself:
   - `config.py`: URLs, repo identities, strip-selector lists, TTL/retry constants
   - `caches.py`: 30-minute in-process cache
   - `utils.py`: logging, HTTP client, `_fetch_raw` (retry + stats), citation prefix; domain modules call `utils._fetch_raw` by module attribute so tests monkeypatch one seam
@@ -46,7 +46,7 @@ Rules for test cases in this repo:
    rtk curl -sL https://quickshell.org/about/ -o tests/fixtures/about.html
    rtk curl -sL https://quickshell.org/docs/v0.3.1/guide/ -o tests/fixtures/guide_index.html
    ```
-5. **Live tests are for fetch-proof only.** Mark with `@pytest.mark.live`; they self-skip unless `QUICKSHELL_DOCS_LIVE_TEST=1`. Never use them to test logic; they're slow, order-dependent, and can flake on site hiccups.
+5. **Live tests are for fetch-proof only.** Mark with `@pytest.mark.live`; they self-skip unless `QUICKSHELL_LIVE_TEST=1`. Never use them to test logic; they're slow, order-dependent, and can flake on site hiccups.
 6. **Don't clear caches manually.** The autouse conftest fixture resets `_cache`, `_TOOL_CALLS`, and `_FETCH_STATS` between tests.
 7. **Code-quality gates are tests too** (`tests/test_code_quality.py`: ruff/format/mypy). They probe before running and skip cleanly where a tool is broken (e.g. glibc-ruff wheel on NixOS). A skip is NOT a pass; see Definition of done.
 
@@ -55,9 +55,9 @@ Rules for test cases in this repo:
 ```bash
 pip install -e '.[dev]'                      # venv setup
 pytest -q                                    # offline suite (+ quality-gate tests)
-QUICKSHELL_DOCS_LIVE_TEST=1 pytest -m live   # opt-in live verification
+QUICKSHELL_LIVE_TEST=1 pytest -m live   # opt-in live verification
 ruff check . && ruff format --check .        # lint + formatting
-mypy quickshell_docs_mcp                     # types
+mypy quickshell_mcp                     # types
 .venv/bin/python scripts/smoke_test.py       # end-to-end stdio vs live site
 nix develop                                  # dev shell with everything CI uses
 nix build && nix flake check                 # package + flake evaluation
@@ -70,9 +70,9 @@ nix build && nix flake check                 # package + flake evaluation
 Run checks when warranted, not reflexively. If none apply, say so instead of running them anyway.
 
 1. `pytest -q`: after any change to the package or `tests/`. Skip for pure docs/comments edits.
-2. Direct lint/type run (`nix develop -c sh -c 'ruff check . && ruff format --check . && mypy quickshell_docs_mcp/'`): when making a non-trivial edit to the package, or whenever you intend to claim CI-green. The venv's pip-installed ruff may be unusable on NixOS (dynamic-linking); the quality-gate *tests* will skip rather than fail, so don't read a skip as passing.
+2. Direct lint/type run (`nix develop -c sh -c 'ruff check . && ruff format --check . && mypy quickshell_mcp/'`): when making a non-trivial edit to the package, or whenever you intend to claim CI-green. The venv's pip-installed ruff may be unusable on NixOS (dynamic-linking); the quality-gate *tests* will skip rather than fail, so don't read a skip as passing.
 3. `scripts/smoke_test.py`: after touching the tool surface (new tool, changed signature/docstring), `main()`/transport, or anything stdio-related. Requires network; keeps stdin open internally because closing the pipe mid-request makes the mcp transport abort in-flight work (looks like a hang, isn't).
-4. Live pytest (`QUICKSHELL_DOCS_LIVE_TEST=1 pytest -m live`): when changing `_fetch_raw`, extraction, version discovery, or URL construction. Proves the real site still agrees with your assumptions.
+4. Live pytest (`QUICKSHELL_LIVE_TEST=1 pytest -m live`): when changing `_fetch_raw`, extraction, version discovery, or URL construction. Proves the real site still agrees with your assumptions.
 5. `git add -A && nix build && nix flake check`: after touching `flake.nix` or `pyproject.toml`. Staging is required because the flake evaluates the git tree, not the worktree.
 6. `python -m build --no-isolation && twine check dist/*` (in `nix develop`): after metadata changes in `pyproject.toml`.
 7. Always self-review the diff against the design principles above before reporting done.
@@ -93,9 +93,9 @@ Run checks when warranted, not reflexively. If none apply, say so instead of run
 ```json
 {
   "mcp": {
-    "quickshell-docs": {
+    "quickshell": {
       "type": "local",
-      "command": ["/absolute/path/to/quickshell-docs-mcp/.venv/bin/quickshell-docs-mcp"],
+      "command": ["/absolute/path/to/quickshell-mcp/.venv/bin/quickshell-mcp"],
       "enabled": true
     }
   }

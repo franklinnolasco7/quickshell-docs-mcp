@@ -45,7 +45,7 @@ def _disk_dir() -> Path | None:
     if override:
         return Path(override)
     xdg = os.environ.get("XDG_CACHE_HOME") or str(Path.home() / ".cache")
-    return Path(xdg) / "quickshell-docs-mcp"
+    return Path(xdg) / "quickshell-mcp"
 
 
 def _disk_ttl_seconds() -> float:
@@ -53,7 +53,7 @@ def _disk_ttl_seconds() -> float:
     try:
         hours = float(raw) if raw else _DEFAULT_DISK_TTL_HOURS
     except ValueError:
-        log_warning = logging.getLogger("quickshell-docs-mcp")
+        log_warning = logging.getLogger("quickshell-mcp")
         log_warning.warning("invalid QUICKSHELL_DOCS_MCP_DISK_TTL_HOURS=%r; using default", raw)
         hours = _DEFAULT_DISK_TTL_HOURS
     return max(hours, 0.0) * 3600

@@ -6,8 +6,8 @@ import re
 
 from conftest import load_fixture
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp import utils  # noqa: E402
+import quickshell_mcp.server as srv
+from quickshell_mcp import utils  # noqa: E402
 
 QT = srv.QT_DOCS_BASE
 

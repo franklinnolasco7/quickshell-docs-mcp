@@ -11,8 +11,8 @@ import json
 import pytest
 from conftest import http_404, load_fixture
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp import utils  # noqa: E402
+import quickshell_mcp.server as srv
+from quickshell_mcp import utils  # noqa: E402
 
 
 def _install(monkeypatch, extra_404: set[str] | None = None):
@@ -201,7 +201,7 @@ def test_truncated_github_tree_is_refused(monkeypatch):
         f"{srv._GITHUB_API}/repos/caelestia-dots/shell/git/trees/main?recursive=1": truncated,
     }
     monkeypatch.setattr(utils, "_fetch_raw", lambda url: mapping[url])
-    from quickshell_docs_mcp.sources.implementations import _build_impl_index
+    from quickshell_mcp.sources.implementations import _build_impl_index
 
     with pytest.raises(RuntimeError, match="truncated"):
         _build_impl_index("caelestia")

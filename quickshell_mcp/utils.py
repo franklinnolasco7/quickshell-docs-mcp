@@ -16,9 +16,9 @@ _log_level_name = os.environ.get("QUICKSHELL_DOCS_MCP_LOG", "").strip().upper()
 logging.basicConfig(
     stream=sys.stderr,
     level=logging.INFO,
-    format="quickshell-docs-mcp: %(levelname)s %(message)s",
+    format="quickshell-mcp: %(levelname)s %(message)s",
 )
-log = logging.getLogger("quickshell-docs-mcp")
+log = logging.getLogger("quickshell-mcp")
 logging.getLogger("httpx").setLevel(
     getattr(logging, _log_level_name, logging.INFO) if _log_level_name else logging.WARNING
 )

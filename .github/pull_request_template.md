@@ -28,7 +28,7 @@ If checked, describe the impact and migration path below.
 
 - [ ] Tests pass (`pytest`)
 - [ ] Lint passes (`ruff check . && ruff format --check .`)
-- [ ] Types pass (`mypy quickshell_docs_mcp`)
+- [ ] Types pass (`mypy quickshell_mcp`)
 - [ ] New tools have happy + failure path tests
 - [ ] Tool docstrings written for how users ask, not what code does
 - [ ] No hardcoded version strings outside `tests/fixtures/`

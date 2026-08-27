@@ -7,8 +7,8 @@ import time
 
 import pytest
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp import caches, utils
+import quickshell_mcp.server as srv
+from quickshell_mcp import caches, utils
 
 
 @pytest.fixture
@@ -63,7 +63,7 @@ def test_corrupt_file_reads_as_missing(disk_dir):
 def test_type_index_survives_process_restart(monkeypatch):
     """Simulated restart: memory cache cleared between the two builds; the
     second build must be served entirely from disk."""
-    from quickshell_docs_mcp.sources import docs as docs_src
+    from quickshell_mcp.sources import docs as docs_src
 
     calls: list[str] = []
 
@@ -87,7 +87,7 @@ def test_type_index_survives_process_restart(monkeypatch):
 
 
 def test_refresh_bypasses_disk(disk_dir, monkeypatch):
-    from quickshell_docs_mcp.sources import docs as docs_src
+    from quickshell_mcp.sources import docs as docs_src
 
     calls: list[str] = []
 

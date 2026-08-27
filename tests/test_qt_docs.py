@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import pytest
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp import utils  # noqa: E402
+import quickshell_mcp.server as srv
+from quickshell_mcp import utils  # noqa: E402
 
 QT = srv.QT_DOCS_BASE
 
@@ -95,7 +95,7 @@ def test_get_qt_type_fetches_exact_url(monkeypatch):
 
 
 def test_resolve_qt_slug_ambiguous_across_modules(monkeypatch):
-    from quickshell_docs_mcp.sources import qt_docs
+    from quickshell_mcp.sources import qt_docs
 
     monkeypatch.setattr(
         qt_docs,

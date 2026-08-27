@@ -1,10 +1,10 @@
-# quickshell-docs-mcp
+# quickshell-mcp
 
 Live Quickshell documentation for AI coding agents.
 
-[![PyPI](https://img.shields.io/pypi/v/quickshell-docs-mcp?logo=pypi&logoColor=white&cacheSeconds=300)](https://pypi.org/project/quickshell-docs-mcp/)
-[![Python](https://img.shields.io/pypi/pyversions/quickshell-docs-mcp?logo=python&logoColor=white&cacheSeconds=300)](https://github.com/franklinnolasco7/quickshell-docs-mcp/blob/main/pyproject.toml)
-[![codecov](https://codecov.io/gh/franklinnolasco7/quickshell-docs-mcp/graph/badge.svg)](https://codecov.io/gh/franklinnolasco7/quickshell-docs-mcp)
+[![PyPI](https://img.shields.io/pypi/v/quickshell-mcp?logo=pypi&logoColor=white&cacheSeconds=300)](https://pypi.org/project/quickshell-mcp/)
+[![Python](https://img.shields.io/pypi/pyversions/quickshell-mcp?logo=python&logoColor=white&cacheSeconds=300)](https://github.com/franklinnolasco7/quickshell-mcp/blob/main/pyproject.toml)
+[![codecov](https://codecov.io/gh/franklinnolasco7/quickshell-mcp/graph/badge.svg)](https://codecov.io/gh/franklinnolasco7/quickshell-mcp)
 
 ---
 
@@ -33,15 +33,15 @@ Every result carries its source URL. When implementations disagree with the docs
 ## Install
 
 ```bash
-pip install quickshell-docs-mcp        # or: uvx quickshell-docs-mcp
+pip install quickshell-mcp        # or: uvx quickshell-mcp
 ```
 
 <details>
 <summary>From source</summary>
 
 ```bash
-git clone https://github.com/franklinnolasco7/quickshell-docs-mcp
-cd quickshell-docs-mcp
+git clone https://github.com/franklinnolasco7/quickshell-mcp
+cd quickshell-mcp
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .
 ```
@@ -52,7 +52,7 @@ pip install -e .
 <summary>Nix</summary>
 
 ```bash
-nix run github:franklinnolasco7/quickshell-docs-mcp
+nix run github:franklinnolasco7/quickshell-mcp
 ```
 
 </details>
@@ -61,8 +61,8 @@ nix run github:franklinnolasco7/quickshell-docs-mcp
 <summary>Docker</summary>
 
 ```bash
-docker build -t quickshell-docs-mcp .
-docker run --rm -i quickshell-docs-mcp     # speaks MCP over stdio
+docker build -t quickshell-mcp .
+docker run --rm -i quickshell-mcp     # speaks MCP over stdio
 ```
 
 </details>
@@ -74,9 +74,9 @@ docker run --rm -i quickshell-docs-mcp     # speaks MCP over stdio
 ```json
 {
   "mcp": {
-    "quickshell-docs": {
+    "quickshell": {
       "type": "local",
-      "command": ["/absolute/path/to/quickshell-docs-mcp/.venv/bin/quickshell-docs-mcp"],
+      "command": ["/absolute/path/to/quickshell-mcp/.venv/bin/quickshell-mcp"],
       "enabled": true
     }
   }
@@ -86,7 +86,7 @@ docker run --rm -i quickshell-docs-mcp     # speaks MCP over stdio
 **Claude Desktop**: same JSON under `claude_desktop_config.json`, wrapped in `mcpServers`. For HTTP transport, set `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (plus optional `HOST`/`PORT`).
 
 > Set `QUICKSHELL_DOCS_MCP_LOG=DEBUG` for verbose request logging on stderr.
-> Bulk doc indexes persist on disk (`~/.cache/quickshell-docs-mcp`, 30-day freshness). Relocate or disable with `QUICKSHELL_DOCS_MCP_DISK_CACHE`, re-tune with `QUICKSHELL_DOCS_MCP_DISK_TTL_HOURS`.
+> Bulk doc indexes persist on disk (`~/.cache/quickshell-mcp`, 30-day freshness). Relocate or disable with `QUICKSHELL_DOCS_MCP_DISK_CACHE`, re-tune with `QUICKSHELL_DOCS_MCP_DISK_TTL_HOURS`.
 
 ## Tools
 

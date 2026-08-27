@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp import utils  # noqa: E402
+import quickshell_mcp.server as srv
+from quickshell_mcp import utils  # noqa: E402
 
 
 def test_extraction_strips_chrome_and_keeps_type_content():

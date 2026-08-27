@@ -8,8 +8,8 @@ import re
 
 from conftest import http_404, load_fixture
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp import utils  # noqa: E402
+import quickshell_mcp.server as srv
+from quickshell_mcp import utils  # noqa: E402
 
 QT = srv.QT_DOCS_BASE
 _CAEL_TREE = f"{srv._GITHUB_API}/repos/caelestia-dots/shell/git/trees/main?recursive=1"

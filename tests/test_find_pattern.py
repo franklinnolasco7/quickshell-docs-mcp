@@ -9,9 +9,9 @@ from conftest import load_fixture
 # share one installer built on committed fixtures.
 from test_search_all import _install as install_search_fixtures
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp.sources.docs import TYPE_LINK_RE
-from quickshell_docs_mcp.sources.find_pattern import _PATTERNS, _interpret_query
+import quickshell_mcp.server as srv
+from quickshell_mcp.sources.docs import TYPE_LINK_RE
+from quickshell_mcp.sources.find_pattern import _PATTERNS, _interpret_query
 
 
 def test_spotlight_alias_finds_launchers_in_both_shells(monkeypatch, docs_fixture_urls):
@@ -86,7 +86,7 @@ def test_ranking_respects_cap(monkeypatch, docs_fixture_urls):
 def test_limit_one_keeps_the_top_hit(monkeypatch, docs_fixture_urls):
     """The cross-project swap trades the last slot; at limit=1 that slot is
     the best result, so it must survive untouched."""
-    from quickshell_docs_mcp.sources import find_pattern as fp
+    from quickshell_mcp.sources import find_pattern as fp
 
     def fake_impl(source, query, tokens, limit):
         if source == "caelestia":

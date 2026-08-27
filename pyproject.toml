@@ -1,5 +1,5 @@
 [project]
-name = "quickshell-docs-mcp"
+name = "quickshell-mcp"
 version = "1.4.0"
 description = "MCP server that fetches live Quickshell docs from quickshell.org so the model reads real, current docs instead of hallucinating."
 readme = "README.md"
@@ -28,9 +28,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/franklinnolasco7/quickshell-docs-mcp"
-Repository = "https://github.com/franklinnolasco7/quickshell-docs-mcp"
-Issues = "https://github.com/franklinnolasco7/quickshell-docs-mcp/issues"
+Homepage = "https://github.com/franklinnolasco7/quickshell-mcp"
+Repository = "https://github.com/franklinnolasco7/quickshell-mcp"
+Issues = "https://github.com/franklinnolasco7/quickshell-mcp/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -44,14 +44,14 @@ dev = [
 ]
 
 [project.scripts]
-quickshell-docs-mcp = "quickshell_docs_mcp:main"
+quickshell-mcp = "quickshell_mcp:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["quickshell_docs_mcp"]
+packages = ["quickshell_mcp"]
 
 [tool.ruff]
 line-length = 100
@@ -68,5 +68,5 @@ check_untyped_defs = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = [
-    "live: hits the real quickshell.org network (opt in with QUICKSHELL_DOCS_LIVE_TEST=1)",
+    "live: hits the real quickshell.org network (opt in with QUICKSHELL_LIVE_TEST=1)",
 ]

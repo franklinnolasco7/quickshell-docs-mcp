@@ -14,8 +14,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-import quickshell_docs_mcp.server as srv  # noqa: E402
-from quickshell_docs_mcp import utils  # noqa: E402
+import quickshell_mcp.server as srv  # noqa: E402
+from quickshell_mcp import utils  # noqa: E402
 
 FIXTURES = Path(__file__).parent / "fixtures"
 

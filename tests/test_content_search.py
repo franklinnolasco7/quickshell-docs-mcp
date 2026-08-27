@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from conftest import http_404, load_fixture
 
-import quickshell_docs_mcp.server as srv
-from quickshell_docs_mcp import utils  # noqa: E402
+import quickshell_mcp.server as srv
+from quickshell_mcp import utils  # noqa: E402
 
 
 def make_guide_fetch(monkeypatch, docs_fixture_urls, extra_body: str = ""):
@@ -106,7 +106,7 @@ def test_type_page_deep_search_skips_dead_pages_and_caches(monkeypatch):
     """include_type_pages deep-search: every indexed type page gets fetched
     once (concurrently), dead pages are skipped, results rank by occurrences,
     and the built index is fully cached."""
-    from quickshell_docs_mcp.sources import docs as docs_src
+    from quickshell_mcp.sources import docs as docs_src
 
     calls: list[str] = []
 

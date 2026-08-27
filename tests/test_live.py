@@ -1,6 +1,6 @@
 """Opt-in live smoke tests against the real quickshell.org.
 
-Run with: QUICKSHELL_DOCS_LIVE_TEST=1 pytest -m live
+Run with: QUICKSHELL_LIVE_TEST=1 pytest -m live
 """
 
 from __future__ import annotations
@@ -9,13 +9,13 @@ import os
 
 import pytest
 
-import quickshell_docs_mcp.server as srv
+import quickshell_mcp.server as srv
 
 pytestmark = [
     pytest.mark.live,
     pytest.mark.skipif(
-        os.environ.get("QUICKSHELL_DOCS_LIVE_TEST") != "1",
-        reason="set QUICKSHELL_DOCS_LIVE_TEST=1 to hit the real site",
+        os.environ.get("QUICKSHELL_LIVE_TEST") != "1",
+        reason="set QUICKSHELL_LIVE_TEST=1 to hit the real site",
     ),
 ]
 

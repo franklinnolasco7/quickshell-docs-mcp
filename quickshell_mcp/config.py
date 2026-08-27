@@ -5,7 +5,7 @@ QT_DOCS_BASE = "https://doc.qt.io/qt-6"
 EXAMPLES_REPO_WEB = "https://git.outfoxxed.me/quickshell/quickshell-examples"
 EXAMPLES_REPO_API = "https://git.outfoxxed.me/api/v1/repos/quickshell/quickshell-examples"
 
-USER_AGENT = "quickshell-docs-mcp/0.1 (+https://github.com/; contact: local use)"
+USER_AGENT = "quickshell-mcp/0.1 (+https://github.com/; contact: local use)"
 
 _CACHE_TTL = 60 * 30  # 30 minutes; long enough to be polite, short enough to track site updates
 
