@@ -105,6 +105,7 @@ def main() -> int:
         "quickshell_explain_error",
         "quickshell_validate_qml",
         "quickshell_check_compatibility",
+        "quickshell_migrate",
         "quickshell_stats",
     }
     missing = expected - names
@@ -162,6 +163,22 @@ def main() -> int:
     assert compat["target_version"] == versions["latest"]
     print(
         f"[ok] check_compatibility: {compat['compatibility']} for {compat['detected_api']['type']}"
+    )
+
+    migrate = _tool_json(
+        c,
+        "quickshell_migrate",
+        {
+            "code": 'Quickshell { shellRoot: "/tmp" }',
+            "from_version": "v0.1.0",
+            "to_version": versions["latest"],
+        },
+    )
+    assert isinstance(migrate.get("issues"), list)
+    assert "summary" in migrate and migrate["from_version"] == "v0.1.0"
+    print(
+        f"[ok] migrate returned summary: {migrate['summary']['verdict']} "
+        f"({len(migrate['issues'])} issue(s))"
     )
 
     c.proc.terminate()

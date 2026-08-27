@@ -94,6 +94,14 @@ from .sources.implementations import (  # noqa: F401
     _norm_source,
     _search_implementations,
 )
+from .sources.migrate import (  # noqa: F401
+    _behavioral_scan,
+    _collect_api_refs,
+    _import_diff,
+    _migrate,
+    _migration_plan,
+    _symbol_issue,
+)
 from .sources.qt_docs import (  # noqa: F401
     _QT_ANCHOR_RE,
     _QT_MODULE_LINK_RE,
@@ -569,6 +577,48 @@ def quickshell_check_compatibility(
         version=version,
         from_version=from_version,
         to_version=to_version,
+    )
+
+
+@mcp.tool()
+def quickshell_migrate(
+    from_version: str,
+    to_version: str,
+    code: str | None = None,
+    api: str | None = None,
+    type: str | None = None,
+    filename: str | None = None,
+) -> dict:
+    """Migrate Quickshell/QML code from one Quickshell version to another:
+    'migrate this config from v0.2.0 to v0.3.0', 'what do I need to change
+    to upgrade to the latest Quickshell?', 'is my config still valid after
+    the upgrade?'. Analyzes the code (or a single API/type) against both
+    versions and reports every removed, renamed, deprecated, or changed API,
+    plus breaking changes from the changelog, each with severity, location,
+    the old API, the replacement, why it must change, a suggested migration,
+    confidence, and a cited source.
+
+    Pass exactly one of:
+    - code: the QML source to migrate
+    - api: a dotted path like 'Quickshell.shellRoot' or
+      'PanelWindow.exclusiveZone'
+    - type: a bare type name like 'LegacyThing'
+
+    Both from_version and to_version are required. Every changelog entry
+    between them is inspected, so a rename that landed at an intermediate
+    release is reported with the version it landed in, not as a vague
+    'sometime between'. Findings are classified definite / likely /
+    manual_review: only changes backed by the docs or changelog are
+    definite. This tool analyzes and recommends; it never rewrites code
+    or modifies files."""
+    _record_tool("quickshell_migrate")
+    return _migrate(
+        from_version=from_version,
+        to_version=to_version,
+        code=code,
+        api=api,
+        type=type,
+        filename=filename,
     )
 
 
