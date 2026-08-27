@@ -252,8 +252,7 @@ flowchart LR
 - Obvious type mismatches
 - APIs unavailable in the requested Quickshell version
 
-> [!TIP]
-> `quickshell_validate_qml` is designed to complement `qmlls`, not replace it. Dynamic JavaScript and local component resolution are intentionally outside its scope.
+> **💡 Tip:** `quickshell_validate_qml` is designed to complement `qmlls`, not replace it. Dynamic JavaScript and local component resolution are intentionally outside its scope.
 
 ```json
 {"source": "PanelWindow { foo: 123 }", "version": "latest", "filename": "panel.qml"}
