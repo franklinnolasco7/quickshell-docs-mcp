@@ -53,6 +53,8 @@ jobs:
     needs: semantic-release
     runs-on: ubuntu-latest
     environment: pypi
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
     if: >-
       github.event_name == 'workflow_dispatch' ||
       needs.semantic-release.outputs.released == 'true'
@@ -93,3 +95,45 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  publish-mcp:
+    name: Publish to MCP Registry
+    needs: [publish]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tagged release
+        uses: actions/checkout@v6
+        with:
+          ref: "v${{ needs.publish.outputs.version }}"
+          persist-credentials: false
+
+      - name: Set server version from release
+        env:
+          VERSION: "${{ needs.publish.outputs.version }}"
+        run: |
+          python3 - <<'PY'
+          import json, os
+          v = os.environ["VERSION"]
+          p = "server.json"
+          d = json.load(open(p))
+          d["version"] = v
+          d["packages"][0]["version"] = v
+          json.dump(d, open(p, "w"), indent=2)
+          print("server.json version ->", v)
+          PY
+
+      - name: Install mcp-publisher
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+
+      - name: Wait for PyPI propagation
+        run: sleep 60
+
+      - name: Validate server.json
+        run: ./mcp-publisher validate
+
+      - name: Authenticate to MCP Registry (OIDC)
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish server to MCP Registry
+        run: ./mcp-publisher publish

@@ -1,3 +1,5 @@
+<!-- mcp-name: io.github.franklinnolasco7/quickshell-mcp -->
+
 # quickshell-mcp
 
 **An MCP server that gives AI coding agents source-grounded access to Quickshell, QML, and Qt.**

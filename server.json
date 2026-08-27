@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.franklinnolasco7/quickshell-mcp",
+  "title": "Quickshell Docs",
+  "description": "MCP server giving AI agents source-grounded access to Quickshell, QML, and Qt docs, examples, and real-world implementations.",
+  "repository": {
+    "url": "https://github.com/franklinnolasco7/quickshell-mcp",
+    "source": "github"
+  },
+  "version": "0.0.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "quickshell-mcp",
+      "version": "0.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
