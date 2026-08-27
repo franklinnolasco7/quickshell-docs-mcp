@@ -989,6 +989,12 @@ def _check_compatibility(
     resolved = _resolve_version(target)
     resolved_from = _resolve_version(from_version) if from_version is not None else None
 
+    if resolved_from is not None and _version_sort_key(resolved_from) > _version_sort_key(resolved):
+        raise ValueError(
+            f"from_version {resolved_from} is newer than target {resolved}; "
+            "the range must be ordered oldest to newest."
+        )
+
     if api is not None:
         ref = _parse_api_ref(api)
         type_name = ref["type_name"]

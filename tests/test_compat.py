@@ -595,6 +595,22 @@ def test_unknown_version_raises(monkeypatch, docs_fixture_urls):
         srv._check_compatibility(type="PanelWindow", version="v9.9.9")
 
 
+def test_reversed_range_raises(monkeypatch, docs_fixture_urls):
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    with pytest.raises(ValueError, match="newer than target"):
+        srv._check_compatibility(
+            api="PanelWindow.exclusiveZone", from_version="v0.3.1", to_version="v0.2.0"
+        )
+
+
+def test_range_equal_bounds_ok(monkeypatch, docs_fixture_urls):
+    _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
+    result = srv._check_compatibility(
+        api="PanelWindow.exclusiveZone", from_version="v0.2.0", to_version="v0.2.0"
+    )
+    assert result["compatibility"] == "compatible"
+
+
 def test_stats_recorded_through_tool(monkeypatch, docs_fixture_urls):
     _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
     srv.quickshell_check_compatibility(api="PanelWindow.exclusiveZone", version="v0.3.1")
