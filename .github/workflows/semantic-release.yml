@@ -130,7 +130,16 @@ jobs:
         run: sleep 60
 
       - name: Validate server.json
-        run: ./mcp-publisher validate
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open("server.json"))
+          assert len(d["description"]) <= 100, (
+              f"description too long: {len(d['description'])} chars (limit 100)"
+          )
+          print("server.json description OK")
+          PY
+          ./mcp-publisher validate
 
       - name: Authenticate to MCP Registry (OIDC)
         run: ./mcp-publisher login github-oidc
