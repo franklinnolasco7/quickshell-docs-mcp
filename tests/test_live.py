@@ -35,3 +35,15 @@ def test_live_type_page():
 def test_live_guide_page():
     out = srv._guide_page("qml-language", "latest")
     assert "# QML Language" in out
+
+
+def test_live_changelog_sections():
+    sections = srv._changelog_sections()
+    assert sections
+    assert all(s["version"] and s["text"] for s in sections)
+
+
+def test_live_check_compatibility():
+    result = srv._check_compatibility(api="PanelWindow.exclusiveZone", version="latest")
+    assert result["compatibility"] in ("compatible", "incompatible", "uncertain")
+    assert result["detected_api"]["type"] == "PanelWindow"

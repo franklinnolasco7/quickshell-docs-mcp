@@ -47,6 +47,17 @@ from .config import (  # noqa: F401
     QT_DOCS_BASE,
 )
 from .extraction import _extract_main_content, _fetch_page_markdown  # noqa: F401
+from .sources.compat import (  # noqa: F401
+    _api_in_version,
+    _changelog_hits,
+    _changelog_sections,
+    _check_compatibility,
+    _compat_at,
+    _compat_from_code,
+    _incorporate_range,
+    _parse_api_ref,
+    _scan_versions,
+)
 from .sources.docs import (  # noqa: F401
     GUIDE_LINK_RE,
     TYPE_LINK_RE,
@@ -517,6 +528,47 @@ def quickshell_explain_error(
         filename=filename,
         line_number=line_number,
         component=component,
+    )
+
+
+@mcp.tool()
+def quickshell_check_compatibility(
+    api: str | None = None,
+    type: str | None = None,
+    code: str | None = None,
+    version: str = "latest",
+    from_version: str | None = None,
+    to_version: str | None = None,
+) -> dict:
+    """Check whether a Quickshell API, QML property/method/signal, type, or
+    code snippet is compatible with a specific Quickshell version. Use this
+    before targeting an older release, e.g. 'is PanelWindow.exclusiveZone
+    available in v0.2.0?', 'which version introduced SomeType?', 'does this
+    QML config work on v0.3.0?', 'was Quickshell.shellRoot renamed?'.
+
+    Pass exactly one of:
+    - api: a dotted path like 'PanelWindow.exclusiveZone',
+      'Quickshell.Hyprland.HyprlandMonitor', or 'HyprlandWorkspace.activate()'
+    - type: a bare type name like 'PanelWindow'
+    - code: a QML snippet; every referenced type and property is checked
+
+    version pins the Quickshell release (default 'latest', resolved at
+    runtime). to_version overrides version as the target; from_version adds a
+    lower-bound so the result reports compatibility across the whole range.
+
+    The verdict is one of 'compatible' / 'incompatible' / 'uncertain', backed
+    by per-version documentation and changelog evidence (never a guess from
+    the latest page alone). Qt/QML types (Rectangle, Item, ...) are reported
+    as compatible with origin 'qt': their availability is governed by your Qt
+    version, not the Quickshell one."""
+    _record_tool("quickshell_check_compatibility")
+    return _check_compatibility(
+        api=api,
+        type=type,
+        code=code,
+        version=version,
+        from_version=from_version,
+        to_version=to_version,
     )
 
 
