@@ -267,6 +267,7 @@ def _install_fetch(monkeypatch, mapping: dict[str, str]) -> None:
 
     monkeypatch.setattr(utils, "_fetch_raw", fake_fetch)
 
+
 def test_parse_api_ref_member():
     ref = srv._parse_api_ref("PanelWindow.exclusiveZone")
     assert ref == {"namespace_hint": None, "type_name": "PanelWindow", "member": "exclusiveZone"}
@@ -308,6 +309,7 @@ def test_check_compatibility_requires_exactly_one_input():
     with pytest.raises(ValueError, match="Exactly one of api, type, or code"):
         srv._check_compatibility()
 
+
 def test_changelog_sections_split_by_version(monkeypatch, docs_fixture_urls):
     _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
     sections = srv._changelog_sections()
@@ -326,6 +328,7 @@ def test_changelog_hits_rename(monkeypatch, docs_fixture_urls):
 def test_changelog_hits_empty(monkeypatch, docs_fixture_urls):
     _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
     assert srv._changelog_hits(["NoSuchApiEver"]) == []
+
 
 def test_api_exists_in_requested_version(monkeypatch, docs_fixture_urls):
     _install_fetch(monkeypatch, _build_mapping(docs_fixture_urls))
