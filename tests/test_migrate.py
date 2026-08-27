@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import re
 
+import httpx
 import pytest
 from conftest import load_fixture
 
@@ -600,6 +601,22 @@ def test_import_diff_index_error_returns_cannot_verify(monkeypatch, docs_fixture
     assert issues[0]["status"] == "cannot_verify"
     assert issues[0]["classification"] == "manual_review"
     assert issues[0]["confidence"] == "low"
+
+
+def test_import_diff_non_404_http_error_returns_cannot_verify(monkeypatch, docs_fixture_urls):
+    parsed = srv._parse_structure(srv._tokenize("import Quickshell"))
+    guide_url = f"{srv.BASE}/docs/v0.1.0/guide/"
+    request = httpx.Request("GET", guide_url)
+    response = httpx.Response(500, request=request)
+    error = httpx.HTTPStatusError("Internal Server Error", request=request, response=response)
+
+    def raising_fetch(url: str) -> str:
+        raise error
+
+    monkeypatch.setattr(utils, "_fetch_raw", raising_fetch)
+    issues = srv._import_diff(parsed, "v0.1.0", "v0.3.1")
+    assert len(issues) == 1
+    assert issues[0]["status"] == "cannot_verify"
 
 
 def test_stats_recorded_through_tool(monkeypatch, docs_fixture_urls):

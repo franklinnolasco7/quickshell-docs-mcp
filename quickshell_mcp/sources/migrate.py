@@ -21,6 +21,8 @@ import re
 from pathlib import Path
 from typing import Any, TypedDict
 
+import httpx
+
 from ..config import BASE
 from ..versions import _resolve_version, _version_sort_key
 from .compat import (
@@ -581,7 +583,7 @@ def _import_diff(parsed: Any, from_version: str, to_version: str) -> list[_Migra
     def _index_namespaces(version: str) -> set[str] | None:
         try:
             return set(_build_index(version)["types_by_namespace"])
-        except RuntimeError:
+        except (httpx.HTTPError, RuntimeError):
             return None
 
     from_namespaces = _index_namespaces(from_version)
