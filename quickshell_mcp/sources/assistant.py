@@ -44,6 +44,9 @@ _MAX_IMPL_EXCERPT_CHARS = 2000
 _COMPOSITOR_TOKENS = {"hyprland", "sway", "niri", "i3", "wayfire", "river", "kwin", "weston"}
 
 _VERSION_HINT_RE = re.compile(r"\bv?(\d+\.\d+(?:\.\d+)?(?:-[0-9A-Za-z.-]+)?)\b")
+# A lone version introduced by "to <version>" wording is the migration target,
+# not the source (e.g. "upgrade to v0.3").
+_TO_VERSION_RE = re.compile(r"\bto\s+(?:v?\d+\.\d+)", re.IGNORECASE)
 
 _MIGRATE_RE = re.compile(r"\b(migrat\w*|upgrad\w*|port(?:ing)?\s+to)\b", re.IGNORECASE)
 _DEBUG_RE = re.compile(
@@ -69,10 +72,12 @@ def _detect_compositor(request: str, compositor: str | None) -> str | None:
     if compositor:
         return compositor.strip().lower()
     lowered = request.lower()
+    best: tuple[str, int] | None = None
     for token in _COMPOSITOR_TOKENS:
-        if re.search(rf"\b{re.escape(token)}\b", lowered):
-            return token
-    return None
+        match = re.search(rf"\b{re.escape(token)}\b", lowered)
+        if match and (best is None or match.start() < best[1]):
+            best = (token, match.start())
+    return best[0] if best else None
 
 
 def _extract_version_hints(request: str) -> list[str]:
@@ -136,8 +141,20 @@ def _classify_intent(
         "research": "You want to understand an API or how something works.",
     }[intent_type]
 
-    from_hint = from_version or (hints[0] if hints else None)
-    to_hint = to_version or (hints[1] if len(hints) > 1 else None)
+    from_hint: str | None
+    to_hint: str | None
+    if from_version:
+        from_hint = from_version
+    elif hints and not (len(hints) == 1 and _TO_VERSION_RE.search(request)):
+        from_hint = hints[0]
+    else:
+        from_hint = None
+    if to_version:
+        to_hint = to_version
+    elif len(hints) == 1 and _TO_VERSION_RE.search(request):
+        to_hint = hints[0]
+    else:
+        to_hint = hints[1] if len(hints) > 1 else None
     return {
         "type": intent_type,
         "reason": reason,
@@ -228,6 +245,7 @@ def _base_result(
         "validation": None,
         "remaining_issues": [],
         "sources": [],
+        "grounded_result": None,
         "orchestration": trace,
         "errors": errors,
         "note": "",
@@ -714,11 +732,8 @@ def _stage_verify(state: _PipelineState) -> None:
             hints.extend(entry.get("apis") or [])
         for group in (state.pattern or {}).get("cross_project_patterns") or []:
             hints.extend(group.get("api_hints") or [])
-        seen: set[str] = set()
-        for hint in hints[:_MAX_RELEVANT_APIS]:
-            if hint in seen:
-                continue
-            seen.add(hint)
+        unique_hints = list(dict.fromkeys(hints))
+        for hint in unique_hints[:_MAX_RELEVANT_APIS]:
             compat = _safe_step(
                 state.trace,
                 state.errors,
@@ -925,7 +940,8 @@ def _stage_generate(state: _PipelineState) -> None:
     state.remaining = _validation_issues(state.validation)
     state.note = generated.get("note") or ""
     if state.context:
-        state.note = f"{state.note}; existing project context noted but not read.".strip()
+        suffix = "existing project context noted but not read"
+        state.note = f"{state.note}; {suffix}" if state.note else suffix
 
 
 def _stage_validate(state: _PipelineState) -> None:
@@ -1087,8 +1103,13 @@ def _stage_orchestrate(state: _PipelineState) -> dict[str, Any]:
 
     verdict = state.compatibility_verdict
     if intent_type == "research" or intent_type == "pattern":
-        checks = {check.get("compatibility") for check in state.compat_checks}
-        verdict = "compatible" if checks <= {"compatible"} and state.compat_checks else None
+        verdicts = {check.get("compatibility") for check in state.compat_checks}
+        if verdicts and verdicts <= {"compatible"}:
+            verdict = "compatible"
+        elif "incompatible" in verdicts:
+            verdict = "incompatible"
+        else:
+            verdict = None
 
     result = _base_result(state.request, state.intent, version, state.trace, state.errors)
     note = state.note or "; ".join(part for part in state.note_parts if part)
@@ -1196,27 +1217,10 @@ def _coding_assistant(
         intent["compositor"] = compositor.strip().lower()
 
     if not request:
-        return {
-            "request": request,
-            "intent": {
-                **intent,
-                "type": None,
-                "version": version,
-                "compositor": intent["compositor"],
-            },
-            "understanding": [],
-            "relevant_apis": [],
-            "recommended_approach": [],
-            "implementation_references": [],
-            "compatibility": None,
-            "validation": None,
-            "remaining_issues": [],
-            "sources": [],
-            "grounded_result": None,
-            "orchestration": [],
-            "errors": {},
-            "note": "Empty request. Describe the development task in plain words.",
-        }
+        result = _base_result(request, intent, version, [], {})
+        result["intent"]["type"] = None
+        result["note"] = "Empty request. Describe the development task in plain words."
+        return result
 
     state = _PipelineState(
         request=request,

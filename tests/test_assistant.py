@@ -83,6 +83,39 @@ def test_classify_intent_modes():
         assert intent["compositor"] == expected_compositor, request
 
 
+def test_detect_compositor_is_deterministic_by_first_occurrence():
+    assert assistant._detect_compositor("hyprland then sway", None) == "hyprland"
+    assert assistant._detect_compositor("sway before hyprland", None) == "sway"
+    assert assistant._detect_compositor("workspace indicator on niri", None) == "niri"
+    assert assistant._detect_compositor("no compositor here", None) is None
+    assert assistant._detect_compositor("hyprland", "sway") == "sway"
+
+
+def test_classify_intent_lone_to_version_is_target():
+    intent = assistant._classify_intent(
+        "upgrade to v0.3", code=None, error=None, from_version=None, to_version=None
+    )
+    assert intent["type"] == "migrate"
+    assert intent["to_version_hint"] == "0.3"
+    assert intent["from_version_hint"] is None
+
+    ranged = assistant._classify_intent(
+        "Migrate this shell from v0.2 to v0.3",
+        code=None,
+        error=None,
+        from_version=None,
+        to_version=None,
+    )
+    assert ranged["from_version_hint"] == "0.2"
+    assert ranged["to_version_hint"] == "0.3"
+
+    from_only = assistant._classify_intent(
+        "migrate from v0.2", code=None, error=None, from_version=None, to_version=None
+    )
+    assert from_only["from_version_hint"] == "0.2"
+    assert from_only["to_version_hint"] is None
+
+
 def test_resolve_version_hint(mock_fetch, docs_fixture_urls):
     mock_fetch(docs_fixture_urls)
     assert assistant._resolve_version_hint("0.2") == "v0.2.1"
@@ -98,6 +131,10 @@ def test_empty_request_short_circuits():
     assert out["orchestration"] == []
     assert out["intent"]["type"] is None
     assert "Empty request" in out["note"]
+    # Shares the standard result shape: same intent keys, grounded_result
+    # present, no version-hint keys leaking into intent.
+    assert set(out["intent"]) == {"type", "reason", "summary", "version", "compositor"}
+    assert out["grounded_result"] is None
 
 
 def test_build_request_routes_to_generate(monkeypatch, docs_fixture_urls):
@@ -228,6 +265,8 @@ def test_migrate_ambiguous_range_asks_for_versions(monkeypatch, docs_fixture_url
     out = srv._coding_assistant("migrate my config")
     assert out["intent"]["type"] == "migrate"
     assert any("Pass from_version and to_version" in line for line in out["understanding"])
+    # Failure paths still expose the full result shape.
+    assert out["grounded_result"] is None
 
 
 def test_pattern_request(monkeypatch, docs_fixture_urls):
@@ -242,6 +281,37 @@ def test_pattern_request(monkeypatch, docs_fixture_urls):
     assert out["implementation_references"]
     assert any("excerpt" in ref for ref in out["implementation_references"])
     assert out["relevant_apis"]
+
+
+def test_pattern_hints_deduplicated_before_cap(monkeypatch, docs_fixture_urls):
+    _install(monkeypatch, docs_fixture_urls)
+
+    def fake_find_pattern(query, version, limit=5):
+        return {
+            "query": query,
+            "version": version,
+            "interpreted_as": [
+                {
+                    "pattern": "osd",
+                    "why": "alias 'hud'",
+                    "apis": ["PanelWindow", "Pipewire", "PanelWindow", "PwNodeAudio"],
+                }
+            ],
+            "cross_project_patterns": [
+                {"pattern": "osd", "projects": {}, "api_hints": ["PanelWindow", "PopupAnchor"]}
+            ],
+            "implementations": [],
+            "examples": [],
+            "errors": {},
+            "note": "",
+        }
+
+    monkeypatch.setattr(assistant, "_find_pattern", fake_find_pattern)
+    out = srv._coding_assistant("Find an implementation of a volume OSD and adapt the pattern")
+
+    names = [api["name"] for api in out["relevant_apis"]]
+    assert len(names) == len(set(names))
+    assert set(names) == {"PanelWindow", "Pipewire", "PwNodeAudio", "PopupAnchor"}
 
 
 def test_conflicting_sources_docs_win(monkeypatch, docs_fixture_urls):
@@ -264,6 +334,8 @@ def test_conflicting_sources_docs_win(monkeypatch, docs_fixture_urls):
     pipewire = next(api for api in out["relevant_apis"] if api["name"] == "Pipewire")
     assert pipewire["compatibility"] == "incompatible"
     assert pipewire["verified"] is False
+    # A confirmed incompatibility must surface as a verdict, not None.
+    assert out["compatibility"]["verdict"] == "incompatible"
 
 
 def test_uncertain_api_resolution_is_flagged(monkeypatch, docs_fixture_urls):
