@@ -47,6 +47,13 @@ from .config import (  # noqa: F401
     QT_DOCS_BASE,
 )
 from .extraction import _extract_main_content, _fetch_page_markdown  # noqa: F401
+from .sources.assistant import (  # noqa: F401
+    _classify_intent,
+    _coding_assistant,
+    _detect_compositor,
+    _resolve_version_hint,
+    _safe_step,
+)
 from .sources.compat import (  # noqa: F401
     _api_in_version,
     _changelog_hits,
@@ -709,6 +716,52 @@ def quickshell_generate_component(
         style=style,
         context=context,
         filename=filename,
+    )
+
+
+@mcp.tool()
+def quickshell_coding_assistant(
+    request: str,
+    version: str = "latest",
+    compositor: str | None = None,
+    code: str | None = None,
+    error: str | None = None,
+    filename: str | None = None,
+    from_version: str | None = None,
+    to_version: str | None = None,
+    context: str | None = None,
+) -> dict:
+    """High-level Quickshell development assistant for AI coding agents.
+
+    Give it one plain-language development request and it routes the work
+    through the other tools, returning a structured, source-grounded result:
+    - build: 'build a Hyprland workspace bar', 'add an animated volume popup'
+    - debug: 'why is this PanelWindow failing?', 'fix this QML error' (pass
+      error= and/or code=)
+    - migrate: 'migrate this shell from v0.2 to v0.3' (from_version/to_version
+      pin the range)
+    - adapt a pattern: 'find an implementation of this feature and adapt it'
+    - research: 'how should I structure this component?', 'what is PanelWindow?'
+
+    The assistant picks the minimal set of lower-level tools needed (search,
+    pattern lookup, type/guide pages, compatibility, migration, generation,
+    validation), runs each step in isolation so a failing source never sinks
+    the whole answer, deduplicates searches, reuses the shared cache, and
+    never modifies files. version pins the Quickshell release. Results clearly
+    separate verified facts (official docs) from recommendations, and every
+    claim carries a source URL. For a single, focused lookup call the specific
+    tool directly instead."""
+    _record_tool("quickshell_coding_assistant")
+    return _coding_assistant(
+        request=request,
+        version=version,
+        compositor=compositor,
+        code=code,
+        error=error,
+        filename=filename,
+        from_version=from_version,
+        to_version=to_version,
+        context=context,
     )
 
 
