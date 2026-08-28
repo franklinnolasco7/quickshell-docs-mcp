@@ -47,3 +47,20 @@ def test_live_check_compatibility():
     result = srv._check_compatibility(api="PanelWindow.exclusiveZone", version="latest")
     assert result["compatibility"] in ("compatible", "incompatible", "uncertain")
     assert result["detected_api"]["type"] == "PanelWindow"
+
+
+def test_live_dots_hyprland_index():
+    """dots-hyprland nests its shell under qml_root; verify the real GitHub
+    tree resolves and paths are root-stripped."""
+    from quickshell_mcp.sources.implementations import _build_impl_index
+
+    index = _build_impl_index("dots-hyprland", refresh=True)
+    assert index["root"] == "dots/.config/quickshell/ii"
+    assert len(index["files"]) > 400  # substantial QML shell
+    assert not any("dots/.config" in f["path"] for f in index["files"][:100])
+    # Verify a known file round-trips through the repo path.
+    known = "services/Audio.qml"
+    assert any(f["path"] == known for f in index["files"])
+    body = srv._impl_file("dots-hyprland", known, find="volume", max_chars=12000)
+    assert "github.com/end-4/dots-hyprland/blob/main/dots/.config/quickshell/ii/" in body
+    assert "not official documentation" in body

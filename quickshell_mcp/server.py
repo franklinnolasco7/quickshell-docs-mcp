@@ -327,7 +327,8 @@ def quickshell_search_all(
 ) -> dict:
     """Search ALL sources at once with one natural-language query: Quickshell
     docs (type names, guide pages), Qt/QML types on doc.qt.io, official
-    example configs, and real-world Caelestia/Noctalia implementations.
+    example configs, and real-world implementations (Caelestia, Noctalia, and
+    end-4's dots-hyprland).
     Results come back grouped by source, most relevant group first; every
     entry carries a relevance score, a why-it-matched reason, and a URL or
     repo path.
@@ -365,12 +366,13 @@ def quickshell_find_pattern(
     plain words instead of exact type names: 'Hyprland workspace indicator',
     'macOS-style control center', 'volume OSD', 'system tray', 'animated
     popup', 'floating notification', 'top bar with workspaces', 'launcher
-    like Spotlight', 'power menu'. Searches Caelestia and Noctalia (real-world
-    shells) plus the official examples repo, interprets aliases ('Spotlight'
-    means launcher, 'hud' means OSD), and returns a small ranked set where
-    every entry carries source project, file path, why it matched, and the
-    Quickshell APIs that pattern typically needs. When several projects solve
-    the same pattern they are grouped so you can compare approaches.
+    like Spotlight', 'power menu'. Searches Caelestia, Noctalia, and end-4's
+    dots-hyprland (real-world shells) plus the official examples repo,
+    interprets aliases ('Spotlight' means launcher, 'hud' means OSD), and
+    returns a small ranked set where every entry carries source project, file
+    path, why it matched, and the Quickshell APIs that pattern typically
+    needs. When several projects solve the same pattern they are grouped so
+    you can compare approaches.
 
     For API/type lookups by name use quickshell_search or
     quickshell_search_all instead; for browsing one repo use
@@ -464,19 +466,21 @@ def quickshell_get_example(path: str) -> str:
 
 @mcp.tool()
 def quickshell_search_implementations(query: str, source: str = "all", limit: int = 8) -> dict:
-    """Search real-world Quickshell shells (Caelestia, Noctalia) for
-    implementations: 'find a bar implementation', 'find a control center
-    example', 'find Quickshell IPC usage', 'find multi-monitor
-    implementation', 'find workspace widget', 'find notification/OSD/launcher
-    implementation', 'find lock screen', 'find wallpaper handling',
-    'find Quickshell animations', 'find service patterns', 'find reusable QML
-    components', 'find Hyprland/Niri integration', 'find volume/audio
-    implementation', 'find wifi/network implementation', 'find bluetooth',
-    'find brightness', 'find battery implementation', 'find media controls'.
-    Restrict to one shell with source='caelestia' or source='noctalia'; to
-    compare approaches, call once per shell. These are practical references,
-    NOT API docs: verify API surface with quickshell_search/
-    quickshell_get_type. Get file contents via quickshell_get_implementation."""
+    """Search real-world Quickshell shells (Caelestia, Noctalia, and
+    end-4's dots-hyprland) for implementations: 'find a bar implementation',
+    'find a control center example', 'find Quickshell IPC usage', 'find
+    multi-monitor implementation', 'find workspace widget', 'find
+    notification/OSD/launcher implementation', 'find lock screen', 'find
+    wallpaper handling', 'find Quickshell animations', 'find service
+    patterns', 'find reusable QML components', 'find Hyprland/Niri
+    integration', 'find volume/audio implementation', 'find wifi/network
+    implementation', 'find bluetooth', 'find brightness', 'find battery
+    implementation', 'find media controls'.
+    Restrict to one shell with source='caelestia', source='noctalia', or
+    source='dots-hyprland'; to compare approaches, call once per shell.
+    These are practical references, NOT API docs: verify API surface with
+    quickshell_search/quickshell_get_type. Get file contents via
+    quickshell_get_implementation."""
     _record_tool("quickshell_search_implementations")
 
     sources = list(IMPLEMENTATION_REPOS) if source == "all" else [_norm_source(source)]
@@ -495,12 +499,12 @@ def quickshell_search_implementations(query: str, source: str = "all", limit: in
 def quickshell_get_implementation(
     source: str, path: str, find: str | None = None, max_chars: int = 12000
 ) -> str:
-    """Read a QML file from the Caelestia or Noctalia shells (get paths from
-    quickshell_search_implementations). Pass find='osd' / find='workspace' /
-    find='ipc' etc. to jump to the most relevant section instead of pulling
-    the whole large file. This is a real-world implementation reference, NOT
-    official documentation: when it disagrees with quickshell.org or
-    doc.qt.io, trust the docs."""
+    """Read a QML file from the Caelestia, Noctalia, or dots-hyprland shells
+    (get paths from quickshell_search_implementations). Pass find='osd' /
+    find='workspace' / find='ipc' etc. to jump to the most relevant section
+    instead of pulling the whole large file. This is a real-world
+    implementation reference, NOT official documentation: when it disagrees
+    with quickshell.org or doc.qt.io, trust the docs."""
     _record_tool("quickshell_get_implementation")
 
     return _impl_file(source, path, find, max_chars)

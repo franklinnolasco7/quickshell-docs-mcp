@@ -134,6 +134,16 @@ def main() -> int:
         f"{[entry['pattern'] for entry in find_pattern['interpreted_as']]}"
     )
 
+    impl_search = _tool_json(
+        c, "quickshell_search_implementations", {"query": "volume", "source": "dots-hyprland"}
+    )
+    dots_entries = impl_search["results"].get("dots-hyprland") or []
+    assert dots_entries, "dots-hyprland should return volume/audio paths"
+    assert all(
+        "dots/.config" not in entry["path"] for entry in dots_entries
+    ), "qml_root must be stripped from dots-hyprland paths"
+    print(f"[ok] dots-hyprland search: {len(dots_entries)} volume path(s)")
+
     page = c.call(
         "tools/call",
         {

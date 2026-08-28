@@ -82,7 +82,7 @@ docker run --rm -i quickshell-mcp     # speaks MCP over stdio
 | **Quickshell docs** | Version-aware type references, guides, and changelogs |
 | **Qt/QML docs** | QtQuick, Controls, Layouts, and other base types |
 | **Official examples** | Working Quickshell example configurations |
-| **Real-world implementations** | Searchable Caelestia and Noctalia patterns |
+| **Real-world implementations** | Searchable Caelestia, Noctalia, and dots-hyprland patterns |
 | **Error explanations** | Grounded diagnosis of QML and Quickshell errors |
 | **QML validation** | Static checks for types, properties, signals, imports, and version compatibility |
 | **Version compatibility** | Whether an API or QML snippet works on a specific Quickshell release |
@@ -99,6 +99,7 @@ flowchart LR
     C[Official examples]
     D[Caelestia]
     E[Noctalia]
+    F[dots-hyprland]
     M((quickshell-mcp))
     Agent[AI coding agent]
 
@@ -107,6 +108,7 @@ flowchart LR
     C --> M
     D --> M
     E --> M
+    F --> M
     M --> Agent
 
     classDef official fill:#cdeaff,stroke:#1c6dd0,stroke-width:1px,color:#0b3661
@@ -154,7 +156,7 @@ For HTTP transport, set `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (plus optional `HOS
 | Tool | What it does |
 |---|---|
 | `quickshell_search` | Search Quickshell type names, namespaces, and guide slugs; optionally full-text including deep search over type pages |
-| `quickshell_search_all` | One-call unified search across Quickshell docs/types, Qt types, official examples, and Caelestia/Noctalia implementations |
+| `quickshell_search_all` | One-call unified search across Quickshell docs/types, Qt types, official examples, and all implementation shells |
 | `quickshell_find_pattern` | Describe a feature in plain words and get matching real-world implementations with per-pattern API hints |
 
 #### Documentation
@@ -178,7 +180,7 @@ For HTTP transport, set `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (plus optional `HOS
 | Tool | What it does |
 |---|---|
 | `quickshell_list_examples` / `quickshell_get_example` | Browse and read official example configs |
-| `quickshell_search_implementations` | Search Caelestia and Noctalia for patterns (bar, OSD, IPC, ...) |
+| `quickshell_search_implementations` | Search Caelestia, Noctalia, and dots-hyprland for patterns (bar, OSD, IPC, ...) |
 | `quickshell_get_implementation` | Read implementation files, narrowed via `find=` |
 
 #### Debugging & session
@@ -347,6 +349,7 @@ Use `refresh=True` to bypass the short-lived cache where supported. The cache lo
 | Quickshell examples | https://git.outfoxxed.me/quickshell/quickshell-examples | Official example configs |
 | Caelestia shell | https://github.com/caelestia-dots/shell | Real-world implementation references |
 | Noctalia shell | https://github.com/noctalia-dev/noctalia (legacy-v4) | Real-world implementation references |
+| dots-hyprland | https://github.com/end-4/dots-hyprland | Real-world implementation references (the "ii" shell) |
 
 ## Development
 

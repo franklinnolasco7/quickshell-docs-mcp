@@ -1,6 +1,7 @@
-"""Real-world implementation references (Caelestia / Noctalia shells) via the
-GitHub API. These are practical Quickshell configs, NOT API documentation;
-when they disagree with quickshell.org or doc.qt.io, the docs are authoritative."""
+"""Real-world implementation references (Caelestia / Noctalia / dots-hyprland
+shells) via the GitHub API. These are practical Quickshell configs, NOT API
+documentation; when they disagree with quickshell.org or doc.qt.io, the docs
+are authoritative."""
 
 import json
 import re
@@ -124,6 +125,8 @@ _IMPL_QUERY_STOPWORDS = {
     "similar",
     "compare",
     "caelestia",
+    "dots",
+    "hyprland",
     "noctalia",
     "source",
     "sources",
@@ -165,6 +168,13 @@ def _impl_branch(repo_config: dict[str, str]) -> str:
     return branch
 
 
+def _impl_repo_path(index: dict, path: str) -> str:
+    """Full path inside the repo for a shell-relative path: dots-hyprland
+    nests its shell under qml_root, other repos root at the repo root."""
+    root = index.get("root") or ""
+    return f"{root}/{path}" if root else path
+
+
 def _build_impl_index(source: str, refresh: bool = False) -> dict:
     cache_key = f"impl_index:{source}"
     if not refresh:
@@ -183,15 +193,17 @@ def _build_impl_index(source: str, refresh: bool = False) -> dict:
             "outgrew the trees API. Index would be incomplete."
         )
 
-    files = sorted(
-        (
-            {"path": entry["path"], "size": entry.get("size", 0)}
-            for entry in payload.get("tree", [])
-            if entry.get("type") == "blob" and entry["path"].endswith(".qml")
-        ),
-        key=lambda file_entry: file_entry["path"],
-    )
-    index = {"repo": full_name, "branch": branch, "files": files}
+    root = repo_config.get("qml_root", "").strip("/")
+    files = []
+    for entry in payload.get("tree", []):
+        if entry.get("type") != "blob" or not entry["path"].endswith(".qml"):
+            continue
+        if root and entry["path"] != root and not entry["path"].startswith(f"{root}/"):
+            continue
+        stripped = entry["path"][len(root) + 1 :] if root else entry["path"]
+        files.append({"path": stripped, "size": entry.get("size", 0)})
+    files.sort(key=lambda file_entry: file_entry["path"])
+    index = {"repo": full_name, "branch": branch, "root": root, "files": files}
     utils.log.info("built %s implementation index: %d QML file(s)", source, len(files))
     _cache_set(cache_key, index)
     return index
@@ -227,7 +239,10 @@ def _impl_entry_meta(source: str, index: dict, path: str, size: int, topics: lis
         "topics": topics,
         "description": "; ".join(descriptions) or "QML implementation reference",
         "size_bytes": size,
-        "url": f"https://github.com/{index['repo']}/blob/{index['branch']}/{path}",
+        "url": (
+            f"https://github.com/{index['repo']}/blob/{index['branch']}/"
+            f"{_impl_repo_path(index, path)}"
+        ),
     }
 
 
@@ -309,8 +324,13 @@ def _impl_file(source: str, path: str, find: str | None, max_chars: int) -> str:
             f"Did you mean one of: {close[:20]}"
         )
 
-    blob_url = f"https://github.com/{index['repo']}/blob/{index['branch']}/{path}"
-    raw_url = f"https://raw.githubusercontent.com/{index['repo']}/{index['branch']}/{path}"
+    blob_url = (
+        f"https://github.com/{index['repo']}/blob/{index['branch']}/{_impl_repo_path(index, path)}"
+    )
+    raw_url = (
+        "https://raw.githubusercontent.com/"
+        f"{index['repo']}/{index['branch']}/{_impl_repo_path(index, path)}"
+    )
     text = utils._fetch_raw(raw_url)
 
     section_note = ""
