@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.franklinnolasco7/quickshell-mcp",
-  "title": "Quickshell Docs",
+  "title": "Quickshell MCP",
   "description": "Source-grounded Quickshell, QML, and Qt documentation, examples, and real-world implementations.",
   "repository": {
     "url": "https://github.com/franklinnolasco7/quickshell-mcp",

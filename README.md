@@ -30,7 +30,7 @@ Quickshell changes quickly, and AI coding agents can generate QML from outdated 
 - [Configure](#configure)
 - [Tools](#tools)
 - [Typical workflow](#typical-workflow)
-- [Static validation](#static-validation)
+- [Advanced usage](#advanced-usage)
 - [Source priority](#source-priority)
 - [Caching](#caching)
 - [References](#references)
@@ -86,6 +86,7 @@ docker run --rm -i quickshell-mcp     # speaks MCP over stdio
 | **Error explanations** | Grounded diagnosis of QML and Quickshell errors |
 | **QML validation** | Static checks for types, properties, signals, imports, and version compatibility |
 | **Version compatibility** | Whether an API or QML snippet works on a specific Quickshell release |
+| **Component generation** | Minimal, source-grounded QML components from a plain-language description |
 | **Unified search** | Search across multiple sources in one call |
 
 ## Knowledge sources
@@ -185,6 +186,7 @@ For HTTP transport, set `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (plus optional `HOS
 |---|---|
 | `quickshell_explain_error` | Explain a QML/Quickshell error and suggest a fix, grounded in actual docs |
 | `quickshell_check_compatibility` | Check whether an API, type, or QML snippet is compatible with a specific Quickshell version |
+| `quickshell_generate_component` | Generate a minimal QML component from a plain-language description, with every API verified against the docs |
 | `quickshell_stats` | Session call counts and cache-hit ratio |
 
 > Page-fetching tools accept `version="latest"` (default) or an explicit version like `"v0.3.0"`. Cache-backed tools accept `refresh=True` to bypass the 30-minute cache.
@@ -222,7 +224,7 @@ Instead of asking an AI agent to guess how to create a workspace indicator in Qu
 flowchart LR
     A[quickshell_search_all] --> B[quickshell_find_pattern]
     B --> C[quickshell_list_versions /<br/>quickshell_get_type]
-    C --> D[generate QML]
+    C --> D[quickshell_generate_component]
     D --> E[quickshell_validate_qml]
     E --> F[quickshell_explain_error]
 
@@ -231,13 +233,18 @@ flowchart LR
     classDef debug fill:#ffd1d1,stroke:#d13b3b,stroke-width:1px,color:#5c0b0b
 
     class A,B,C tool
-    class D action
-    class E,F debug
+    class D,E action
+    class F debug
 ```
 
-## Static validation
+## Advanced usage
 
-`quickshell_validate_qml` performs lightweight static analysis against the same Quickshell and Qt documentation indexes used by the other tools. It can detect:
+<details>
+<summary><b>Static validation, version compatibility, and component generation</b>: catch bad QML, check API support per release, and generate components</summary>
+
+### Static validation
+
+`quickshell_validate_qml` checks QML against the same Quickshell and Qt documentation indexes the other tools use. It catches:
 
 - Unknown Quickshell and Qt types
 - Unknown properties, methods, and signals
@@ -245,18 +252,17 @@ flowchart LR
 - Obvious type mismatches
 - APIs unavailable in the requested Quickshell version
 
-> [!TIP]
-> `quickshell_validate_qml` is designed to complement `qmlls`, not replace it. Dynamic JavaScript and local component resolution are intentionally outside its scope.
+> `quickshell_validate_qml` complements `qmlls`; it does not replace it. Dynamic JavaScript and local component resolution are outside its scope.
 
 ```json
 {"source": "PanelWindow { foo: 123 }", "version": "latest", "filename": "panel.qml"}
 ```
 
-## Version compatibility
+### Version compatibility
 
-`quickshell_check_compatibility` tells you whether a Quickshell API, QML property/method/signal, type, or whole snippet works on a specific release. Pass exactly one of `api`, `type`, or `code`; pin the release with `version` (or `from_version`/`to_version` for a range).
+`quickshell_check_compatibility` checks whether a Quickshell API, QML property/method/signal, type, or whole snippet works on a specific release. Pass one of `api`, `type`, or `code`; choose the release with `version` (or use `from_version`/`to_version` for a range).
 
-It never concludes from the latest docs page alone: it cross-references the requested version's type index and pages plus the changelog, and returns `uncertain` rather than guessing when the evidence is insufficient. Qt/QML types (Rectangle, Item, ...) come back as `compatible` with `origin: "qt"`, because their availability is set by your Qt version, not the Quickshell one.
+It does not judge from the latest docs page alone. It cross-references the requested version's type index and pages plus the changelog, and returns `uncertain` when the evidence is not enough. Qt/QML types (Rectangle, Item, ...) show as `compatible` with `origin: "qt"`, because your Qt version sets their availability, not the Quickshell one.
 
 ```json
 {"api": "PanelWindow.exclusiveZone", "version": "v0.2.0"}
@@ -264,7 +270,31 @@ It never concludes from the latest docs page alone: it cross-references the requ
 {"code": "PanelWindow { exclusiveZone: 1 }", "version": "v0.1.0"}
 ```
 
-The result includes the verdict, the version evidence (earliest/latest known), any change or rename with a likely replacement, the matching changelog entry, and cited documentation URLs.
+The result includes the verdict, the version evidence (earliest/latest known), any rename or change with a likely replacement, the matching changelog entry, and cited documentation URLs.
+
+### Component generation
+
+`quickshell_generate_component` turns a plain-language description into a minimal QML component, e.g. "Create a Hyprland workspace indicator", "animated volume OSD", "top bar with workspaces, clock and system tray", "popup control center", or "notification popup".
+
+```json
+{"description": "volume OSD", "version": "latest", "compositor": "hyprland"}
+```
+
+The generator searches for the request (using the same search and pattern tools as the rest), builds a small component from the section templates, then checks every Quickshell type and property/method it references against the requested version with `quickshell_check_compatibility` and runs the assembled QML through `quickshell_validate_qml`. An API that cannot be verified is shown in the result, not silently emitted, so the output never passes off an unverified API as valid.
+
+The result includes the generated QML plus:
+
+- `dependencies`: imports, required Quickshell types, and Qt types
+- `verified_surface`: the documented properties/methods/signals of every type the component uses, so you can rewrite the QML against verified members
+- `integration`: compositor and external-service requirements (Hyprland socket, PipeWire, a notification daemon, ...)
+- `verification`: per-API compatibility verdicts and an overall `verified`/`unverified` flag
+- `validation`: the diagnostics from the static validator
+- `references`: documentation, official examples, and real-world implementations to compare against
+- `assumptions`: the conservative choices made (default palette, unrecognized compositor, requested windows that were not embedded)
+
+`compositor="hyprland"` generates Hyprland-specific types; any other value is noted and generates no compositor-specific code. A request that matches no template still returns `verified_surface` plus `references`, so you can compose the component yourself. Each generated file contains one top-level window: if a request mentions several windows (such as a bar and a notification popup), the primary one is generated and the rest are listed under `assumptions` instead of being nested. The tool writes nothing to disk.
+
+</details>
 
 ## Source priority
 
