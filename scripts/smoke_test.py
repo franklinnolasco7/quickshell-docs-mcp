@@ -108,6 +108,7 @@ def main() -> int:
         "quickshell_migrate",
         "quickshell_stats",
         "quickshell_generate_component",
+        "quickshell_coding_assistant",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"
@@ -192,6 +193,17 @@ def main() -> int:
     print(
         f"[ok] migrate returned summary: {migrate['summary']['verdict']} "
         f"({len(migrate['issues'])} issue(s))"
+    )
+
+    assistant = _tool_json(c, "quickshell_coding_assistant", {"request": "What is PanelWindow?"})
+    assert assistant["intent"]["type"] == "research"
+    assert isinstance(assistant.get("understanding"), list)
+    assert isinstance(assistant.get("relevant_apis"), list)
+    assert isinstance(assistant.get("sources"), list)
+    assert any(entry["tool"] == "quickshell_search_all" for entry in assistant["orchestration"])
+    print(
+        f"[ok] coding_assistant: intent={assistant['intent']['type']}, "
+        f"{len(assistant['relevant_apis'])} API(s), {len(assistant['sources'])} source(s)"
     )
 
     c.proc.terminate()

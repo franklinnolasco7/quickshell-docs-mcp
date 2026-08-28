@@ -89,6 +89,7 @@ docker run --rm -i quickshell-mcp     # speaks MCP over stdio
 | **Migration** | Analyze what a QML config must change to keep working after an upgrade |
 | **Component generation** | Minimal, source-grounded QML components from a plain-language description |
 | **Unified search** | Search across multiple sources in one call |
+| **Coding assistant** | One plain-language request routed through the right tools, returning a structured, source-grounded result |
 
 ## Knowledge sources
 
@@ -189,6 +190,7 @@ For HTTP transport, set `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (plus optional `HOS
 | `quickshell_check_compatibility` | Check whether an API, type, or QML snippet is compatible with a specific Quickshell version |
 | `quickshell_migrate` | Analyze what a QML config must change to keep working after a Quickshell upgrade |
 | `quickshell_generate_component` | Generate a minimal QML component from a plain-language description, with every API verified against the docs |
+| `quickshell_coding_assistant` | Route a plain-language development request (build, debug, migrate, adapt, research) through the right tools and get a structured, source-grounded result |
 | `quickshell_stats` | Session call counts and cache-hit ratio |
 
 > Page-fetching tools accept `version="latest"` (default) or an explicit version like `"v0.3.0"`. Cache-backed tools accept `refresh=True` to bypass the 30-minute cache.
@@ -242,7 +244,7 @@ flowchart LR
 ## Advanced usage
 
 <details>
-<summary><b>Static validation, version compatibility, migration, and component generation</b>: catch bad QML, verify API support per release, plan upgrades, and generate components</summary>
+<summary><b>Static validation, version compatibility, migration, component generation, and the coding assistant</b>: catch bad QML, verify API support per release, plan upgrades, generate components, or route a whole development task through the assistant</summary>
 
 ### Static validation
 
@@ -313,6 +315,29 @@ The result includes the generated QML plus:
 - `assumptions`: the conservative choices made (default palette, unrecognized compositor, requested windows that were not embedded)
 
 `compositor="hyprland"` generates Hyprland-specific types; any other value is noted and generates no compositor-specific code. A request that matches no template still returns `verified_surface` plus `references`, so you can compose the component yourself. Each generated file contains one top-level window: if a request mentions several windows (such as a bar and a notification popup), the primary one is generated and the rest are listed under `assumptions` instead of being nested. The tool writes nothing to disk.
+
+### Coding assistant
+
+`quickshell_coding_assistant` is an orchestration layer over the other tools, for tasks that span several of them. Give it one plain-language development request and it runs a fixed pipeline of stages: search, verify, generate, validate, migrate, orchestrate. Each stage activates only the tools the request needs. The result is structured and source-grounded, with sections for understanding, relevant APIs, recommended approach, implementation references, compatibility, validation, remaining issues, sources, and a terminal `grounded_result`.
+
+```json
+{"request": "Build a Hyprland workspace bar"}
+{"request": "Why is this PanelWindow failing?", "code": "PanelWindow { foo: 1 }"}
+{"request": "Migrate this shell from v0.2 to v0.3", "from_version": "v0.2.0", "to_version": "v0.3.1"}
+{"request": "Find an implementation of a volume OSD and adapt the pattern"}
+```
+
+Requests map to five intents, each running the relevant pipeline stages:
+
+- **build** ("build/add/make a ...") delegates the search and verify stages to `quickshell_generate_component`, which runs them internally, and its validated QML becomes `grounded_result`.
+- **debug** ("why is X failing?", "fix this error") runs search (`quickshell_explain_error`) and verify (relevant type page + compatibility), then validate (`quickshell_validate_qml`); `grounded_result` is the diagnosis and fix.
+- **migrate** ("migrate/upgrade from vX to vY") runs search (breaking-change changelog when no code is given), validate against the target version, and migrate (`quickshell_migrate`); `grounded_result` is the ordered migration plan.
+- **pattern** ("find an implementation ... and adapt it") runs search (`quickshell_find_pattern`, with a short excerpt of the top implementation) and verify (compatibility of the hinted APIs); `grounded_result` is the excerpt plus verified APIs.
+- **research** ("what is X?", "how do I ...?") runs search (all sources) and verify (top type and guide pages + compatibility); `grounded_result` lists the resolved types and guides.
+
+Version and compositor come from the request text (`0.2`, `hyprland`) or from the `version`/`compositor`/`from_version`/`to_version` parameters. Loose version hints resolve at runtime against the published list. Each step runs in isolation, so a failing source shows up in `errors` instead of failing the whole request. The result carries an `orchestration` trace of the tools used and a deduplicated `sources` list. The `basis` tags on approach steps and the `verified` flag on API entries separate verified facts (from the official docs) from recommendations. The assistant writes nothing to disk.
+
+**When to use it:** multi-step development requests, or when you do not yet know which single tool fits. For a single, focused lookup (one type page, one error message, one version check) call the specific tool directly; it is cheaper and gives the raw answer.
 
 </details>
 
