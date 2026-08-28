@@ -118,7 +118,7 @@ flowchart LR
     classDef agent fill:#ead6ff,stroke:#8a3ff0,stroke-width:1px,color:#3a1466
 
     class A,B,C official
-    class D,E community
+    class D,E,F community
     class M core
     class Agent agent
 ```
