@@ -1,8 +1,8 @@
 """Cross-source unified search: one natural-language query fanned out across
 every indexed source (quickshell.org types/guides, doc.qt.io Qt types, the
-official examples repo, Caelestia/Noctalia implementations). This module only
-composes and ranks; every section delegates to the existing per-source
-helpers, so caching and URL construction stay in one place."""
+official examples repo, Caelestia/Noctalia/dots-hyprland implementations).
+This module only composes and ranks; every section delegates to the existing
+per-source helpers, so caching and URL construction stay in one place."""
 
 from __future__ import annotations
 
@@ -322,7 +322,7 @@ def _search_everything(
         note_parts.insert(
             0,
             "No matches. Searched: quickshell types, guide pages, Qt types, "
-            f"official examples, and both implementation shells ({topic_keys} "
+            f"official examples, and the implementation shells ({topic_keys} "
             "are known implementation topics). Try shorter keywords or a type name.",
         )
 

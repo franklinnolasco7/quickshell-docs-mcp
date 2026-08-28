@@ -1,0 +1,2937 @@
+{
+  "repo": "end-4/dots-hyprland",
+  "ref": "97c5bc651f68092351b24aaa935af708b1e04514",
+  "truncated": false,
+  "tree": [
+    {
+      "path": "dots/.config/quickshell/ii/GlobalStates.qml",
+      "type": "blob",
+      "size": 1510
+    },
+    {
+      "path": "dots/.config/quickshell/ii/ReloadPopup.qml",
+      "type": "blob",
+      "size": 4078
+    },
+    {
+      "path": "dots/.config/quickshell/ii/killDialog.qml",
+      "type": "blob",
+      "size": 6556
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/Appearance.qml",
+      "type": "blob",
+      "size": 23689
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/Config.qml",
+      "type": "blob",
+      "size": 31745
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/Directories.qml",
+      "type": "blob",
+      "size": 5074
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/Icons.qml",
+      "type": "blob",
+      "size": 3597
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/Images.qml",
+      "type": "blob",
+      "size": 1045
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/Persistent.qml",
+      "type": "blob",
+      "size": 5793
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/ColorUtils.qml",
+      "type": "blob",
+      "size": 6138
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/DateUtils.qml",
+      "type": "blob",
+      "size": 828
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/FileUtils.qml",
+      "type": "blob",
+      "size": 2040
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/Fuzzy.qml",
+      "type": "blob",
+      "size": 312
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/Levendist.qml",
+      "type": "blob",
+      "size": 363
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/NotificationUtils.qml",
+      "type": "blob",
+      "size": 3527
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/NumberUtils.qml",
+      "type": "blob",
+      "size": 326
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/ObjectUtils.qml",
+      "type": "blob",
+      "size": 3480
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/Session.qml",
+      "type": "blob",
+      "size": 1474
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/functions/StringUtils.qml",
+      "type": "blob",
+      "size": 9818
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/AdaptedMaterialScheme.qml",
+      "type": "blob",
+      "size": 2003
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/AnimatedTabIndexPair.qml",
+      "type": "blob",
+      "size": 647
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/FolderListModelWithHistory.qml",
+      "type": "blob",
+      "size": 1444
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/IndexModel.qml",
+      "type": "blob",
+      "size": 109
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/LauncherSearchResult.qml",
+      "type": "blob",
+      "size": 908
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/NestableObject.qml",
+      "type": "blob",
+      "size": 129
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/WorkspaceModel.qml",
+      "type": "blob",
+      "size": 2389
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/gCloud/GCloudApi.qml",
+      "type": "blob",
+      "size": 1513
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/gCloud/GCloudTranslate.qml",
+      "type": "blob",
+      "size": 1569
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/gCloud/GCloudVision.qml",
+      "type": "blob",
+      "size": 2594
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/gCloud/GCloudVisionResult.qml",
+      "type": "blob",
+      "size": 3519
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/hyprland/HyprlandConfigOption.qml",
+      "type": "blob",
+      "size": 1773
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/AntiFlashbangToggle.qml",
+      "type": "blob",
+      "size": 822
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/AudioToggle.qml",
+      "type": "blob",
+      "size": 543
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/BluetoothToggle.qml",
+      "type": "blob",
+      "size": 893
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/CloudflareWarpToggle.qml",
+      "type": "blob",
+      "size": 2492
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/ColorPickerToggle.qml",
+      "type": "blob",
+      "size": 631
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/DarkModeToggle.qml",
+      "type": "blob",
+      "size": 748
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/EasyEffectsToggle.qml",
+      "type": "blob",
+      "size": 702
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/GameModeToggle.qml",
+      "type": "blob",
+      "size": 1265
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/IdleInhibitorToggle.qml",
+      "type": "blob",
+      "size": 374
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/MicToggle.qml",
+      "type": "blob",
+      "size": 568
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/MusicRecognitionToggle.qml",
+      "type": "blob",
+      "size": 782
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/NetworkToggle.qml",
+      "type": "blob",
+      "size": 454
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/NightLightToggle.qml",
+      "type": "blob",
+      "size": 732
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/NotificationToggle.qml",
+      "type": "blob",
+      "size": 538
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/OnScreenKeyboardToggle.qml",
+      "type": "blob",
+      "size": 448
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/PowerProfilesToggle.qml",
+      "type": "blob",
+      "size": 1505
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/QuickToggleModel.qml",
+      "type": "blob",
+      "size": 525
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/models/quickToggles/ScreenSnipToggle.qml",
+      "type": "blob",
+      "size": 695
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/panels/lock/LockContext.qml",
+      "type": "blob",
+      "size": 3671
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/panels/lock/LockScreen.qml",
+      "type": "blob",
+      "size": 4245
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/utils/ImageDownloaderProcess.qml",
+      "type": "blob",
+      "size": 1475
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/utils/MultiTurnProcess.qml",
+      "type": "blob",
+      "size": 1056
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/utils/ScreenshotAction.qml",
+      "type": "blob",
+      "size": 3589
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/utils/TempScreenshotProcess.qml",
+      "type": "blob",
+      "size": 562
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/AddressBar.qml",
+      "type": "blob",
+      "size": 3792
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/AddressBreadcrumb.qml",
+      "type": "blob",
+      "size": 1183
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/AppIcon.qml",
+      "type": "blob",
+      "size": 324
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/Box.qml",
+      "type": "blob",
+      "size": 417
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/BoxLayout.qml",
+      "type": "blob",
+      "size": 465
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ButtonGroup.qml",
+      "type": "blob",
+      "size": 1717
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ButtonMouseArea.qml",
+      "type": "blob",
+      "size": 190
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/CalendarView.qml",
+      "type": "blob",
+      "size": 4574
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/Circle.qml",
+      "type": "blob",
+      "size": 142
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/CircularProgress.qml",
+      "type": "blob",
+      "size": 2532
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/CliphistImage.qml",
+      "type": "blob",
+      "size": 4013
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ClippedFilledCircularProgress.qml",
+      "type": "blob",
+      "size": 2867
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ClippedProgressBar.qml",
+      "type": "blob",
+      "size": 2763
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/Colorizer.qml",
+      "type": "blob",
+      "size": 319
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ConfigRow.qml",
+      "type": "blob",
+      "size": 131
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ConfigSelectionArray.qml",
+      "type": "blob",
+      "size": 1507
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ConfigSlider.qml",
+      "type": "blob",
+      "size": 1162
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ConfigSpinBox.qml",
+      "type": "blob",
+      "size": 923
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ConfigSwitch.qml",
+      "type": "blob",
+      "size": 1118
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ContentPage.qml",
+      "type": "blob",
+      "size": 777
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ContentSection.qml",
+      "type": "blob",
+      "size": 801
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ContentSubsection.qml",
+      "type": "blob",
+      "size": 1253
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ContentSubsectionLabel.qml",
+      "type": "blob",
+      "size": 200
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/CustomIcon.qml",
+      "type": "blob",
+      "size": 927
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/DashedBorder.qml",
+      "type": "blob",
+      "size": 864
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/DialogButton.qml",
+      "type": "blob",
+      "size": 1312
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/DialogListItem.qml",
+      "type": "blob",
+      "size": 787
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/DirectoryIcon.qml",
+      "type": "blob",
+      "size": 1355
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/DragManager.qml",
+      "type": "blob",
+      "size": 2113
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ErrorShakeAnimation.qml",
+      "type": "blob",
+      "size": 713
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/FadeLoader.qml",
+      "type": "blob",
+      "size": 429
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/Favicon.qml",
+      "type": "blob",
+      "size": 1541
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/FloatingActionButton.qml",
+      "type": "blob",
+      "size": 2270
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/FlowButtonGroup.qml",
+      "type": "blob",
+      "size": 141
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/FocusedScrollMouseArea.qml",
+      "type": "blob",
+      "size": 1444
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/FullscreenPolkitWindow.qml",
+      "type": "blob",
+      "size": 1202
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/Graph.qml",
+      "type": "blob",
+      "size": 1517
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/GroupButton.qml",
+      "type": "blob",
+      "size": 5575
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/IconAndTextToolbarButton.qml",
+      "type": "blob",
+      "size": 1069
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/IconToolbarButton.qml",
+      "type": "blob",
+      "size": 728
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/KeyboardKey.qml",
+      "type": "blob",
+      "size": 1357
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/LightDarkPreferenceButton.qml",
+      "type": "blob",
+      "size": 5789
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MaskMultiEffect.qml",
+      "type": "blob",
+      "size": 172
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MaterialCookie.qml",
+      "type": "blob",
+      "size": 1419
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MaterialLoadingIndicator.qml",
+      "type": "blob",
+      "size": 2882
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MaterialShape.qml",
+      "type": "blob",
+      "size": 3969
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MaterialShapeWrappedMaterialSymbol.qml",
+      "type": "blob",
+      "size": 644
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MaterialSymbol.qml",
+      "type": "blob",
+      "size": 1100
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MaterialTextArea.qml",
+      "type": "blob",
+      "size": 1758
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MaterialTextField.qml",
+      "type": "blob",
+      "size": 1265
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/MenuButton.qml",
+      "type": "blob",
+      "size": 690
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NavigationRail.qml",
+      "type": "blob",
+      "size": 264
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NavigationRailButton.qml",
+      "type": "blob",
+      "size": 5667
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NavigationRailExpandButton.qml",
+      "type": "blob",
+      "size": 782
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NavigationRailTabArray.qml",
+      "type": "blob",
+      "size": 1454
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NoticeBox.qml",
+      "type": "blob",
+      "size": 1410
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NotificationActionButton.qml",
+      "type": "blob",
+      "size": 963
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NotificationAppIcon.qml",
+      "type": "blob",
+      "size": 3632
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NotificationGroup.qml",
+      "type": "blob",
+      "size": 10570
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NotificationGroupExpandButton.qml",
+      "type": "blob",
+      "size": 1630
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NotificationItem.qml",
+      "type": "blob",
+      "size": 13891
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/NotificationListView.qml",
+      "type": "blob",
+      "size": 717
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/OptionalMaterialSymbol.qml",
+      "type": "blob",
+      "size": 686
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/PagePlaceholder.qml",
+      "type": "blob",
+      "size": 1823
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/Pill.qml",
+      "type": "blob",
+      "size": 70
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/PointingHandInteraction.qml",
+      "type": "blob",
+      "size": 142
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/PointingHandLinkHover.qml",
+      "type": "blob",
+      "size": 213
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/PopupToolTip.qml",
+      "type": "blob",
+      "size": 1849
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/Revealer.qml",
+      "type": "blob",
+      "size": 743
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/RippleButton.qml",
+      "type": "blob",
+      "size": 6204
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/RippleButtonWithIcon.qml",
+      "type": "blob",
+      "size": 2038
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/RoundCorner.qml",
+      "type": "blob",
+      "size": 3086
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ScrollEdgeFade.qml",
+      "type": "blob",
+      "size": 1704
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/SecondaryTabBar.qml",
+      "type": "blob",
+      "size": 1607
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/SecondaryTabButton.qml",
+      "type": "blob",
+      "size": 5776
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/SelectionDialog.qml",
+      "type": "blob",
+      "size": 4067
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/SelectionGroupButton.qml",
+      "type": "blob",
+      "size": 2119
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/SineCookie.qml",
+      "type": "blob",
+      "size": 2120
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/SqueezedAnnotationStyledText.qml",
+      "type": "blob",
+      "size": 2310
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StateLayer.qml",
+      "type": "blob",
+      "size": 482
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StateOverlay.qml",
+      "type": "blob",
+      "size": 2007
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledBlurEffect.qml",
+      "type": "blob",
+      "size": 186
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledComboBox.qml",
+      "type": "blob",
+      "size": 7299
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledDropShadow.qml",
+      "type": "blob",
+      "size": 276
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledFlickable.qml",
+      "type": "blob",
+      "size": 2118
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledImage.qml",
+      "type": "blob",
+      "size": 849
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledIndeterminateProgressBar.qml",
+      "type": "blob",
+      "size": 188
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledListView.qml",
+      "type": "blob",
+      "size": 5377
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledProgressBar.qml",
+      "type": "blob",
+      "size": 3134
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledRadioButton.qml",
+      "type": "blob",
+      "size": 2923
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledRectangle.qml",
+      "type": "blob",
+      "size": 1019
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledRectangularShadow.qml",
+      "type": "blob",
+      "size": 323
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledScrollBar.qml",
+      "type": "blob",
+      "size": 836
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledSlider.qml",
+      "type": "blob",
+      "size": 9848
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledSpinBox.qml",
+      "type": "blob",
+      "size": 2994
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledSwitch.qml",
+      "type": "blob",
+      "size": 2886
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledText.qml",
+      "type": "blob",
+      "size": 3044
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledTextArea.qml",
+      "type": "blob",
+      "size": 648
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledTextInput.qml",
+      "type": "blob",
+      "size": 593
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledToolTip.qml",
+      "type": "blob",
+      "size": 1040
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/StyledToolTipContent.qml",
+      "type": "blob",
+      "size": 1886
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ThumbnailImage.qml",
+      "type": "blob",
+      "size": 2223
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/Toolbar.qml",
+      "type": "blob",
+      "size": 1230
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ToolbarButton.qml",
+      "type": "blob",
+      "size": 152
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ToolbarPairedFab.qml",
+      "type": "blob",
+      "size": 1013
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ToolbarTabBar.qml",
+      "type": "blob",
+      "size": 2921
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ToolbarTabButton.qml",
+      "type": "blob",
+      "size": 1130
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/ToolbarTextField.qml",
+      "type": "blob",
+      "size": 894
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/VerticalButtonGroup.qml",
+      "type": "blob",
+      "size": 1547
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/VibrantToolbarButton.qml",
+      "type": "blob",
+      "size": 327
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WaveVisualizer.qml",
+      "type": "blob",
+      "size": 1995
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WavyLine.qml",
+      "type": "blob",
+      "size": 1042
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WeekRow.qml",
+      "type": "blob",
+      "size": 1316
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WindowDialog.qml",
+      "type": "blob",
+      "size": 3191
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WindowDialogButtonRow.qml",
+      "type": "blob",
+      "size": 334
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WindowDialogParagraph.qml",
+      "type": "blob",
+      "size": 297
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WindowDialogSectionHeader.qml",
+      "type": "blob",
+      "size": 332
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WindowDialogSeparator.qml",
+      "type": "blob",
+      "size": 407
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WindowDialogSlider.qml",
+      "type": "blob",
+      "size": 1042
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/WindowDialogTitle.qml",
+      "type": "blob",
+      "size": 403
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/widgetCanvas/AbstractOverlayWidget.qml",
+      "type": "blob",
+      "size": 341
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/widgetCanvas/AbstractWidget.qml",
+      "type": "blob",
+      "size": 844
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/common/widgets/widgetCanvas/WidgetCanvas.qml",
+      "type": "blob",
+      "size": 107
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/Background.qml",
+      "type": "blob",
+      "size": 14006
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/AbstractBackgroundWidget.qml",
+      "type": "blob",
+      "size": 4682
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/ClockText.qml",
+      "type": "blob",
+      "size": 503
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/ClockWidget.qml",
+      "type": "blob",
+      "size": 6512
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/CookieClock.qml",
+      "type": "blob",
+      "size": 7935
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/CookieQuote.qml",
+      "type": "blob",
+      "size": 1690
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/DigitalClock.qml",
+      "type": "blob",
+      "size": 2494
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/HourHand.qml",
+      "type": "blob",
+      "size": 1458
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/HourMarks.qml",
+      "type": "blob",
+      "size": 1327
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/MinuteHand.qml",
+      "type": "blob",
+      "size": 1368
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/SecondHand.qml",
+      "type": "blob",
+      "size": 2238
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/TimeColumn.qml",
+      "type": "blob",
+      "size": 1370
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/dateIndicator/BubbleDate.qml",
+      "type": "blob",
+      "size": 1038
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/dateIndicator/DateIndicator.qml",
+      "type": "blob",
+      "size": 2191
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/dateIndicator/RectangleDate.qml",
+      "type": "blob",
+      "size": 524
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/dateIndicator/RotatingDate.qml",
+      "type": "blob",
+      "size": 1729
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/minuteMarks/BigHourNumbers.qml",
+      "type": "blob",
+      "size": 1365
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/minuteMarks/Dots.qml",
+      "type": "blob",
+      "size": 870
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/minuteMarks/Lines.qml",
+      "type": "blob",
+      "size": 1716
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/clock/minuteMarks/MinuteMarks.qml",
+      "type": "blob",
+      "size": 1393
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/background/widgets/weather/WeatherWidget.qml",
+      "type": "blob",
+      "size": 1520
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/ActiveWindow.qml",
+      "type": "blob",
+      "size": 1836
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/Bar.qml",
+      "type": "blob",
+      "size": 10486
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/BarContent.qml",
+      "type": "blob",
+      "size": 13423
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/BarGroup.qml",
+      "type": "blob",
+      "size": 1431
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/BatteryIndicator.qml",
+      "type": "blob",
+      "size": 2054
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/BatteryPopup.qml",
+      "type": "blob",
+      "size": 2275
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/CircleUtilButton.qml",
+      "type": "blob",
+      "size": 338
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/ClockWidget.qml",
+      "type": "blob",
+      "size": 1235
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/ClockWidgetPopup.qml",
+      "type": "blob",
+      "size": 1969
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/HyprlandXkbIndicator.qml",
+      "type": "blob",
+      "size": 1089
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/LeftSidebarButton.qml",
+      "type": "blob",
+      "size": 2503
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/Media.qml",
+      "type": "blob",
+      "size": 3188
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/NotificationUnreadCount.qml",
+      "type": "blob",
+      "size": 1271
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/Resource.qml",
+      "type": "blob",
+      "size": 2971
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/Resources.qml",
+      "type": "blob",
+      "size": 1715
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/ResourcesPopup.qml",
+      "type": "blob",
+      "size": 2701
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/ScrollHint.qml",
+      "type": "blob",
+      "size": 1711
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/StyledPopup.qml",
+      "type": "blob",
+      "size": 3210
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/StyledPopupHeaderRow.qml",
+      "type": "blob",
+      "size": 726
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/StyledPopupValueRow.qml",
+      "type": "blob",
+      "size": 711
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/SysTray.qml",
+      "type": "blob",
+      "size": 5250
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/SysTrayItem.qml",
+      "type": "blob",
+      "size": 3216
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/SysTrayMenu.qml",
+      "type": "blob",
+      "size": 8662
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/SysTrayMenuEntry.qml",
+      "type": "blob",
+      "size": 3800
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/UtilButtons.qml",
+      "type": "blob",
+      "size": 6612
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/Workspaces.qml",
+      "type": "blob",
+      "size": 18468
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/weather/WeatherBar.qml",
+      "type": "blob",
+      "size": 1485
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/weather/WeatherCard.qml",
+      "type": "blob",
+      "size": 1270
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/bar/weather/WeatherPopup.qml",
+      "type": "blob",
+      "size": 3542
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/cheatsheet/Cheatsheet.qml",
+      "type": "blob",
+      "size": 7534
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/cheatsheet/CheatsheetKeybinds.qml",
+      "type": "blob",
+      "size": 1138
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/cheatsheet/CheatsheetKeybindsCategory.qml",
+      "type": "blob",
+      "size": 8007
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/cheatsheet/CheatsheetPeriodicTable.qml",
+      "type": "blob",
+      "size": 1599
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/cheatsheet/ElementTile.qml",
+      "type": "blob",
+      "size": 2255
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/dock/Dock.qml",
+      "type": "blob",
+      "size": 6501
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/dock/DockAppButton.qml",
+      "type": "blob",
+      "size": 4709
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/dock/DockApps.qml",
+      "type": "blob",
+      "size": 9653
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/dock/DockButton.qml",
+      "type": "blob",
+      "size": 371
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/dock/DockSeparator.qml",
+      "type": "blob",
+      "size": 381
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/lock/Lock.qml",
+      "type": "blob",
+      "size": 2788
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/lock/LockSurface.qml",
+      "type": "blob",
+      "size": 11909
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/lock/PasswordChars.qml",
+      "type": "blob",
+      "size": 4925
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/mediaControls/MediaControls.qml",
+      "type": "blob",
+      "size": 8742
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/mediaControls/PlayerControl.qml",
+      "type": "blob",
+      "size": 12315
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/notificationPopup/NotificationPopup.qml",
+      "type": "blob",
+      "size": 1340
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/onScreenDisplay/OnScreenDisplay.qml",
+      "type": "blob",
+      "size": 7521
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/onScreenDisplay/OsdValueIndicator.qml",
+      "type": "blob",
+      "size": 3872
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/onScreenDisplay/indicators/BrightnessIndicator.qml",
+      "type": "blob",
+      "size": 536
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/onScreenDisplay/indicators/GammaIndicator.qml",
+      "type": "blob",
+      "size": 301
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/onScreenDisplay/indicators/VolumeIndicator.qml",
+      "type": "blob",
+      "size": 251
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/onScreenKeyboard/OnScreenKeyboard.qml",
+      "type": "blob",
+      "size": 5438
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/onScreenKeyboard/OskContent.qml",
+      "type": "blob",
+      "size": 1171
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/onScreenKeyboard/OskKey.qml",
+      "type": "blob",
+      "size": 4055
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/Overlay.qml",
+      "type": "blob",
+      "size": 2661
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/OverlayBackground.qml",
+      "type": "blob",
+      "size": 150
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/OverlayContent.qml",
+      "type": "blob",
+      "size": 1873
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/OverlayContext.qml",
+      "type": "blob",
+      "size": 1560
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/OverlayTaskbar.qml",
+      "type": "blob",
+      "size": 4585
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/OverlayWidgetDelegateChooser.qml",
+      "type": "blob",
+      "size": 950
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/StyledOverlayWidget.qml",
+      "type": "blob",
+      "size": 13548
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/crosshair/Crosshair.qml",
+      "type": "blob",
+      "size": 466
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/crosshair/CrosshairContent.qml",
+      "type": "blob",
+      "size": 7174
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/floatingImage/FloatingImage.qml",
+      "type": "blob",
+      "size": 3304
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/fpsLimiter/FpsLimiter.qml",
+      "type": "blob",
+      "size": 274
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/fpsLimiter/FpsLimiterContent.qml",
+      "type": "blob",
+      "size": 2796
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/notes/Notes.qml",
+      "type": "blob",
+      "size": 345
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/notes/NotesContent.qml",
+      "type": "blob",
+      "size": 10314
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/recorder/Recorder.qml",
+      "type": "blob",
+      "size": 4041
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/resources/Resources.qml",
+      "type": "blob",
+      "size": 4292
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overlay/volumeMixer/VolumeMixer.qml",
+      "type": "blob",
+      "size": 2344
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overview/Overview.qml",
+      "type": "blob",
+      "size": 6633
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overview/OverviewWidget.qml",
+      "type": "blob",
+      "size": 20544
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overview/OverviewWindow.qml",
+      "type": "blob",
+      "size": 5999
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overview/SearchBar.qml",
+      "type": "blob",
+      "size": 6700
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overview/SearchItem.qml",
+      "type": "blob",
+      "size": 12276
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/overview/SearchWidget.qml",
+      "type": "blob",
+      "size": 9007
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/polkit/Polkit.qml",
+      "type": "blob",
+      "size": 287
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/polkit/PolkitContent.qml",
+      "type": "blob",
+      "size": 2887
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/regionSelector/CircleSelectionDetails.qml",
+      "type": "blob",
+      "size": 1152
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/regionSelector/CursorGuide.qml",
+      "type": "blob",
+      "size": 3439
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/regionSelector/OptionsToolbar.qml",
+      "type": "blob",
+      "size": 1006
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/regionSelector/RectCornersSelectionDetails.qml",
+      "type": "blob",
+      "size": 2955
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/regionSelector/RegionFunctions.qml",
+      "type": "blob",
+      "size": 2813
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/regionSelector/RegionSelection.qml",
+      "type": "blob",
+      "size": 22232
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/regionSelector/RegionSelector.qml",
+      "type": "blob",
+      "size": 3519
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/regionSelector/TargetRegion.qml",
+      "type": "blob",
+      "size": 2530
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/screenCorners/ScreenCorners.qml",
+      "type": "blob",
+      "size": 8404
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/screenTranslator/ScreenTextOverlay.qml",
+      "type": "blob",
+      "size": 11639
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/screenTranslator/ScreenTranslator.qml",
+      "type": "blob",
+      "size": 1375
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/screenTranslator/ScreenTranslatorPanel.qml",
+      "type": "blob",
+      "size": 6374
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sessionScreen/SessionActionButton.qml",
+      "type": "blob",
+      "size": 1749
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sessionScreen/SessionScreen.qml",
+      "type": "blob",
+      "size": 12314
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/AiChat.qml",
+      "type": "blob",
+      "size": 35476
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/Anime.qml",
+      "type": "blob",
+      "size": 23950
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/ApiCommandButton.qml",
+      "type": "blob",
+      "size": 751
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/ApiInputBoxIndicator.qml",
+      "type": "blob",
+      "size": 1274
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/DescriptionBox.qml",
+      "type": "blob",
+      "size": 1759
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/ScrollToBottomButton.qml",
+      "type": "blob",
+      "size": 1704
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/SidebarLeft.qml",
+      "type": "blob",
+      "size": 8245
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/SidebarLeftContent.qml",
+      "type": "blob",
+      "size": 3928
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/Translator.qml",
+      "type": "blob",
+      "size": 9479
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/aiChat/AiMessage.qml",
+      "type": "blob",
+      "size": 14181
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/aiChat/AiMessageControlButton.qml",
+      "type": "blob",
+      "size": 853
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/aiChat/AnnotationSourceButton.qml",
+      "type": "blob",
+      "size": 1374
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/aiChat/AttachedFileIndicator.qml",
+      "type": "blob",
+      "size": 5447
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/aiChat/MessageCodeBlock.qml",
+      "type": "blob",
+      "size": 12380
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/aiChat/MessageTextBlock.qml",
+      "type": "blob",
+      "size": 7024
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/aiChat/MessageThinkBlock.qml",
+      "type": "blob",
+      "size": 6590
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/aiChat/SearchQueryButton.qml",
+      "type": "blob",
+      "size": 1526
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/anime/BooruImage.qml",
+      "type": "blob",
+      "size": 7747
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/anime/BooruResponse.qml",
+      "type": "blob",
+      "size": 11077
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/translator/LanguageSelectorButton.qml",
+      "type": "blob",
+      "size": 1257
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarLeft/translator/TextCanvas.qml",
+      "type": "blob",
+      "size": 2867
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/BottomWidgetGroup.qml",
+      "type": "blob",
+      "size": 9809
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/CenterWidgetGroup.qml",
+      "type": "blob",
+      "size": 413
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/QuickSliders.qml",
+      "type": "blob",
+      "size": 5743
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/SidebarRight.qml",
+      "type": "blob",
+      "size": 2949
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/SidebarRightContent.qml",
+      "type": "blob",
+      "size": 9983
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/bluetoothDevices/BluetoothDeviceItem.qml",
+      "type": "blob",
+      "size": 4352
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/bluetoothDevices/BluetoothDialog.qml",
+      "type": "blob",
+      "size": 2071
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/calendar/CalendarDayButton.qml",
+      "type": "blob",
+      "size": 882
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/calendar/CalendarHeaderButton.qml",
+      "type": "blob",
+      "size": 1015
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/calendar/CalendarWidget.qml",
+      "type": "blob",
+      "size": 3906
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/nightLight/NightLightDialog.qml",
+      "type": "blob",
+      "size": 5759
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/notifications/NotificationList.qml",
+      "type": "blob",
+      "size": 1905
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/notifications/NotificationStatusButton.qml",
+      "type": "blob",
+      "size": 1386
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/pomodoro/PomodoroTimer.qml",
+      "type": "blob",
+      "size": 4426
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/pomodoro/PomodoroWidget.qml",
+      "type": "blob",
+      "size": 2295
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/pomodoro/Stopwatch.qml",
+      "type": "blob",
+      "size": 8606
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/AbstractQuickPanel.qml",
+      "type": "blob",
+      "size": 312
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/AndroidQuickPanel.qml",
+      "type": "blob",
+      "size": 6287
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/ClassicQuickPanel.qml",
+      "type": "blob",
+      "size": 892
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidAntiFlashbangToggle.qml",
+      "type": "blob",
+      "size": 240
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidAudioToggle.qml",
+      "type": "blob",
+      "size": 241
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidBluetoothToggle.qml",
+      "type": "blob",
+      "size": 302
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidCloudflareWarpToggle.qml",
+      "type": "blob",
+      "size": 261
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidColorPickerToggle.qml",
+      "type": "blob",
+      "size": 247
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidDarkModeToggle.qml",
+      "type": "blob",
+      "size": 220
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidEasyEffectsToggle.qml",
+      "type": "blob",
+      "size": 209
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidGameModeToggle.qml",
+      "type": "blob",
+      "size": 241
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidIdleInhibitorToggle.qml",
+      "type": "blob",
+      "size": 243
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidMicToggle.qml",
+      "type": "blob",
+      "size": 225
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidMusicRecognition.qml",
+      "type": "blob",
+      "size": 260
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidNetworkToggle.qml",
+      "type": "blob",
+      "size": 255
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidNightLightToggle.qml",
+      "type": "blob",
+      "size": 223
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidNotificationToggle.qml",
+      "type": "blob",
+      "size": 234
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidOnScreenKeyboardToggle.qml",
+      "type": "blob",
+      "size": 238
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidPowerProfileToggle.qml",
+      "type": "blob",
+      "size": 269
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidQuickToggleButton.qml",
+      "type": "blob",
+      "size": 9645
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidScreenSnipToggle.qml",
+      "type": "blob",
+      "size": 259
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/androidStyle/AndroidToggleDelegateChooser.qml",
+      "type": "blob",
+      "size": 8875
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/classicStyle/BluetoothToggle.qml",
+      "type": "blob",
+      "size": 1030
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/classicStyle/CloudflareWarp.qml",
+      "type": "blob",
+      "size": 2846
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/classicStyle/EasyEffectsToggle.qml",
+      "type": "blob",
+      "size": 684
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/classicStyle/GameMode.qml",
+      "type": "blob",
+      "size": 1080
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/classicStyle/IdleInhibitor.qml",
+      "type": "blob",
+      "size": 268
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/classicStyle/NetworkToggle.qml",
+      "type": "blob",
+      "size": 722
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/classicStyle/NightLight.qml",
+      "type": "blob",
+      "size": 643
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/quickToggles/classicStyle/QuickToggleButton.qml",
+      "type": "blob",
+      "size": 852
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/todo/TaskList.qml",
+      "type": "blob",
+      "size": 5293
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/todo/TodoItemActionButton.qml",
+      "type": "blob",
+      "size": 738
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/todo/TodoWidget.qml",
+      "type": "blob",
+      "size": 7623
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/volumeMixer/AudioDeviceSelectorButton.qml",
+      "type": "blob",
+      "size": 1808
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/volumeMixer/VolumeDialog.qml",
+      "type": "blob",
+      "size": 1093
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/volumeMixer/VolumeDialogContent.qml",
+      "type": "blob",
+      "size": 2357
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/volumeMixer/VolumeMixerEntry.qml",
+      "type": "blob",
+      "size": 3396
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/wifiNetworks/WifiDialog.qml",
+      "type": "blob",
+      "size": 1789
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/sidebarRight/wifiNetworks/WifiNetworkItem.qml",
+      "type": "blob",
+      "size": 4086
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/verticalBar/BatteryIndicator.qml",
+      "type": "blob",
+      "size": 2377
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/verticalBar/Resource.qml",
+      "type": "blob",
+      "size": 1112
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/verticalBar/Resources.qml",
+      "type": "blob",
+      "size": 1239
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/verticalBar/VerticalBar.qml",
+      "type": "blob",
+      "size": 10026
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/verticalBar/VerticalBarContent.qml",
+      "type": "blob",
+      "size": 11073
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/verticalBar/VerticalClockWidget.qml",
+      "type": "blob",
+      "size": 1915
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/verticalBar/VerticalMedia.qml",
+      "type": "blob",
+      "size": 2886
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/wallpaperSelector/WallpaperDirectoryItem.qml",
+      "type": "blob",
+      "size": 4742
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/wallpaperSelector/WallpaperSelector.qml",
+      "type": "blob",
+      "size": 2880
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/ii/wallpaperSelector/WallpaperSelectorContent.qml",
+      "type": "blob",
+      "size": 19997
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/settings/About.qml",
+      "type": "blob",
+      "size": 4826
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/settings/AdvancedConfig.qml",
+      "type": "blob",
+      "size": 3463
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/settings/BackgroundConfig.qml",
+      "type": "blob",
+      "size": 23888
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/settings/BarConfig.qml",
+      "type": "blob",
+      "size": 12329
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/settings/GeneralConfig.qml",
+      "type": "blob",
+      "size": 12274
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/settings/InterfaceConfig.qml",
+      "type": "blob",
+      "size": 34164
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/settings/QuickConfig.qml",
+      "type": "blob",
+      "size": 14096
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/settings/ServicesConfig.qml",
+      "type": "blob",
+      "size": 9277
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/ActionCenterContent.qml",
+      "type": "blob",
+      "size": 1924
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/ActionCenterContext.qml",
+      "type": "blob",
+      "size": 398
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/ExpandableChoiceButton.qml",
+      "type": "blob",
+      "size": 624
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/HeaderRow.qml",
+      "type": "blob",
+      "size": 490
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/MediaPaneContent.qml",
+      "type": "blob",
+      "size": 4411
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/SectionText.qml",
+      "type": "blob",
+      "size": 402
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/ToggleItem.qml",
+      "type": "blob",
+      "size": 2111
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/WaffleActionCenter.qml",
+      "type": "blob",
+      "size": 2539
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/bluetooth/BluetoothControl.qml",
+      "type": "blob",
+      "size": 4456
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/bluetooth/BluetoothDeviceItem.qml",
+      "type": "blob",
+      "size": 3001
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/mainPage/MainPageBody.qml",
+      "type": "blob",
+      "size": 783
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/mainPage/MainPageBodySliders.qml",
+      "type": "blob",
+      "size": 2480
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/mainPage/MainPageBodyToggles.qml",
+      "type": "blob",
+      "size": 3127
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/mainPage/MainPageFooter.qml",
+      "type": "blob",
+      "size": 1371
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/nightLight/NightLightControl.qml",
+      "type": "blob",
+      "size": 4401
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/toggles/ActionCenterToggleButton.qml",
+      "type": "blob",
+      "size": 4143
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/toggles/ActionCenterTogglesDelegateChooser.qml",
+      "type": "blob",
+      "size": 4074
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/toggles/WNetworkToggle.qml",
+      "type": "blob",
+      "size": 321
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/volumeControl/VolumeControl.qml",
+      "type": "blob",
+      "size": 4757
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/volumeControl/VolumeEntry.qml",
+      "type": "blob",
+      "size": 1402
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/wifi/WWifiNetworkItem.qml",
+      "type": "blob",
+      "size": 3502
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/actionCenter/wifi/WifiControl.qml",
+      "type": "blob",
+      "size": 3785
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/background/WaffleBackground.qml",
+      "type": "blob",
+      "size": 1106
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/AppButton.qml",
+      "type": "blob",
+      "size": 2551
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/BarButton.qml",
+      "type": "blob",
+      "size": 978
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/BarIconButton.qml",
+      "type": "blob",
+      "size": 1072
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/BarMenu.qml",
+      "type": "blob",
+      "size": 1908
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/BarPopup.qml",
+      "type": "blob",
+      "size": 4044
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/BarToolTip.qml",
+      "type": "blob",
+      "size": 186
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/SearchButton.qml",
+      "type": "blob",
+      "size": 585
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/StartButton.qml",
+      "type": "blob",
+      "size": 1961
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/SystemButton.qml",
+      "type": "blob",
+      "size": 3570
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/TaskViewButton.qml",
+      "type": "blob",
+      "size": 637
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/TimeButton.qml",
+      "type": "blob",
+      "size": 1573
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/UpdatesButton.qml",
+      "type": "blob",
+      "size": 983
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/WaffleBar.qml",
+      "type": "blob",
+      "size": 2057
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/WaffleBarContent.qml",
+      "type": "blob",
+      "size": 2045
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/WidgetsButton.qml",
+      "type": "blob",
+      "size": 2322
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/tasks/TaskAppButton.qml",
+      "type": "blob",
+      "size": 4365
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/tasks/TaskPreview.qml",
+      "type": "blob",
+      "size": 3746
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/tasks/Tasks.qml",
+      "type": "blob",
+      "size": 1521
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/tasks/WindowPreview.qml",
+      "type": "blob",
+      "size": 3190
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/tray/Tray.qml",
+      "type": "blob",
+      "size": 3596
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/tray/TrayButton.qml",
+      "type": "blob",
+      "size": 1400
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/bar/tray/TrayOverflowMenu.qml",
+      "type": "blob",
+      "size": 4584
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/lock/WaffleLock.qml",
+      "type": "blob",
+      "size": 12356
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/AcrylicButton.qml",
+      "type": "blob",
+      "size": 1233
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/AcrylicRectangle.qml",
+      "type": "blob",
+      "size": 2218
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/BodyRectangle.qml",
+      "type": "blob",
+      "size": 282
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/CloseButton.qml",
+      "type": "blob",
+      "size": 1230
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/FluentIcon.qml",
+      "type": "blob",
+      "size": 716
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/FooterRectangle.qml",
+      "type": "blob",
+      "size": 319
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/Looks.qml",
+      "type": "blob",
+      "size": 12122
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/VerticalPageIndicator.qml",
+      "type": "blob",
+      "size": 2069
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WAmbientShadow.qml",
+      "type": "blob",
+      "size": 483
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WAppIcon.qml",
+      "type": "blob",
+      "size": 600
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WBarAttachedPanelContent.qml",
+      "type": "blob",
+      "size": 3261
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WBorderedButton.qml",
+      "type": "blob",
+      "size": 511
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WBorderlessButton.qml",
+      "type": "blob",
+      "size": 952
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WButton.qml",
+      "type": "blob",
+      "size": 5251
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WChoiceButton.qml",
+      "type": "blob",
+      "size": 2075
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WFadeLoader.qml",
+      "type": "blob",
+      "size": 528
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WIcons.qml",
+      "type": "blob",
+      "size": 6317
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WIndeterminateProgressBar.qml",
+      "type": "blob",
+      "size": 516
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WListView.qml",
+      "type": "blob",
+      "size": 356
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WMenu.qml",
+      "type": "blob",
+      "size": 3305
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WMenuItem.qml",
+      "type": "blob",
+      "size": 4133
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WMouseAreaButton.qml",
+      "type": "blob",
+      "size": 1152
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WPane.qml",
+      "type": "blob",
+      "size": 1642
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WPanelIconButton.qml",
+      "type": "blob",
+      "size": 561
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WPanelPageColumn.qml",
+      "type": "blob",
+      "size": 71
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WPanelSeparator.qml",
+      "type": "blob",
+      "size": 203
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WPopupToolTip.qml",
+      "type": "blob",
+      "size": 735
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WProgressBar.qml",
+      "type": "blob",
+      "size": 1177
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WRectangularShadow.qml",
+      "type": "blob",
+      "size": 215
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WRectangularShadowThis.qml",
+      "type": "blob",
+      "size": 354
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WScrollBar.qml",
+      "type": "blob",
+      "size": 652
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WSlider.qml",
+      "type": "blob",
+      "size": 2974
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WStackView.qml",
+      "type": "blob",
+      "size": 2397
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WSwitch.qml",
+      "type": "blob",
+      "size": 2367
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WText.qml",
+      "type": "blob",
+      "size": 424
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WTextButton.qml",
+      "type": "blob",
+      "size": 526
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WTextField.qml",
+      "type": "blob",
+      "size": 660
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WTextInput.qml",
+      "type": "blob",
+      "size": 457
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WTextWithFixedWidth.qml",
+      "type": "blob",
+      "size": 784
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WToolTip.qml",
+      "type": "blob",
+      "size": 816
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WToolTipContent.qml",
+      "type": "blob",
+      "size": 831
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WToolbar.qml",
+      "type": "blob",
+      "size": 949
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WToolbarButton.qml",
+      "type": "blob",
+      "size": 131
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WToolbarIconButton.qml",
+      "type": "blob",
+      "size": 314
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WToolbarIconTabButton.qml",
+      "type": "blob",
+      "size": 370
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WToolbarSeparator.qml",
+      "type": "blob",
+      "size": 207
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WToolbarTabBar.qml",
+      "type": "blob",
+      "size": 1497
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/looks/WUserAvatar.qml",
+      "type": "blob",
+      "size": 704
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/CalendarWidget.qml",
+      "type": "blob",
+      "size": 4199
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/DateHeader.qml",
+      "type": "blob",
+      "size": 1434
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/FocusFooter.qml",
+      "type": "blob",
+      "size": 2168
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/NotificationCenterContent.qml",
+      "type": "blob",
+      "size": 2999
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/NotificationHeaderButton.qml",
+      "type": "blob",
+      "size": 788
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/NotificationPaneContent.qml",
+      "type": "blob",
+      "size": 2172
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/SmallBorderedIconAndTextButton.qml",
+      "type": "blob",
+      "size": 1133
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/SmallBorderedIconButton.qml",
+      "type": "blob",
+      "size": 371
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/WNotificationAppIcon.qml",
+      "type": "blob",
+      "size": 703
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/WNotificationDismissAnim.qml",
+      "type": "blob",
+      "size": 734
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/WNotificationGroup.qml",
+      "type": "blob",
+      "size": 4281
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/WSingleNotification.qml",
+      "type": "blob",
+      "size": 8936
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationCenter/WaffleNotificationCenter.qml",
+      "type": "blob",
+      "size": 2072
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/notificationPopup/WaffleNotificationPopup.qml",
+      "type": "blob",
+      "size": 1795
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/onScreenDisplay/BrightnessOSD.qml",
+      "type": "blob",
+      "size": 557
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/onScreenDisplay/OSDValue.qml",
+      "type": "blob",
+      "size": 1812
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/onScreenDisplay/VolumeOSD.qml",
+      "type": "blob",
+      "size": 495
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/onScreenDisplay/WaffleOSD.qml",
+      "type": "blob",
+      "size": 4481
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/polkit/WPolkitContent.qml",
+      "type": "blob",
+      "size": 7582
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/polkit/WafflePolkit.qml",
+      "type": "blob",
+      "size": 288
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/screenSnip/WRectangularSelection.qml",
+      "type": "blob",
+      "size": 1884
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/screenSnip/WRegionSelectionPanel.qml",
+      "type": "blob",
+      "size": 13588
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/screenSnip/WScreenSnip.qml",
+      "type": "blob",
+      "size": 2947
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/sessionScreen/PowerButton.qml",
+      "type": "blob",
+      "size": 2269
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/sessionScreen/SessionScreenContent.qml",
+      "type": "blob",
+      "size": 3919
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/sessionScreen/WSessionScreenTextButton.qml",
+      "type": "blob",
+      "size": 1323
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/sessionScreen/WaffleSessionScreen.qml",
+      "type": "blob",
+      "size": 2932
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/SearchBar.qml",
+      "type": "blob",
+      "size": 2879
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/StartMenuContent.qml",
+      "type": "blob",
+      "size": 4775
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/StartMenuContext.qml",
+      "type": "blob",
+      "size": 1684
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/WaffleStartMenu.qml",
+      "type": "blob",
+      "size": 4494
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/searchPage/SearchEntryIcon.qml",
+      "type": "blob",
+      "size": 1634
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/searchPage/SearchPageContent.qml",
+      "type": "blob",
+      "size": 879
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/searchPage/SearchResultButton.qml",
+      "type": "blob",
+      "size": 3422
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/searchPage/SearchResults.qml",
+      "type": "blob",
+      "size": 10025
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/searchPage/TagStrip.qml",
+      "type": "blob",
+      "size": 2473
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/startPage/AggregatedAppCategoryModel.qml",
+      "type": "blob",
+      "size": 110
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/startPage/AllAppsGrid.qml",
+      "type": "blob",
+      "size": 2512
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/startPage/AppCategoryGrid.qml",
+      "type": "blob",
+      "size": 12452
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/startPage/BigAppGrid.qml",
+      "type": "blob",
+      "size": 811
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/startPage/StartAppButton.qml",
+      "type": "blob",
+      "size": 2853
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/startPage/StartPageApps.qml",
+      "type": "blob",
+      "size": 1811
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/startPage/StartPageContent.qml",
+      "type": "blob",
+      "size": 2341
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/startMenu/startPage/StartUserButton.qml",
+      "type": "blob",
+      "size": 5112
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/taskView/TaskViewContent.qml",
+      "type": "blob",
+      "size": 11138
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/taskView/TaskViewWindow.qml",
+      "type": "blob",
+      "size": 5170
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/taskView/TaskViewWorkspace.qml",
+      "type": "blob",
+      "size": 4510
+    },
+    {
+      "path": "dots/.config/quickshell/ii/modules/waffle/taskView/WaffleTaskView.qml",
+      "type": "blob",
+      "size": 3301
+    },
+    {
+      "path": "dots/.config/quickshell/ii/panelFamilies/IllogicalImpulseFamily.qml",
+      "type": "blob",
+      "size": 1785
+    },
+    {
+      "path": "dots/.config/quickshell/ii/panelFamilies/PanelLoader.qml",
+      "type": "blob",
+      "size": 157
+    },
+    {
+      "path": "dots/.config/quickshell/ii/panelFamilies/WaffleFamily.qml",
+      "type": "blob",
+      "size": 1626
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Ai.qml",
+      "type": "blob",
+      "size": 39766
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/AppSearch.qml",
+      "type": "blob",
+      "size": 5247
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Audio.qml",
+      "type": "blob",
+      "size": 4779
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Battery.qml",
+      "type": "blob",
+      "size": 3962
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/BluetoothStatus.qml",
+      "type": "blob",
+      "size": 1591
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Booru.qml",
+      "type": "blob",
+      "size": 19927
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/BooruResponseData.qml",
+      "type": "blob",
+      "size": 209
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Brightness.qml",
+      "type": "blob",
+      "size": 9547
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Cliphist.qml",
+      "type": "blob",
+      "size": 5004
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/ConflictKiller.qml",
+      "type": "blob",
+      "size": 1555
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/DateTime.qml",
+      "type": "blob",
+      "size": 2103
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/EasyEffects.qml",
+      "type": "blob",
+      "size": 1611
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Emojis.qml",
+      "type": "blob",
+      "size": 1858
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/FirstRunExperience.qml",
+      "type": "blob",
+      "size": 1544
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/GlobalFocusGrab.qml",
+      "type": "blob",
+      "size": 1865
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/GoogleCloud.qml",
+      "type": "blob",
+      "size": 3418
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/HyprlandAntiFlashbangShader.qml",
+      "type": "blob",
+      "size": 1469
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/HyprlandConfig.qml",
+      "type": "blob",
+      "size": 1780
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/HyprlandData.qml",
+      "type": "blob",
+      "size": 4966
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/HyprlandKeybinds.qml",
+      "type": "blob",
+      "size": 1551
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/HyprlandXkb.qml",
+      "type": "blob",
+      "size": 4946
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Hyprsunset.qml",
+      "type": "blob",
+      "size": 5595
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Idle.qml",
+      "type": "blob",
+      "size": 1308
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/KeyringStorage.qml",
+      "type": "blob",
+      "size": 4267
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/LatexRenderer.qml",
+      "type": "blob",
+      "size": 3626
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/LauncherApps.qml",
+      "type": "blob",
+      "size": 1508
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/LauncherSearch.qml",
+      "type": "blob",
+      "size": 15953
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/MaterialThemeLoader.qml",
+      "type": "blob",
+      "size": 2676
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/MprisController.qml",
+      "type": "blob",
+      "size": 5778
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Network.qml",
+      "type": "blob",
+      "size": 11157
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Notifications.qml",
+      "type": "blob",
+      "size": 11058
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/PolkitService.qml",
+      "type": "blob",
+      "size": 1416
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Privacy.qml",
+      "type": "blob",
+      "size": 550
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/ResourceUsage.qml",
+      "type": "blob",
+      "size": 3983
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/SessionWarnings.qml",
+      "type": "blob",
+      "size": 1118
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/SongRec.qml",
+      "type": "blob",
+      "size": 3621
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/SystemInfo.qml",
+      "type": "blob",
+      "size": 4467
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/TaskbarApps.qml",
+      "type": "blob",
+      "size": 2159
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/TimerService.qml",
+      "type": "blob",
+      "size": 5199
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Todo.qml",
+      "type": "blob",
+      "size": 2287
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Translation.qml",
+      "type": "blob",
+      "size": 4942
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/TrayService.qml",
+      "type": "blob",
+      "size": 1927
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Updates.qml",
+      "type": "blob",
+      "size": 1597
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Wallpapers.qml",
+      "type": "blob",
+      "size": 7126
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Weather.qml",
+      "type": "blob",
+      "size": 5709
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/Ydotool.qml",
+      "type": "blob",
+      "size": 1310
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/ai/AiMessageData.qml",
+      "type": "blob",
+      "size": 700
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/ai/AiModel.qml",
+      "type": "blob",
+      "size": 1156
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/ai/ApiStrategy.qml",
+      "type": "blob",
+      "size": 886
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/ai/GeminiApiStrategy.qml",
+      "type": "blob",
+      "size": 10502
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/ai/MistralApiStrategy.qml",
+      "type": "blob",
+      "size": 5553
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/ai/OpenAiApiStrategy.qml",
+      "type": "blob",
+      "size": 4035
+    },
+    {
+      "path": "dots/.config/quickshell/ii/services/network/WifiAccessPoint.qml",
+      "type": "blob",
+      "size": 515
+    },
+    {
+      "path": "dots/.config/quickshell/ii/settings.qml",
+      "type": "blob",
+      "size": 11760
+    },
+    {
+      "path": "dots/.config/quickshell/ii/shell.qml",
+      "type": "blob",
+      "size": 1818
+    },
+    {
+      "path": "dots/.config/quickshell/ii/welcome.qml",
+      "type": "blob",
+      "size": 22214
+    }
+  ]
+}

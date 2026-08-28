@@ -19,11 +19,17 @@ def _install(monkeypatch, extra_404: set[str] | None = None):
     extra_404 = extra_404 or set()
     cael_tree = f"{srv._GITHUB_API}/repos/caelestia-dots/shell/git/trees/main?recursive=1"
     noct_tree = f"{srv._GITHUB_API}/repos/noctalia-dev/noctalia/git/trees/legacy-v4?recursive=1"
+    dots_tree = f"{srv._GITHUB_API}/repos/end-4/dots-hyprland/git/trees/main?recursive=1"
+    dots_repo = f"{srv._GITHUB_API}/repos/end-4/dots-hyprland"
     cael_raw = (
         "https://raw.githubusercontent.com/caelestia-dots/shell/main/components/AnchorAnim.qml"
     )
     noct_raw = (
         "https://raw.githubusercontent.com/noctalia-dev/noctalia/legacy-v4/Widgets/NButton.qml"
+    )
+    dots_raw = (
+        "https://raw.githubusercontent.com/end-4/dots-hyprland/main/"
+        "dots/.config/quickshell/ii/services/Audio.qml"
     )
     mapping = {
         f"{srv._GITHUB_API}/repos/caelestia-dots/shell": load_fixture(
@@ -33,6 +39,9 @@ def _install(monkeypatch, extra_404: set[str] | None = None):
         cael_raw: load_fixture("impl_caelestia_anchoranim.qml"),
         noct_tree: load_fixture("impl_noctalia_tree.json"),
         noct_raw: load_fixture("impl_noctalia_nbutton.qml"),
+        dots_repo: load_fixture("impl_dots_repo_info.json"),
+        dots_tree: load_fixture("impl_dots_tree.json"),
+        dots_raw: load_fixture("impl_dots_audio.qml"),
     }
 
     def fake_fetch(url: str) -> str:
@@ -50,11 +59,11 @@ def test_search_finds_bar_in_both_shells_with_metadata(monkeypatch):
     out = srv.quickshell_search_implementations("find a Quickshell bar implementation")
     assert out["total_matches"] > 0
     for src, entries in out["results"].items():
-        assert src in ("caelestia", "noctalia")
+        assert src in ("caelestia", "noctalia", "dots-hyprland")
         for entry in entries:
             assert entry["source"] == src
             assert entry["kind"] == "real-world implementation"
-            assert entry["repo"].startswith(("caelestia-dots/", "noctalia-dev/"))
+            assert entry["repo"].startswith(("caelestia-dots/", "noctalia-dev/", "end-4/"))
             assert entry["url"].startswith("https://github.com/")
             assert entry["path"].endswith(".qml")
             assert "bar" in entry["topics"] or "bar" in entry["path"].lower()
@@ -225,3 +234,46 @@ def test_examples_listing_carries_official_kind(monkeypatch):
     out = srv.quickshell_list_examples()
     assert out["kind"] == "official examples"
     assert all(entry["kind"] == "official example" for entry in out["entries"])
+
+
+def test_dots_hyprland_search_strips_qml_root(monkeypatch):
+    """dots-hyprland is a dotfiles repo: its shell is nested under
+    dots/.config/quickshell/ii. Indexed paths must be shell-relative while
+    the blob URL keeps the full repo path."""
+    _install(monkeypatch)
+    out = srv.quickshell_search_implementations(
+        "find a volume implementation", source="dots-hyprland"
+    )
+    assert list(out["results"]) == ["dots-hyprland"]
+    entries = out["results"]["dots-hyprland"]
+    assert entries, "dots-hyprland should hit audio/volume paths"
+    for entry in entries:
+        assert "dots/.config" not in entry["path"], "qml_root must be stripped from paths"
+        assert entry["url"].startswith("https://github.com/end-4/dots-hyprland/blob/main/")
+    assert any("audio" in e["path"].lower() for e in entries)
+
+
+def test_dots_hyprland_get_implementation_uses_full_repo_path(monkeypatch):
+    _install(monkeypatch)
+    body = srv.quickshell_get_implementation("dots-hyprland", "services/Audio.qml", find="volume")
+    assert (
+        "https://github.com/end-4/dots-hyprland/blob/main/"
+        "dots/.config/quickshell/ii/services/Audio.qml" in body
+    )
+    assert "not official documentation" in body
+
+
+def test_dots_hyprland_unknown_path_suggests_siblings(monkeypatch):
+    _install(monkeypatch)
+    with pytest.raises(ValueError, match="Did you mean"):
+        srv.quickshell_get_implementation("dots-hyprland", "services/NoSuch.qml")
+
+
+def test_dots_hyprland_known_source_and_component(monkeypatch):
+    _install(monkeypatch)
+    from quickshell_mcp.sources.implementations import _impl_component, _norm_source
+
+    assert _norm_source("dots-hyprland") == "dots-hyprland"
+    # Component attribution works on the shell-relative paths.
+    assert _impl_component("modules/ii/Bar.qml") == "modules/ii"
+    assert _impl_component("services/Audio.qml") == "services"

@@ -13,6 +13,8 @@ from quickshell_mcp import utils  # noqa: E402
 
 QT = srv.QT_DOCS_BASE
 _CAEL_TREE = f"{srv._GITHUB_API}/repos/caelestia-dots/shell/git/trees/main?recursive=1"
+_DOTS_REPO = f"{srv._GITHUB_API}/repos/end-4/dots-hyprland"
+_DOTS_TREE = f"{srv._GITHUB_API}/repos/end-4/dots-hyprland/git/trees/main?recursive=1"
 
 
 def _install(monkeypatch, docs_fixture_urls, extra_404=None, guide_bodies=None):
@@ -36,6 +38,8 @@ def _install(monkeypatch, docs_fixture_urls, extra_404=None, guide_bodies=None):
         f"{srv._GITHUB_API}/repos/noctalia-dev/noctalia/git/trees/legacy-v4?recursive=1": (
             load_fixture("impl_noctalia_tree.json")
         ),
+        _DOTS_REPO: load_fixture("impl_dots_repo_info.json"),
+        _DOTS_TREE: load_fixture("impl_dots_tree.json"),
         srv.EXAMPLES_REPO_API: load_fixture("examples_repo_info.json"),
         f"{srv.EXAMPLES_REPO_API}/contents?ref=master": load_fixture("examples_contents_root.json"),
     }
@@ -85,7 +89,7 @@ def test_feature_query_ranks_implementations_first(monkeypatch, docs_fixture_url
     out = srv._search_everything("volume OSD", "v0.3.1")
 
     impl_sections = [key for key in out["section_order"] if key.endswith("_implementations")]
-    assert len(impl_sections) == 2  # both shells carry osd/audio paths
+    assert len(impl_sections) == 3  # all three shells carry osd/audio paths
     # Feature phrasing puts working code ahead of reference material.
     assert out["section_order"].index(impl_sections[0]) < out["section_order"].index(
         "official_examples"
@@ -188,7 +192,12 @@ def test_partial_source_failure_is_isolated(monkeypatch, docs_fixture_urls):
     out = srv._search_everything("volume OSD", "v0.3.1")
 
     assert "caelestia_implementations" in out["errors"]
-    assert out["section_order"][0] == "noctalia_implementations"
+    assert "caelestia_implementations" not in out["results"]
+    impl_sections = [key for key in out["section_order"] if key.endswith("_implementations")]
+    assert impl_sections, "the working shells still surface despite caelestia's failure"
+    assert out["section_order"].index(impl_sections[0]) < out["section_order"].index(
+        "official_examples"
+    )
     assert "official_examples" in out["results"]
     assert "unavailable sources: caelestia_implementations" in out["note"]
 

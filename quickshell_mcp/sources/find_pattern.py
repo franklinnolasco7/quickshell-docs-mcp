@@ -169,16 +169,19 @@ def _find_pattern(query: str, version: str, limit: int = 5) -> dict:
 
     merged.sort(key=lambda entry: (-entry["relevance"], entry["path"]))
     implementations = merged[:limit]
-    # Comparing approaches is the point of this tool: if a second project
-    # scored anything, trade the last slot so it shows up instead of letting
-    # one repo monopolize the cap. With a single slot there is nothing to
-    # trade; the highest-ranked entry always wins.
+    # Comparing approaches is the point of this tool: if a second (or third)
+    # project scored anything, trade trailing slots so every project that
+    # matched shows up instead of letting one repo monopolize the cap. With a
+    # single slot there is nothing to trade; the highest-ranked entry wins.
     if len(merged) > limit > 1:
         included = {entry["source"] for entry in implementations}
-        for entry in merged[limit:]:
-            if entry["source"] not in included:
-                implementations[-1] = entry
-                included.add(entry["source"])
+        for slot in range(limit - 1, 0, -1):
+            for entry in merged[limit:]:
+                if entry["source"] not in included:
+                    implementations[slot] = entry
+                    included.add(entry["source"])
+                    break
+            else:
                 break
 
     examples: list[dict] = []

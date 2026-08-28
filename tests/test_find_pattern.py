@@ -22,7 +22,7 @@ def test_spotlight_alias_finds_launchers_in_both_shells(monkeypatch, docs_fixtur
     assert "launcher" in interpreted
     assert "spotlight" in interpreted["launcher"]["why"]
     sources = {entry["source"] for entry in out["implementations"]}
-    assert sources == {"caelestia", "noctalia"}
+    assert sources == {"caelestia", "noctalia", "dots-hyprland"}
     for entry in out["implementations"]:
         assert entry["api_hints"] == ["IpcHandler", "Process"]
         assert entry["url"].startswith("https://github.com/")
@@ -49,9 +49,9 @@ def test_volume_osd_groups_cross_project_and_examples(monkeypatch, docs_fixture_
     patterns = {entry["pattern"] for entry in out["interpreted_as"]}
     assert {"osd", "audio"} <= patterns
     grouped = {group["pattern"]: group for group in out["cross_project_patterns"]}
-    assert grouped, "both shells ship OSD and audio code; grouping should fire"
+    assert grouped, "all three shells ship OSD and audio code; grouping should fire"
     for group in grouped.values():
-        assert set(group["projects"]) == {"caelestia", "noctalia"}
+        assert set(group["projects"]) == {"caelestia", "noctalia", "dots-hyprland"}
         assert all(group["projects"][source] for source in group["projects"])
     example_paths = {entry["path"] for entry in out["examples"]}
     assert "volume-osd" in example_paths
@@ -76,8 +76,9 @@ def test_ranking_respects_cap(monkeypatch, docs_fixture_urls):
     assert len(impls) <= 2
     relevances = [entry["relevance"] for entry in impls]
     assert relevances == sorted(relevances, reverse=True)
-    # Both projects still get representation despite the tiny cap.
-    assert {entry["source"] for entry in impls} == {"caelestia", "noctalia"}
+    # Two projects still get representation despite the tiny cap (the
+    # cross-project swap guarantees at least two distinct projects).
+    assert len({entry["source"] for entry in impls}) >= 2
 
     default = srv._find_pattern("workspace indicator", "v0.3.1")
     assert len(default["implementations"]) <= 5
@@ -134,7 +135,7 @@ def test_grouping_survives_result_capping(monkeypatch, docs_fixture_urls):
 
     groups = {group["pattern"]: group for group in out["cross_project_patterns"]}
     assert "workspaces" in groups
-    assert set(groups["workspaces"]["projects"]) == {"caelestia", "noctalia"}
+    assert set(groups["workspaces"]["projects"]) == {"caelestia", "noctalia", "dots-hyprland"}
     assert groups["workspaces"]["projects"]["caelestia"]
 
 
@@ -149,7 +150,7 @@ def test_multi_pattern_grouping_at_limit_one(monkeypatch, docs_fixture_urls):
     groups = {group["pattern"]: group for group in out["cross_project_patterns"]}
     assert {"osd", "audio"} <= set(groups)
     for key in ("osd", "audio"):
-        assert set(groups[key]["projects"]) == {"caelestia", "noctalia"}
+        assert set(groups[key]["projects"]) == {"caelestia", "noctalia", "dots-hyprland"}
 
 
 def test_version_is_echoed(monkeypatch, docs_fixture_urls):
@@ -217,5 +218,8 @@ def test_partial_failure_is_isolated(monkeypatch, docs_fixture_urls):
     out = srv._find_pattern("volume OSD", "v0.3.1")
 
     assert "noctalia_implementations" in out["errors"]
-    assert {entry["source"] for entry in out["implementations"]} == {"caelestia"}
+    assert {entry["source"] for entry in out["implementations"]} == {
+        "caelestia",
+        "dots-hyprland",
+    }
     assert out["examples"], "examples source is independent of the GitHub failure"

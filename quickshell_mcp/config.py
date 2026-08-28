@@ -37,4 +37,12 @@ IMPLEMENTATION_REPOS: dict[str, dict[str, str]] = {
     # The Quickshell shell lives on the legacy-v4 branch; noctalia's main
     # branch moved to a C++ compositor project, so the ref is pinned here.
     "noctalia": {"owner": "noctalia-dev", "repo": "noctalia", "branch": "legacy-v4"},
+    # Dotfiles repo: the Quickshell shell ("ii", Illogical-Impulse) is nested
+    # under this path, so only QML under qml_root is indexed and paths are
+    # reported relative to it (raw/blob URLs still use the full repo path).
+    "dots-hyprland": {
+        "owner": "end-4",
+        "repo": "dots-hyprland",
+        "qml_root": "dots/.config/quickshell/ii",
+    },
 }

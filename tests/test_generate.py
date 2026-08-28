@@ -431,7 +431,10 @@ def test_validation_failures_are_reported(monkeypatch, docs_fixture_urls):
 def test_no_result_implementation_searches_do_not_block_generation(monkeypatch, docs_fixture_urls):
     cael_tree = f"{srv._GITHUB_API}/repos/caelestia-dots/shell/git/trees/main?recursive=1"
     noct_tree = f"{srv._GITHUB_API}/repos/noctalia-dev/noctalia/git/trees/legacy-v4?recursive=1"
-    _install_generate_fixtures(monkeypatch, docs_fixture_urls, extra_404={cael_tree, noct_tree})
+    dots_tree = f"{srv._GITHUB_API}/repos/end-4/dots-hyprland/git/trees/main?recursive=1"
+    _install_generate_fixtures(
+        monkeypatch, docs_fixture_urls, extra_404={cael_tree, noct_tree, dots_tree}
+    )
 
     out = srv._generate_component("volume OSD")
     assert out["component"] is not None
