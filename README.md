@@ -2,7 +2,7 @@
 
 # quickshell-mcp
 
-**An MCP server that gives AI coding agents source-grounded access to Quickshell, QML, and Qt.**
+**An MCP server that connects AI coding agents to live Quickshell, QML, and Qt documentation.**
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/quickshell-mcp?logo=pypi&logoColor=white)](https://pypi.org/project/quickshell-mcp/)
@@ -17,7 +17,7 @@ Search APIs, discover implementation patterns, explain errors, and validate QML 
 
 ## Why
 
-Quickshell changes quickly, and AI coding agents can generate QML from outdated or incomplete training data. `quickshell-mcp` lets agents verify APIs against current documentation, find proven implementation patterns, and validate generated QML instead of relying on memory.
+Quickshell changes quickly, and AI coding agents can generate QML from outdated or incomplete training data. `quickshell-mcp` lets agents verify APIs against current documentation, find existing implementation patterns, and validate generated QML instead of guessing from memory.
 
 > [!IMPORTANT]
 > When sources disagree, official documentation always takes precedence.
@@ -86,6 +86,7 @@ docker run --rm -i quickshell-mcp     # speaks MCP over stdio
 | **Error explanations** | Grounded diagnosis of QML and Quickshell errors |
 | **QML validation** | Static checks for types, properties, signals, imports, and version compatibility |
 | **Version compatibility** | Whether an API or QML snippet works on a specific Quickshell release |
+| **Migration** | Analyze what a QML config must change to keep working after an upgrade |
 | **Component generation** | Minimal, source-grounded QML components from a plain-language description |
 | **Unified search** | Search across multiple sources in one call |
 
@@ -186,6 +187,7 @@ For HTTP transport, set `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (plus optional `HOS
 |---|---|
 | `quickshell_explain_error` | Explain a QML/Quickshell error and suggest a fix, grounded in actual docs |
 | `quickshell_check_compatibility` | Check whether an API, type, or QML snippet is compatible with a specific Quickshell version |
+| `quickshell_migrate` | Analyze what a QML config must change to keep working after a Quickshell upgrade |
 | `quickshell_generate_component` | Generate a minimal QML component from a plain-language description, with every API verified against the docs |
 | `quickshell_stats` | Session call counts and cache-hit ratio |
 
@@ -240,7 +242,7 @@ flowchart LR
 ## Advanced usage
 
 <details>
-<summary><b>Static validation, version compatibility, and component generation</b>: catch bad QML, check API support per release, and generate components</summary>
+<summary><b>Static validation, version compatibility, migration, and component generation</b>: catch bad QML, verify API support per release, plan upgrades, and generate components</summary>
 
 ### Static validation
 
@@ -271,6 +273,24 @@ It does not judge from the latest docs page alone. It cross-references the reque
 ```
 
 The result includes the verdict, the version evidence (earliest/latest known), any rename or change with a likely replacement, the matching changelog entry, and cited documentation URLs.
+
+### Migrating between versions
+
+`quickshell_migrate` analyzes what a QML config must change to keep working when upgrading from one Quickshell version to another. Pass the QML source (or a single `api`/`type`), plus `from_version` and `to_version` (both required, ordered oldest to newest).
+
+It reports every removed, renamed, deprecated, or changed API with severity, location, the old and new API, why it must change, a suggested migration, confidence, and a cited source. It also inspects every changelog entry between the versions, so a rename that landed at an intermediate release is reported with the version it landed in. Findings are classified `definite` (backed by the docs or changelog), `likely` (documented but low-impact, e.g. deprecation), or `manual_review` (evidence suggests a change but the exact migration is not provable).
+
+The tool analyzes and recommends; it never rewrites code or files.
+
+```json
+{
+  "code": "Quickshell { shellRoot: \"/tmp\" }\nPanelWindow { exclusiveZone: 1 }",
+  "from_version": "v0.1.0",
+  "to_version": "v0.3.1"
+}
+```
+
+The report includes the overall verdict (`compatible`, `changes_required`, `uncertain`), the per-issue findings, and an ordered migration plan.
 
 ### Component generation
 

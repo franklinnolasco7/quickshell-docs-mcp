@@ -105,6 +105,7 @@ def main() -> int:
         "quickshell_explain_error",
         "quickshell_validate_qml",
         "quickshell_check_compatibility",
+        "quickshell_migrate",
         "quickshell_stats",
         "quickshell_generate_component",
     }
@@ -175,6 +176,22 @@ def main() -> int:
         f"[ok] generate_component: {len(generated['component']['qml'])} chars, "
         f"verdict={generated['verification']['verdict']}, "
         f"{len(generated['verified_surface']['types'])} type(s) in surface"
+    )
+
+    migrate = _tool_json(
+        c,
+        "quickshell_migrate",
+        {
+            "code": 'Quickshell { shellRoot: "/tmp" }',
+            "from_version": "v0.1.0",
+            "to_version": versions["latest"],
+        },
+    )
+    assert isinstance(migrate.get("issues"), list)
+    assert "summary" in migrate and migrate["from_version"] == "v0.1.0"
+    print(
+        f"[ok] migrate returned summary: {migrate['summary']['verdict']} "
+        f"({len(migrate['issues'])} issue(s))"
     )
 
     c.proc.terminate()
