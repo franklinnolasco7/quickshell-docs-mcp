@@ -1,6 +1,6 @@
 [project]
 name = "quickshell-mcp"
-version = "1.7.0"
+version = "1.8.0"
 description = "MCP server that fetches live Quickshell docs from quickshell.org so the model reads real, current docs instead of hallucinating."
 readme = "README.md"
 requires-python = ">=3.10"
