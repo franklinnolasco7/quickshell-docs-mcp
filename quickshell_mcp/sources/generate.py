@@ -72,14 +72,17 @@ def _bar_section(compositor: str | None, version: str) -> _Section:
     return _Section(
         key="bar",
         reason="top bar / status bar / panel request",
-        imports=["Quickshell", "QtQuick"],
-        apis=["PanelWindow", "PanelWindow.anchors", "PanelWindow.exclusiveMode"],
-        types=[{"type_name": "PanelWindow", "namespace": "Quickshell"}],
+        imports=["Quickshell", "QtQuick", "QtQuick.Layouts"],
+        apis=["PanelWindow", "PanelWindow.anchors", "PanelWindow.exclusionMode", "ExclusionMode"],
+        types=[
+            {"type_name": "PanelWindow", "namespace": "Quickshell"},
+            {"type_name": "ExclusionMode", "namespace": "Quickshell"},
+        ],
         qt_types=["Item", "RowLayout", "Text"],
         child_block="""PanelWindow {
     id: panel
     anchors { left: true; right: true; top: true }
-    exclusiveMode: ExclusionMode.Normal
+    exclusionMode: ExclusionMode.Normal
     height: 36
     color: "#1e1e2e"
 
@@ -228,16 +231,19 @@ def _control_center_section(compositor: str | None, version: str) -> _Section:
     return _Section(
         key="control-center",
         reason="control center / quick settings request",
-        imports=["Quickshell", "QtQuick"],
-        apis=["PanelWindow", "PanelWindow.anchors", "PanelWindow.exclusiveZone"],
-        types=[{"type_name": "PanelWindow", "namespace": "Quickshell"}],
+        imports=["Quickshell", "QtQuick", "QtQuick.Layouts"],
+        apis=["PanelWindow", "PanelWindow.anchors", "PanelWindow.exclusionMode", "ExclusionMode"],
+        types=[
+            {"type_name": "PanelWindow", "namespace": "Quickshell"},
+            {"type_name": "ExclusionMode", "namespace": "Quickshell"},
+        ],
         qt_types=["Item", "ColumnLayout"],
         child_block="""PanelWindow {
     id: controlCenter
     anchors { right: true; top: true; bottom: true }
     width: 300
     color: "#1e1e2e"
-    exclusiveMode: ExclusionMode.Normal
+    exclusionMode: ExclusionMode.Normal
 
     ColumnLayout {
         anchors.fill: parent
@@ -257,8 +263,11 @@ def _notifications_section(compositor: str | None, version: str) -> _Section:
     return _Section(
         key="notifications",
         reason="notification popup request",
-        imports=["Quickshell", "Quickshell.Services.Notifications", "QtQuick"],
+        imports=["Quickshell", "Quickshell.Services.Notifications", "QtQuick", "QtQuick.Layouts"],
         apis=[
+            "PanelWindow",
+            "PanelWindow.exclusionMode",
+            "ExclusionMode",
             "NotificationServer",
             "NotificationServer.trackedNotifications",
             "Notification",
@@ -267,6 +276,8 @@ def _notifications_section(compositor: str | None, version: str) -> _Section:
             "Notification.dismiss()",
         ],
         types=[
+            {"type_name": "PanelWindow", "namespace": "Quickshell"},
+            {"type_name": "ExclusionMode", "namespace": "Quickshell"},
             {"type_name": "NotificationServer", "namespace": "Quickshell.Services.Notifications"},
             {"type_name": "Notification", "namespace": "Quickshell.Services.Notifications"},
         ],
@@ -276,7 +287,7 @@ def _notifications_section(compositor: str | None, version: str) -> _Section:
     anchors { right: true; top: true }
     width: 320
     color: "#1e1e2e"
-    exclusiveMode: ExclusionMode.Normal
+    exclusionMode: ExclusionMode.Normal
 
     NotificationServer {
         id: notificationServer
@@ -327,10 +338,12 @@ def _osd_section(compositor: str | None, version: str) -> _Section:
     return _Section(
         key="osd",
         reason="on-screen display / volume OSD request",
-        imports=["Quickshell", "Quickshell.Services.Pipewire", "QtQuick"],
+        imports=["Quickshell", "Quickshell.Services.Pipewire", "QtQuick", "QtQuick.Layouts"],
         apis=[
             "PanelWindow",
             "PanelWindow.anchors",
+            "PanelWindow.exclusionMode",
+            "ExclusionMode",
             "Pipewire",
             "Pipewire.defaultAudioSink",
             "PwNode",
@@ -338,12 +351,15 @@ def _osd_section(compositor: str | None, version: str) -> _Section:
             "PwNodeAudio",
             "PwNodeAudio.volume",
             "PwNodeAudio.muted",
+            "PwObjectTracker",
         ],
         types=[
             {"type_name": "PanelWindow", "namespace": "Quickshell"},
+            {"type_name": "ExclusionMode", "namespace": "Quickshell"},
             {"type_name": "Pipewire", "namespace": "Quickshell.Services.Pipewire"},
             {"type_name": "PwNode", "namespace": "Quickshell.Services.Pipewire"},
             {"type_name": "PwNodeAudio", "namespace": "Quickshell.Services.Pipewire"},
+            {"type_name": "PwObjectTracker", "namespace": "Quickshell.Services.Pipewire"},
         ],
         qt_types=["Item", "RowLayout", "Text", "Rectangle", "Behavior", "NumberAnimation"],
         child_block="""PanelWindow {
@@ -351,7 +367,7 @@ def _osd_section(compositor: str | None, version: str) -> _Section:
     anchors { left: true; right: true; bottom: true }
     height: 48
     color: "#1e1e2e"
-    exclusiveMode: ExclusionMode.Normal
+    exclusionMode: ExclusionMode.Normal
 
     PwObjectTracker {
         id: sinkTracker
@@ -407,11 +423,13 @@ def _audio_section(compositor: str | None, version: str) -> _Section:
             "PwNodeAudio",
             "PwNodeAudio.volume",
             "PwNodeAudio.muted",
+            "PwObjectTracker",
         ],
         types=[
             {"type_name": "Pipewire", "namespace": "Quickshell.Services.Pipewire"},
             {"type_name": "PwNode", "namespace": "Quickshell.Services.Pipewire"},
             {"type_name": "PwNodeAudio", "namespace": "Quickshell.Services.Pipewire"},
+            {"type_name": "PwObjectTracker", "namespace": "Quickshell.Services.Pipewire"},
         ],
         qt_types=["Text"],
         child_block="""PwObjectTracker {
@@ -458,7 +476,7 @@ def _interpret_component_query(description: str, compositor: str | None) -> list
             matched[key] = reason
 
     for key, tokens in _TOKEN_SECTIONS:
-        if any(token in description_lower for token in tokens):
+        if any(re.search(rf"\b{re.escape(token)}\b", description_lower) for token in tokens):
             matched.setdefault(key, f"query mentions '{tokens[0]}'")
 
     # Apply subsumption: a root key drops the sections it subsumes.
@@ -488,22 +506,68 @@ def _indent_block(block: str, level: int = 1) -> str:
     return "\n".join(prefix + line for line in block.splitlines())
 
 
-def _assemble_qml(sections: list[_Section]) -> tuple[str, list[str], list[str]]:
+_LEAF_WRAPPER_QML = """PanelWindow {
+    id: root
+    anchors { left: true; right: true; bottom: true }
+    height: 36
+    color: "#1e1e2e"
+    exclusionMode: ExclusionMode.Normal
+
+    RowLayout {
+        anchors.fill: parent
+        anchors.margins: 4
+        spacing: 8
+        /*CHILD_SECTIONS*/
+        Item { Layout.fillWidth: true }
+    }
+}"""
+
+
+def _leaf_wrapper_section() -> _Section:
+    """The synthetic root window that hosts a standalone widget section."""
+    return _Section(
+        key="root",
+        reason="synthetic root window wrapping a standalone widget",
+        imports=["Quickshell", "QtQuick", "QtQuick.Layouts"],
+        apis=["PanelWindow", "PanelWindow.exclusionMode", "ExclusionMode"],
+        types=[
+            {"type_name": "PanelWindow", "namespace": "Quickshell"},
+            {"type_name": "ExclusionMode", "namespace": "Quickshell"},
+        ],
+        qt_types=["Item", "RowLayout"],
+        child_block=_LEAF_WRAPPER_QML,
+        standalone=True,
+        container=True,
+        description="Synthetic root window wrapping a standalone widget.",
+    )
+
+
+def _assemble_qml(
+    sections: list[_Section],
+) -> tuple[str, list[str], list[str], _Section | None]:
     """Assemble one QML file from sections.
 
-    Returns ``(qml, imports, used_keys)``. Only one top-level window may
-    exist, so a single container (or standalone section) becomes the root and
-    hosts the remaining *leaf* blocks; any other standalone section is a
-    second window and is left out of the file so a window is never nested
-    inside another window's layout.
+    Returns ``(qml, imports, used_keys, wrapper_section)`` where
+    *wrapper_section* is the synthetic root window created to host a
+    standalone widget, or ``None``. Only one top-level window may exist, so a
+    single container (or standalone section) becomes the root and hosts the
+    remaining *leaf* blocks; any other standalone section is a second window
+    and is left out of the file so a window is never nested inside another
+    window's layout.
     """
+    wrapper: _Section | None = None
+    container = next((section for section in sections if section.container), None)
+    if container is None and sections and not sections[0].standalone:
+        wrapper = _leaf_wrapper_section()
+        sections = [wrapper, *sections]
+        container = wrapper
+
     imports: list[str] = []
     for section in sections:
         for imp in section.imports:
             if imp not in imports:
                 imports.append(imp)
 
-    container = next((section for section in sections if section.container), None)
     if container is not None:
         children = [
             section for section in sections if section is not container and not section.standalone
@@ -518,35 +582,11 @@ def _assemble_qml(sections: list[_Section]) -> tuple[str, list[str], list[str]]:
             body = body.replace(_child_placeholder(), "")
         qml = "\n".join(f"import {imp}" for imp in imports) + "\n\n" + body
         used = [container.key] + [child.key for child in children]
-        return qml.strip() + "\n", imports, used
+        return qml.strip() + "\n", imports, used, wrapper
 
     primary = sections[0]
-    if primary.standalone:
-        qml = "\n".join(f"import {imp}" for imp in imports) + "\n\n" + primary.child_block
-        return qml.strip() + "\n", imports, [primary.key]
-
-    for imp in ("Quickshell", "QtQuick"):
-        if imp not in imports:
-            imports.append(imp)
-    leaf_block = _indent_block(primary.child_block, level=2) if primary.child_block else ""
-    qml = "\n".join(f"import {imp}" for imp in imports) + "\n\n"
-    qml += (
-        "PanelWindow {\n"
-        "    id: root\n"
-        "    anchors { left: true; right: true; bottom: true }\n"
-        "    height: 36\n"
-        '    color: "#1e1e2e"\n'
-        "    exclusiveMode: ExclusionMode.Normal\n\n"
-        "    RowLayout {\n"
-        "        anchors.fill: parent\n"
-        "        anchors.margins: 4\n"
-        "        spacing: 8\n"
-        f"{leaf_block}\n"
-        "        Item { Layout.fillWidth: true }\n"
-        "    }\n"
-        "}"
-    )
-    return qml.strip() + "\n", imports, [primary.key]
+    qml = "\n".join(f"import {imp}" for imp in imports) + "\n\n" + primary.child_block
+    return qml.strip() + "\n", imports, [primary.key], None
 
 
 def _suggest_filename(description: str) -> str:
@@ -588,7 +628,12 @@ def _verify_apis(sections: list[_Section], version: str) -> dict[str, Any]:
             )
 
     verdicts = {finding["compatibility"] for finding in findings}
-    verdict = "verified" if verdicts <= {"compatible"} else "unverified"
+    if not findings:
+        verdict = "unchecked"
+    elif verdicts <= {"compatible"}:
+        verdict = "verified"
+    else:
+        verdict = "unverified"
     return {"per_api": findings, "verdict": verdict}
 
 
@@ -730,16 +775,17 @@ def _generate_component(
         _build_section(key, reason, compositor, resolved_version) for key, reason in ordered
     ]
 
-    qml, imports, used_keys = _assemble_qml(sections)
+    qml, imports, used_keys, wrapper = _assemble_qml(sections)
     out_filename = filename or _suggest_filename(description)
 
-    verification = _verify_apis(sections, resolved_version)
+    verify_sections = sections + ([wrapper] if wrapper is not None else [])
+    verification = _verify_apis(verify_sections, resolved_version)
     validation = _validate(qml, version=resolved_version, filename=out_filename)
     references = _gather_references(description, resolved_version)
     verified_surface = _verified_type_surface(
         [
             (type_info["type_name"], type_info.get("namespace", ""))
-            for section in sections
+            for section in verify_sections
             for type_info in section.types
         ],
         resolved_version,
@@ -799,8 +845,15 @@ def _generate_component(
                 "embed it by adding its block to the root layout."
             )
 
-    note_parts = ["generated from verified APIs; read the references before extending"]
-    if verification["verdict"] == "unverified":
+    if verification["verdict"] == "verified":
+        note_parts = ["generated from verified APIs; read the references before extending"]
+    elif verification["verdict"] == "unchecked":
+        note_parts = [
+            "no APIs were referenced, so nothing could be verified; the component is "
+            "a placeholder that needs compositor-specific types before it runs"
+        ]
+    else:
+        note_parts = ["generated from verified APIs; read the references before extending"]
         bad = [
             finding["api"]
             for finding in verification["per_api"]

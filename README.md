@@ -278,7 +278,7 @@ The result includes the verdict, the version evidence (earliest/latest known), a
 
 `quickshell_migrate` analyzes what a QML config must change to keep working when upgrading from one Quickshell version to another. Pass the QML source (or a single `api`/`type`), plus `from_version` and `to_version` (both required, ordered oldest to newest).
 
-It reports every removed, renamed, deprecated, or changed API with severity, location, the old and new API, why it must change, a suggested migration, confidence, and a cited source. It also inspects every changelog entry between the versions, so a rename that landed at an intermediate release is reported with the version it landed in. Findings are classified `definite` (backed by the docs or changelog), `likely` (documented but low-impact, e.g. deprecation), or `manual_review` (evidence suggests a change but the exact migration is not provable).
+It reports every removed, renamed, deprecated, or changed API with severity, location, the old and new API, why it must change, a suggested migration, confidence, and a cited source. It also scans the breaking-change changelog entries between the versions that mention the referenced symbols, so a rename that landed at an intermediate release is reported with the version it landed in. Findings are classified `definite` (backed by the docs or changelog), `likely` (documented but low-impact, e.g. deprecation), or `manual_review` (evidence suggests a change but the exact migration is not provable).
 
 The tool analyzes and recommends; it never rewrites code or files.
 

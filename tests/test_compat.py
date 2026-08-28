@@ -31,7 +31,7 @@ def _panel_window_page(version: str) -> str:
     props = ["- layer  :\n  [string](https://doc.qt.io/qt-6/qml-string.html)"]
     if version >= "v0.2.0":
         props.insert(0, "- exclusiveZone  :\n  [int](https://doc.qt.io/qt-6/qml-int.html)")
-        props.insert(0, "- exclusiveMode  :\n  [int](https://doc.qt.io/qt-6/qml-int.html)")
+        props.insert(0, "- exclusionMode  :\n  [int](https://doc.qt.io/qt-6/qml-int.html)")
     return f"""\
 # PanelWindow
 

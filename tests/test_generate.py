@@ -73,7 +73,7 @@ _PAGES: dict[str, str] = {
         _QS_WINDOW,
         props=[
             ("exclusiveZone", "int"),
-            ("exclusiveMode", "int"),
+            ("exclusionMode", "int"),
             ("anchors", "object"),
             ("focusable", "bool"),
         ],
@@ -83,6 +83,7 @@ _PAGES: dict[str, str] = {
     "Quickshell/QsWindow": _type_page(
         "QsWindow", _QT_OBJECT, props=[("width", "int"), ("height", "int"), ("color", "color")]
     ),
+    "Quickshell/ExclusionMode": _type_page("ExclusionMode", _QT_OBJECT, props=[("mode", "int")]),
     "Quickshell/SystemClock": _type_page(
         "SystemClock",
         _QT_OBJECT,
@@ -455,9 +456,14 @@ def test_every_template_api_verifies_against_fixtures(monkeypatch, docs_fixture_
         for compositor in (None, "hyprland"):
             section = gen._build_section(key, "", compositor, "v0.3.1")
             result = gen._verify_apis([section], "v0.3.1")
-            assert result["verdict"] == "verified", (
-                f"{key} (compositor={compositor}): {result['per_api']}"
-            )
+            if key == "workspaces" and compositor is None:
+                # The generic placeholder references no APIs, so nothing is
+                # checked rather than everything passing.
+                assert result["verdict"] == "unchecked", f"{key} ({compositor})"
+            else:
+                assert result["verdict"] == "verified", (
+                    f"{key} (compositor={compositor}): {result['per_api']}"
+                )
 
 
 def test_template_query_coverage():
@@ -485,6 +491,13 @@ def test_subsumption_drops_audio_when_osd_present():
     keys = {k for k, _ in gen._interpret_component_query("volume OSD", None)}
     assert "osd" in keys
     assert "audio" not in keys
+
+
+def test_token_sections_match_word_boundaries():
+    # "date" must not match inside unrelated words like "updated" or "mandate".
+    assert gen._interpret_component_query("updated mandate widget", None) == []
+    assert {k for k, _ in gen._interpret_component_query("show the time", None)} >= {"clock"}
+    assert {k for k, _ in gen._interpret_component_query("set the clock", None)} >= {"clock"}
 
 
 def test_verified_surface_in_generation(monkeypatch, docs_fixture_urls):

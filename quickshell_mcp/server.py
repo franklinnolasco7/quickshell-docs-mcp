@@ -609,8 +609,9 @@ def quickshell_migrate(
       'PanelWindow.exclusiveZone'
     - type: a bare type name like 'LegacyThing'
 
-    Both from_version and to_version are required. Every changelog entry
-    between them is inspected, so a rename that landed at an intermediate
+    Both from_version and to_version are required. The scan covers only
+    breaking-change changelog entries between the versions that mention
+    the referenced symbols, so a rename that landed at an intermediate
     release is reported with the version it landed in, not as a vague
     'sometime between'. Findings are classified definite / likely /
     manual_review: only changes backed by the docs or changelog are
