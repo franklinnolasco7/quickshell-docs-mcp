@@ -266,6 +266,7 @@ def _notifications_section(compositor: str | None, version: str) -> _Section:
         imports=["Quickshell", "Quickshell.Services.Notifications", "QtQuick", "QtQuick.Layouts"],
         apis=[
             "PanelWindow",
+            "PanelWindow.anchors",
             "PanelWindow.exclusionMode",
             "ExclusionMode",
             "NotificationServer",
@@ -529,7 +530,7 @@ def _leaf_wrapper_section() -> _Section:
         key="root",
         reason="synthetic root window wrapping a standalone widget",
         imports=["Quickshell", "QtQuick", "QtQuick.Layouts"],
-        apis=["PanelWindow", "PanelWindow.exclusionMode", "ExclusionMode"],
+        apis=["PanelWindow", "PanelWindow.anchors", "PanelWindow.exclusionMode", "ExclusionMode"],
         types=[
             {"type_name": "PanelWindow", "namespace": "Quickshell"},
             {"type_name": "ExclusionMode", "namespace": "Quickshell"},
@@ -793,7 +794,7 @@ def _generate_component(
 
     quickshell_types: list[str] = []
     qt_types: list[str] = []
-    for section in sections:
+    for section in verify_sections:
         for type_info in section.types:
             ns = type_info.get("namespace", "")
             name = type_info["type_name"]
