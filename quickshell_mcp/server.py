@@ -81,6 +81,11 @@ from .sources.explain_error import (  # noqa: F401
     _extract_type_from_code,
 )
 from .sources.find_pattern import _find_pattern, _interpret_query  # noqa: F401
+from .sources.generate import (  # noqa: F401
+    _build_section,
+    _generate_component,
+    _interpret_component_query,
+)
 from .sources.implementations import (  # noqa: F401
     _GITHUB_API,
     _IMPL_QUERY_STOPWORDS,
@@ -604,8 +609,9 @@ def quickshell_migrate(
       'PanelWindow.exclusiveZone'
     - type: a bare type name like 'LegacyThing'
 
-    Both from_version and to_version are required. Every changelog entry
-    between them is inspected, so a rename that landed at an intermediate
+    Both from_version and to_version are required. The scan covers only
+    breaking-change changelog entries between the versions that mention
+    the referenced symbols, so a rename that landed at an intermediate
     release is reported with the version it landed in, not as a vague
     'sometime between'. Findings are classified definite / likely /
     manual_review: only changes backed by the docs or changelog are
@@ -650,6 +656,60 @@ def quickshell_validate_qml(
     - type not present in the requested Quickshell version"""
     _record_tool("quickshell_validate_qml")
     return _validate(source=source, version=version, filename=filename)
+
+
+@mcp.tool()
+def quickshell_generate_component(
+    description: str,
+    version: str = "latest",
+    compositor: str | None = None,
+    style: str | None = None,
+    context: str | None = None,
+    filename: str | None = None,
+) -> dict:
+    """Generate a minimal, source-grounded Quickshell QML component from a
+    plain-language description, e.g. 'Create a Hyprland workspace indicator',
+    'animated volume OSD', 'top bar with workspaces, clock and system tray',
+    'popup control center', or 'notification popup'.
+
+    The generator researches the request, assembles a small component from
+    curated templates, and BEFORE returning it verifies every Quickshell type
+    and property/method it references against the requested version (via the
+    compatibility machinery) and runs the static validator on the assembled
+    QML. Any API that cannot be verified is surfaced rather than silently
+    emitted, so the result never claims an API is valid without checking.
+
+    The result also includes a 'verified_surface': the documented
+    properties/methods/signals of every type the component uses, so you can
+    freely rewrite the QML against verified members. When no curated template
+    matches the request, the result carries that verified surface plus
+    supporting references instead of a component, so you can compose the
+    component yourself from grounded building blocks. Only one top-level
+    window is generated; additional requested windows are reported in
+    'assumptions' rather than embedded.
+
+    Inputs:
+    - description: what to build, in plain words
+    - version: Quickshell release to target (default 'latest', resolved at runtime)
+    - compositor: e.g. 'hyprland' to use compositor-specific types
+    - style: optional style/behavior hints (surfaced in 'assumptions')
+    - context: optional existing project context (surfaced, never read)
+    - filename: suggested filename; derived from the description by default
+
+    The result includes the generated QML, the imports/types it needs, any
+    compositor or external-service dependency, per-API verification evidence,
+    validation diagnostics, supporting references, and the assumptions made.
+    Official documentation always wins over examples and real-world
+    implementations when they disagree. This tool writes nothing to disk."""
+    _record_tool("quickshell_generate_component")
+    return _generate_component(
+        description=description,
+        version=version,
+        compositor=compositor,
+        style=style,
+        context=context,
+        filename=filename,
+    )
 
 
 @mcp.tool()

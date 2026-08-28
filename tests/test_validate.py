@@ -29,7 +29,7 @@ A window that docks to a panel layer.
 
   The exclusive zone in pixels.
 
-- exclusiveMode  :
+- exclusionMode  :
   [int](https://doc.qt.io/qt-6/qml-int.html)
 
 - layer  :

@@ -107,6 +107,7 @@ def main() -> int:
         "quickshell_check_compatibility",
         "quickshell_migrate",
         "quickshell_stats",
+        "quickshell_generate_component",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"
@@ -163,6 +164,18 @@ def main() -> int:
     assert compat["target_version"] == versions["latest"]
     print(
         f"[ok] check_compatibility: {compat['compatibility']} for {compat['detected_api']['type']}"
+    )
+
+    generated = _tool_json(c, "quickshell_generate_component", {"description": "volume OSD"})
+    assert isinstance(generated.get("component"), dict)
+    assert generated["component"]["qml"].strip()
+    assert generated["verification"]["verdict"] in ("verified", "unverified")
+    assert isinstance(generated.get("validation", {}).get("summary"), dict)
+    assert generated.get("verified_surface", {}).get("types") is not None
+    print(
+        f"[ok] generate_component: {len(generated['component']['qml'])} chars, "
+        f"verdict={generated['verification']['verdict']}, "
+        f"{len(generated['verified_surface']['types'])} type(s) in surface"
     )
 
     migrate = _tool_json(
