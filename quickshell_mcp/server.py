@@ -34,8 +34,86 @@ from . import utils
 
 # Re-exports: the historical flat-module surface (srv._build_index & friends)
 # moved into domain modules; keep every name addressable from here so tests
-# and external callers survive unchanged.
+# and external callers survive unchanged. Tool logic is routed through the
+# capability layer, which re-exports the shared-service helpers it needs.
 from .caches import _cache, _cache_get, _cache_set  # noqa: F401
+from .capabilities.assistant import (  # noqa: F401
+    _classify_intent,
+    _coding_assistant,
+    _detect_compositor,
+    _resolve_version_hint,
+    _safe_step,
+)
+from .capabilities.debugging import (  # noqa: F401
+    _categorize_error,
+    _explain_error,
+    _extract_type_from_code,
+)
+from .capabilities.generation import (  # noqa: F401
+    _build_section,
+    _generate_component,
+    _interpret_component_query,
+)
+from .capabilities.knowledge import (  # noqa: F401
+    _GITHUB_API,
+    _IMPL_QUERY_STOPWORDS,
+    _IMPL_TOPICS,
+    _QT_ANCHOR_RE,
+    _QT_MODULE_LINK_RE,
+    _QT_TYPE_LINK_RE,
+    _VALUE_TYPES_BUCKET,
+    GUIDE_LINK_RE,
+    TYPE_LINK_RE,
+    _build_index,
+    _build_qt_index,
+    _example_file,
+    _examples_branch,
+    _examples_known_paths,
+    _examples_listing,
+    _find_pattern,
+    _guide_content_index,
+    _guide_page,
+    _impl_branch,
+    _impl_component,
+    _impl_entry_meta,
+    _impl_file,
+    _impl_repo_config,
+    _impl_topics_for_query,
+    _interpret_query,
+    _norm_source,
+    _normalize_qt_module,
+    _qt_type_page,
+    _resolve_qt_slug,
+    _resolve_version,
+    _search_everything,
+    _search_guide_content,
+    _search_implementations,
+    _search_type_content,
+    _type_page,
+)
+from .capabilities.migration import (  # noqa: F401
+    _behavioral_scan,
+    _collect_api_refs,
+    _import_diff,
+    _migrate,
+    _migration_plan,
+    _symbol_issue,
+)
+from .capabilities.validation import (  # noqa: F401
+    _api_in_version,
+    _changelog_hits,
+    _changelog_sections,
+    _check_compatibility,
+    _compat_at,
+    _compat_from_code,
+    _incorporate_range,
+    _parse_api_ref,
+    _parse_members,
+    _parse_structure,
+    _scan_versions,
+    _tokenize,
+    _validate,
+)
 from .config import (  # noqa: F401
     _QT_STRIP_SELECTORS,
     _RETRY_ATTEMPTS,
@@ -47,90 +125,6 @@ from .config import (  # noqa: F401
     QT_DOCS_BASE,
 )
 from .extraction import _extract_main_content, _fetch_page_markdown  # noqa: F401
-from .sources.assistant import (  # noqa: F401
-    _classify_intent,
-    _coding_assistant,
-    _detect_compositor,
-    _resolve_version_hint,
-    _safe_step,
-)
-from .sources.compat import (  # noqa: F401
-    _api_in_version,
-    _changelog_hits,
-    _changelog_sections,
-    _check_compatibility,
-    _compat_at,
-    _compat_from_code,
-    _incorporate_range,
-    _parse_api_ref,
-    _scan_versions,
-)
-from .sources.docs import (  # noqa: F401
-    GUIDE_LINK_RE,
-    TYPE_LINK_RE,
-    _build_index,
-    _guide_content_index,
-    _guide_page,
-    _resolve_version,
-    _search_guide_content,
-    _search_type_content,
-    _type_page,
-)
-from .sources.examples import (  # noqa: F401
-    _example_file,
-    _examples_branch,
-    _examples_known_paths,
-    _examples_listing,
-)
-from .sources.explain_error import (  # noqa: F401
-    _categorize_error,
-    _explain_error,
-    _extract_type_from_code,
-)
-from .sources.find_pattern import _find_pattern, _interpret_query  # noqa: F401
-from .sources.generate import (  # noqa: F401
-    _build_section,
-    _generate_component,
-    _interpret_component_query,
-)
-from .sources.implementations import (  # noqa: F401
-    _GITHUB_API,
-    _IMPL_QUERY_STOPWORDS,
-    _IMPL_TOPICS,
-    _impl_branch,
-    _impl_component,
-    _impl_entry_meta,
-    _impl_file,
-    _impl_repo_config,
-    _impl_topics_for_query,
-    _norm_source,
-    _search_implementations,
-)
-from .sources.migrate import (  # noqa: F401
-    _behavioral_scan,
-    _collect_api_refs,
-    _import_diff,
-    _migrate,
-    _migration_plan,
-    _symbol_issue,
-)
-from .sources.qt_docs import (  # noqa: F401
-    _QT_ANCHOR_RE,
-    _QT_MODULE_LINK_RE,
-    _QT_TYPE_LINK_RE,
-    _VALUE_TYPES_BUCKET,
-    _build_qt_index,
-    _normalize_qt_module,
-    _qt_type_page,
-    _resolve_qt_slug,
-)
-from .sources.search_all import _search_everything  # noqa: F401
-from .sources.validate import (
-    _parse_members,  # noqa: F401
-    _parse_structure,  # noqa: F401
-    _tokenize,  # noqa: F401
-    _validate,
-)
 from .utils import (  # noqa: F401
     _FETCH_STATS,
     _STATS_STARTED,

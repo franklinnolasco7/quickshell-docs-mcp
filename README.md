@@ -380,6 +380,22 @@ Use `refresh=True` to bypass the short-lived cache where supported. The cache lo
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, workflow, and how to submit changes.
 
+### Internal architecture
+
+The server is structured into four layers:
+
+```
+MCP tool (server.py, tool registration + docstrings)
+    ↓
+capabilities/ (domain layer: knowledge, validation, generation, migration, debugging, assistant)
+    ↓
+sources/ (shared services: data-source access, index building, parsing, compatibility)
+    ↓
+config, caches, utils, versions, extraction (infrastructure)
+```
+
+Each capability module declares its tools and its explicit dependencies on other capabilities. The dependency graph is acyclic and verified by `tests/test_capabilities.py`. Planned capabilities (project, runtime, inspection, testing, performance) are documented in the registry; no empty modules are created until features land.
+
 ## Limitations
 
 - Validation is static and heuristic; it complements `qmlls`.
