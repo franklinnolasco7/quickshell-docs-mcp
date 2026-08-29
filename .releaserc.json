@@ -7,7 +7,8 @@
       {
         "parserOpts": {
           "headerPattern": "^([\\w.\\-*/]+):\\s?(.*)$",
-          "headerCorrespondence": ["scope", "subject"]
+          "headerCorrespondence": ["scope", "subject"],
+          "noteKeywords": []
         },
         "releaseRules": [
           {"body": "Semver: minor", "release": "minor"},
@@ -20,7 +21,8 @@
       {
         "parserOpts": {
           "headerPattern": "^([\\w.\\-*/]+):\\s?(.*)$",
-          "headerCorrespondence": ["scope", "subject"]
+          "headerCorrespondence": ["scope", "subject"],
+          "noteKeywords": []
         }
       }
     ],
