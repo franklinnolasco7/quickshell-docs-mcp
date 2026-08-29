@@ -29,6 +29,7 @@ from .find_pattern import _find_pattern
 from .generate import _generate_component
 from .implementations import _impl_file
 from .migrate import _breaking_lines, _migrate
+from .project import _build_project_context
 from .search_all import _search_everything
 from .validate import _validate
 
@@ -415,6 +416,7 @@ class _PipelineState:
     resolved_version: str | None = None
     resolved_from: str | None = None
     resolved_to: str | None = None
+    project_info: dict[str, Any] | None = None
     # Discovery output.
     search: dict[str, Any] | None = None
     pattern: dict[str, Any] | None = None
@@ -1112,6 +1114,8 @@ def _stage_orchestrate(state: _PipelineState) -> dict[str, Any]:
             verdict = None
 
     result = _base_result(state.request, state.intent, version, state.trace, state.errors)
+    if state.project_info:
+        result["project"] = state.project_info
     note = state.note or "; ".join(part for part in state.note_parts if part)
 
     grounded = _grounded_result(state)
@@ -1196,6 +1200,39 @@ def _grounded_result(state: _PipelineState) -> dict[str, Any] | None:
     return None
 
 
+def _project_info(project: str | None) -> dict[str, Any] | None:
+    """Discover lightweight ProjectContext metadata for a project root.
+
+    Returns None when no project is given. Never raises for a bad path: a
+    missing/non-directory root is surfaced as an ``error`` entry so the
+    assistant can note it and continue rather than fail the whole request.
+    """
+    if not project:
+        return None
+    try:
+        ctx = _build_project_context(project)
+        info = ctx.discover({"quickshell_version", "compositor", "qml_files"})
+        return {
+            "root": str(ctx.root),
+            "qml_files": info["qml_files"],
+            "quickshell_version": info["quickshell_version"],
+            "compositor": info["compositor"],
+            "version_status": ctx.detection_status("quickshell_version"),
+            "compositor_status": ctx.detection_status("compositor"),
+            "error": None,
+        }
+    except ValueError as exc:
+        return {
+            "root": project,
+            "qml_files": [],
+            "quickshell_version": None,
+            "compositor": [],
+            "version_status": "unknown",
+            "compositor_status": "unknown",
+            "error": str(exc),
+        }
+
+
 def _coding_assistant(
     request: str,
     version: str = "latest",
@@ -1206,6 +1243,7 @@ def _coding_assistant(
     from_version: str | None = None,
     to_version: str | None = None,
     context: str | None = None,
+    project: str | None = None,
 ) -> dict[str, Any]:
     """Route a development request through the pipeline and return a grounded
     result. See the ``quickshell_coding_assistant`` tool docstring."""
@@ -1216,10 +1254,25 @@ def _coding_assistant(
     if compositor:
         intent["compositor"] = compositor.strip().lower()
 
+    project_info = _project_info(project)
+    if project_info and not project_info["error"]:
+        # The project carries an inferred compositor; use it only when the
+        # caller did not already pin one.
+        if not intent["compositor"] and len(project_info["compositor"]) == 1:
+            intent["compositor"] = project_info["compositor"][0].lower()
+        # The project declares a Quickshell version; use it as the default
+        # target when the caller left the version unpinned.
+        if version == "latest" and project_info["quickshell_version"]:
+            resolved = _resolve_version_hint(project_info["quickshell_version"])
+            if resolved:
+                version = resolved
+
     if not request:
         result = _base_result(request, intent, version, [], {})
         result["intent"]["type"] = None
         result["note"] = "Empty request. Describe the development task in plain words."
+        if project_info:
+            result["project"] = project_info
         return result
 
     state = _PipelineState(
@@ -1234,6 +1287,7 @@ def _coding_assistant(
         from_version=from_version,
         to_version=to_version,
     )
+    state.project_info = project_info
 
     # Understand: classify (done above), then resolve the version(s). The
     # migrate intent resolves its own range; the rest resolve one target.
@@ -1252,14 +1306,17 @@ def _coding_assistant(
         state.resolved_to = range_info.get("to_version") if range_info else None
         state.resolved_version = state.resolved_to
         if state.resolved_from is None or state.resolved_to is None:
+            result = _base_result(
+                state.request,
+                intent,
+                state.resolved_to or state.resolved_from or "latest",
+                state.trace,
+                state.errors,
+            )
+            if project_info:
+                result["project"] = project_info
             return {
-                **_base_result(
-                    state.request,
-                    intent,
-                    state.resolved_to or state.resolved_from or "latest",
-                    state.trace,
-                    state.errors,
-                ),
+                **result,
                 "understanding": [
                     "Could not resolve the migration range from the request text.",
                     "Pass from_version and to_version explicitly, e.g. "
@@ -1277,8 +1334,11 @@ def _coding_assistant(
             "str",
         )
         if resolved_version is None:
+            result = _base_result(state.request, intent, version, state.trace, state.errors)
+            if project_info:
+                result["project"] = project_info
             return {
-                **_base_result(state.request, intent, version, state.trace, state.errors),
+                **result,
                 "understanding": [f"Could not resolve Quickshell version '{version}'."],
                 "note": "Version resolution failed; see errors.",
             }

@@ -119,6 +119,61 @@ Run checks when warranted, not reflexively. If none apply, say so instead of run
 5. **CI pipeline** (`.github/workflows/ci.yml`): flake check → nix build + dist/twine → lint → offline pytest with coverage → Dockerfile validation; live-smoke runs only on manual dispatch. If you add a check locally, wire the equivalent into CI.
 6. **Implementation references are not documentation.** Caelestia/Noctalia/dots-hyprland results carry `kind: real-world implementation` and every tool docstring says the docs win on API disputes. Noctalia's ref is pinned to its `legacy-v4` branch deliberately (its `main` moved to a C++ compositor); a GitHub `truncated: true` tree response is refused rather than silently under-indexed. dots-hyprland's QML root is nested under `dots/.config/quickshell/ii/` and paths are reported relative to it.
 
+## ProjectContext (`quickshell_mcp/sources/project.py`)
+
+A reusable internal abstraction for representing a Quickshell project on disk.
+It is **not** a capability or an MCP tool — it is shared infrastructure in the
+`sources/` layer that capabilities consume.
+
+### Consumer pattern
+
+```python
+from ..sources.project import _build_project_context
+
+ctx = _build_project_context("/path/to/shell")
+info = ctx.discover({"qml_files", "imports", "compositor"})
+# info = {"qml_files": [...], "imports": [...], "compositor": ["Hyprland"], ...}
+# ctx.detection_status("compositor") -> "inferred"
+```
+
+### Available fields (all lazy)
+
+| Field | Status | Description |
+|-------|--------|-------------|
+| `qml_files` | detected | Every `*.qml` under the project root |
+| `js_files` | detected | Every `*.js` under the project root |
+| `entrypoints` | detected | QML files whose root object is a window type |
+| `imports` | detected | All QML import statements across every file |
+| `quickshell_modules` | detected / unknown | Imports starting with `Quickshell` |
+| `quickshell_version` | inferred / unknown | Version string from `Quickshell` import versions |
+| `qt_version` | inferred / unknown | Version string from `Qt*` module import versions |
+| `compositor` | inferred / unknown | Quickshell integration namespaces (e.g. `Hyprland`) |
+| `config_paths` | detected | Config files at the project root |
+| `dependencies` | detected | All distinct import modules |
+| `conventions` | inferred | Naming, layout, structure patterns |
+
+### Status semantics
+
+- **detected** — directly observed in the filesystem (file lists, import statements)
+- **inferred** — derived from detected data (version strings, compositor, conventions)
+- **unknown** — no data could be found (no QML files, no version-bearing imports)
+
+### Design rules
+
+- **Never fabricates.** A field without data is `None` / `[]` with status `"unknown"`.
+- **Lazy by default.** `discover({needs})` computes only the requested fields.
+- **Instance-cached.** Repeated `discover()` calls on the same `_ProjectContext` reuse precomputed values.
+- **Shared-cached.** The expensive file-tree scan is cached in the 30-minute in-memory cache keyed by the resolved root path, so a second `_build_project_context` for the same directory skips re-scanning.
+- **No HTTP.** ProjectContext is purely local-filesystem: it walks the tree and parses QML text. Any version resolution against the live site is the caller's responsibility.
+- **Compositor-independent.** The compositor field reports Quickshell integration namespaces (e.g. `Hyprland`) from `Quickshell.<Name>` imports after excluding core namespaces. No compositor-name list is hardcoded.
+
+### Adding a new field
+
+1. Add the field name to `_ALL_FIELDS` in `project.py`.
+2. Add a `_discover_<name>` method that calls `_set(...)` or `_set_inferred(...)`.
+3. Call `_scan()` for the raw file/import data; derive your field from it.
+4. Add a test in `tests/test_project.py`.
+
 ## MCP client configuration
 
 ```json

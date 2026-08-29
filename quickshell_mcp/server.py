@@ -38,9 +38,11 @@ from . import utils
 # capability layer, which re-exports the shared-service helpers it needs.
 from .caches import _cache, _cache_get, _cache_set  # noqa: F401
 from .capabilities.assistant import (  # noqa: F401
+    _build_project_context,
     _classify_intent,
     _coding_assistant,
     _detect_compositor,
+    _project_info,
     _resolve_version_hint,
     _safe_step,
 )
@@ -728,6 +730,7 @@ def quickshell_coding_assistant(
     from_version: str | None = None,
     to_version: str | None = None,
     context: str | None = None,
+    project: str | None = None,
 ) -> dict:
     """High-level Quickshell development assistant for AI coding agents.
 
@@ -748,7 +751,14 @@ def quickshell_coding_assistant(
     never modifies files. version pins the Quickshell release. Results clearly
     separate verified facts (official docs) from recommendations, and every
     claim carries a source URL. For a single, focused lookup call the specific
-    tool directly instead."""
+    tool directly instead.
+
+    Pass project= a path to the Quickshell project root to ground the answer
+    in that project: the assistant infers its Quickshell version and
+    compositor from the project's QML imports and uses them as defaults, and
+    returns a 'project' section describing what was detected (version,
+    compositor, QML files, each marked detected/inferred/unknown). An invalid
+    path is reported in that section instead of failing the request."""
     _record_tool("quickshell_coding_assistant")
     return _coding_assistant(
         request=request,
@@ -760,6 +770,7 @@ def quickshell_coding_assistant(
         from_version=from_version,
         to_version=to_version,
         context=context,
+        project=project,
     )
 
 
