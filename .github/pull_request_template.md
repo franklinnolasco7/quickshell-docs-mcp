@@ -12,11 +12,12 @@ Key implementation details or approach taken.
 
 ## Type of Change
 
-- [ ] `feat` (new feature or tool)
-- [ ] `fix` (bug fix)
-- [ ] `docs` (documentation only)
-- [ ] `refactor` (code change with no behavior change)
-- [ ] `chore` (maintenance, deps, CI)
+- [ ] New feature or tool (add `Semver: minor` trailer to commit body)
+- [ ] Bug fix (defaults to patch release)
+- [ ] Breaking change (add `BREAKING CHANGE:` trailer to commit body)
+- [ ] Documentation only
+- [ ] Refactor (no behavior change)
+- [ ] Maintenance, CI, deps, packaging
 
 ## Breaking Changes
 

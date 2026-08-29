@@ -2,8 +2,28 @@
   "branches": ["main"],
   "tagFormat": "v${version}",
   "plugins": [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "parserOpts": {
+          "headerPattern": "^([\\w.\\-*/]+):\\s?(.*)$",
+          "headerCorrespondence": ["scope", "subject"]
+        },
+        "releaseRules": [
+          {"body": "Semver: minor", "release": "minor"},
+          {"body": "Semver: major", "release": "major"}
+        ]
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "parserOpts": {
+          "headerPattern": "^([\\w.\\-*/]+):\\s?(.*)$",
+          "headerCorrespondence": ["scope", "subject"]
+        }
+      }
+    ],
     [
       "@google/semantic-release-replace-plugin",
       {
@@ -21,7 +41,7 @@
       "@semantic-release/git",
       {
         "assets": ["pyproject.toml"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]"
+        "message": "release: v${nextRelease.version} [skip ci]"
       }
     ],
     [

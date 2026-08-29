@@ -68,23 +68,27 @@ tests/           offline test suite with fixtures
 
 ## Commit Messages
 
-We use [Conventional Commits](https://www.conventionalcommits.org/):
-
-| Prefix | Use for |
-|---|---|
-| `feat:` | New feature or tool |
-| `fix:` | Bug fix |
-| `docs:` | Documentation only |
-| `refactor:` | Code change that neither fixes a bug nor adds a feature |
-| `chore:` | Maintenance tasks |
-
-Examples:
+We use [Scoped Commits](https://scopedcommits.com/):
 
 ```
-feat: blablabla
-fix: handle 404 on missing guide pages
-chore(ci): update ruff to v0.8
+docs: add PanelWindow anchor example
+tests: cover qt_docs 404 path
+server: add quickshell_search_all tool
 ```
+
+The scope is the module/area touched (see `AGENTS.md` for the scope list).
+
+**Auto-release note:** A CI pipeline auto-releases on every push to `main`.
+By default every commit is a patch. If you introduce a new feature/tool, add
+`Semver: minor` as a trailer in the commit body:
+
+```
+docs: add PanelWindow anchor example
+
+Semver: minor
+```
+
+`BREAKING CHANGE:` in the body/footer triggers a major release.
 
 ## Pull Requests
 

@@ -2,22 +2,27 @@
 
 Guidance for AI agents (Claude Code, opencode, etc.) working on this repository.
 
+## Quick start
+
+- `pip install -e '.[dev]'` for the venv (or `nix develop` for the CI-equivalent shell)
+- `pytest -q` for the offline suite; see Build/test commands below for the full list
+
 ## Scope
 
 Governs agent behavior within `quickshell-mcp` only. This is a single-author personal tool, so keep changes proportional: no release automation, no features without a stated consumer, no dependencies without a reason.
 
 ## Project overview
 
-An MCP server that serves live Quickshell documentation from quickshell.org so LLMs read real docs instead of hallucinating API surface (the API has shifted heavily between releases). Two companion sources round it out: Qt type docs from doc.qt.io (base types like Rectangle that Quickshell configs import but quickshell.org doesn't document) and the official quickshell-examples repo via its Gitea API. Everything is fetched at query time; nothing is hardcoded.
+An MCP server that serves live Quickshell documentation from quickshell.org so LLMs read real docs instead of hallucinating API surface (the API has shifted heavily between releases). Three companion sources round it out: Qt type docs from doc.qt.io (base types like Rectangle that Quickshell configs import but quickshell.org doesn't document), the official quickshell-examples repo via its Gitea API, and real-world QML shells (Caelestia, Noctalia, end-4's dots-hyprland) indexed from their GitHub repos. Everything is fetched at query time; nothing is hardcoded.
 
 ## Project structure
 
 - `quickshell_mcp/`, the package itself:
   - `config.py`: URLs, repo identities, strip-selector lists, TTL/retry constants
-  - `caches.py`: 30-minute in-process cache
+  - `caches.py`: 30-minute in-memory cache per fetch, plus a disk layer that persists built indexes (guide/type/qt) across restarts (30-day default TTL); `QUICKSHELL_DOCS_MCP_DISK_CACHE` env var to disable/redirect
   - `utils.py`: logging, HTTP client, `_fetch_raw` (retry + stats), citation prefix; domain modules call `utils._fetch_raw` by module attribute so tests monkeypatch one seam
   - `versions.py`, `extraction.py`: runtime version discovery; HTML→Markdown with per-source strip rules
-  - `sources/`: one logic module per upstream (`docs`, `qt_docs`, `examples`, `implementations`); no MCP decorators here
+  - `sources/`: one logic module per domain capability (`docs`, `qt_docs`, `examples`, `implementations`, `compat`, `migrate`, `validate`, `generate`, `assistant`, `explain_error`, `find_pattern`, `search_all`); no MCP decorators here
   - `server.py`: FastMCP instance, every `@mcp.tool()` wrapper + docstring (the trigger surface), `main()`, and re-exports of helper names so tests keep addressing `srv.<helper>`
 - `tests/`: offline pytest suite driven by saved snapshots in `tests/fixtures/`. `conftest.py` provides `mock_fetch` (patches `utils._fetch_raw`), `docs_fixture_urls`, `http_404`, and an autouse cache/stats reset.
 - `scripts/smoke_test.py`: end-to-end stdio client; drives the server like a real MCP session against the live sites.
@@ -28,9 +33,34 @@ An MCP server that serves live Quickshell documentation from quickshell.org so L
 1. **Never hardcode a Quickshell version.** `"latest"` resolves at runtime by regex-scanning pages for `/docs/vX.Y.Z/` links. A hardcoded version string outside tests/fixtures is a bug.
 2. **Regex over CSS selectors for structural discovery.** `VERSION_RE`, `TYPE_LINK_RE`, `GUIDE_LINK_RE` scan raw HTML for URL patterns, not DOM structure; quickshell.org is an Astro site that can redesign. Keep this pattern for new discovery logic.
 3. **Every fetched page returns its source URL** (`_with_source`). Don't strip it from new fetch-based tools.
-4. **Scaffold-style generation is out of scope.** The server documents; it does not synthesize configs. Generated-code tools were removed deliberately; point users at `quickshell_get_example` instead. If a generation need ever returns, it must ship a verification checklist like the old scaffold did.
+4. **Generation ships only with verification.** `quickshell_generate_component` may synthesize QML, but only because every emitted type/property is checked against the versioned docs via the compat machinery + static validator before return (its `verified_surface`). Any new generate-style tool must keep that checklist; unverifiable APIs are surfaced, never silently emitted.
 5. **Tool docstrings are the trigger surface.** Models reach for tools by matching phrasing against docstrings (see `quickshell_search`'s keyword map). Write docstrings for how users ask, not what the code does.
 6. **Fail loudly with suggestions.** A 404 raises `ValueError` with did-you-mean candidates from `_build_index`, never silent empty results.
+
+## Coding guidelines (write/review code first)
+
+**Naming.** Prefer descriptive names over abbreviations (`enableBluetoothAutoConnect`, not `btAuto`). Optimize for readability: names are read far more often than typed.
+
+**Comments.** Explain *why*, not *what*. Keep comments brief. Comment only edge cases, workarounds, non-obvious logic, or important constraints. Don't comment self-explanatory code. Match the comment style already used elsewhere in the codebase (formatting, tone, placement). Look at nearby files before writing a comment, rather than defaulting to a generic style. If the codebase has no established comment convention, keep comments short and placed directly above the code they explain.
+
+**Code quality.**
+
+- Handle realistic edge cases: invalid input, empty values, missing data, unexpected states, boundaries, failure paths.
+- Skip defensive code for impossible scenarios unless there's a clear reason.
+- Fail clearly and predictably; never silently swallow errors. Preserve context when propagating them.
+- Validate external or untrusted input at system boundaries. Treat filesystem paths, commands, and network data as untrusted.
+- Keep functions, classes, and modules focused.
+- Avoid unnecessary duplication, but don't build abstractions just to remove a few repeated lines.
+- Prefer straightforward control flow over deep nesting, clever one-liners, or unnecessary indirection.
+- Use strong typing; avoid `any`, unchecked casts, magic values, and suppressions unless justified.
+- Avoid unnecessary dependencies and obvious performance problems (repeated I/O, unnecessary computation, excessive allocations).
+- Clean up resources: files, processes, connections, timers, subscriptions.
+- Account for race conditions, cancellation, ordering, and shared state in concurrent or async code.
+- Preserve existing behavior and compatibility unless the change intentionally requires otherwise.
+- Add or update tests for behavior changes, especially edge cases and regressions.
+- Remove dead code, obsolete branches, unused imports, and commented-out code.
+- Prefer minimal, focused changes over unrelated refactoring; follow existing project conventions unless there's a strong reason to improve them.
+- Before finishing, review for correctness, edge cases, error paths, unnecessary complexity, naming, duplication, and unintended side effects.
 
 ## Test harness
 
@@ -38,7 +68,7 @@ The suite is offline by construction: `mock_fetch` replaces `_fetch_raw`, servin
 
 Rules for test cases in this repo:
 
-1. **Test the private helpers, not the decorated tools**: `_guide_page`, `_type_page`, `_build_index`, `_build_qt_index`, `_search_guide_content`, `_examples_listing`, `list_versions`. They hold the logic; `@mcp.tool()` wrappers are thin (recording + delegation). Exception: stats assertions go through the tool functions, since `_record_tool` lives there.
+1. **Test the private helpers, not the decorated tools**: the helper functions in `sources/*.py` plus `list_versions`. They hold the logic; `@mcp.tool()` wrappers are thin (recording + delegation). Exception: stats assertions go through the tool functions, since `_record_tool` lives there.
 2. **Exact-match fake fetches over prefix matching** when a test cares *which* URL was fetched. Prefix matching once served the guide-index page for a typo'd slug and masked a bug. Use `url in mapping` or explicit equality.
 3. **Every new tool needs three tests**: happy path (shape of returned dict/str), failure path (404 → friendly `ValueError` with suggestions), and an entry added to `expected` in `scripts/smoke_test.py`.
 4. **Fixtures are committed real HTML.** If quickshell.org's markup changes and discovery/index tests break, re-snapshot deliberately and inspect the diff; it tells you exactly which regex died:
@@ -86,7 +116,7 @@ Run checks when warranted, not reflexively. If none apply, say so instead of run
 3. **There is no canonical `/docs/` index; it 404s.** Version discovery scans `/about/` first (it links every published version), then `/docs/`, then `/`. Don't "fix" this back to fetching `/docs/`.
 4. **Extraction is per-source.** quickshell.org strips `[class*=sidebar]` junk; doc.qt.io must NOT use that rule because its page body lives in `article.b-sidebar__content...` (see `_QT_STRIP_SELECTORS`). When adding a source, verify extraction against a real snapshot before trusting it.
 5. **CI pipeline** (`.github/workflows/ci.yml`): flake check → nix build + dist/twine → lint → offline pytest with coverage → Dockerfile validation; live-smoke runs only on manual dispatch. If you add a check locally, wire the equivalent into CI.
-6. **Implementation references are not documentation.** Caelestia/Noctalia results carry `kind: real-world implementation` and every tool docstring says the docs win on API disputes. Noctalia's ref is pinned to its `legacy-v4` branch deliberately (its `main` moved to a C++ compositor); a GitHub `truncated: true` tree response is refused rather than silently under-indexed.
+6. **Implementation references are not documentation.** Caelestia/Noctalia/dots-hyprland results carry `kind: real-world implementation` and every tool docstring says the docs win on API disputes. Noctalia's ref is pinned to its `legacy-v4` branch deliberately (its `main` moved to a C++ compositor); a GitHub `truncated: true` tree response is refused rather than silently under-indexed. dots-hyprland's QML root is nested under `dots/.config/quickshell/ii/` and paths are reported relative to it.
 
 ## MCP client configuration
 
@@ -106,4 +136,29 @@ HTTP transport alternative: `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (+ `HOST`/`PORT
 
 ## Commit guidelines
 
-Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`). Small diffs, one logical change per commit. Never auto-commit; the user runs git commands (staging for flake verification is fine).
+Scoped Commits (`<scope>: <description>`). Small diffs, one logical change per commit. Never auto-commit; the user runs git commands (staging for flake verification is fine).
+
+- `<scope>` — the module, subsystem, or area touched (e.g. `docs`, `qt-docs`, `examples`, `implementations`, `compat`, `migrate`, `validate`, `generate`, `server`, `sources`, `tests`, `ci`, `flake`, `packaging`, `config`, `caches`, `extraction`, `versions`, `utils`, `scripts`, `readme`). Puts what the change touches up front; use `treewide` for whole-tree changes.
+- `<description>` — imperative mood, ≤72 chars, no trailing period.
+- Body (optional) — details when the subject can't cover the change; bullet the parts.
+- Trailers (optional) — additional metadata (`Closes #N`, `Co-authored-by: N`).
+- Multi-area changes: comma-separate scopes (`ci,packaging: ...`) or use a broader scope.
+- Special commits (reverts, merges, release) can use whatever format fits.
+
+**Version-bump trailer (required for auto-release):**
+
+> ⚠️ A semantic-release CI runs on every merge to `main`. Every commit defaults to a **patch** release. A new feature/tool must signal a minor bump explicitly — there is no type-prefix heuristic anymore. Forgetting `Semver: minor` on a new tool means no minor release.
+
+- `Semver: minor` — new feature, tool, or user-facing addition
+- `BREAKING CHANGE: <description>` — breaking API/config change
+
+Example:
+
+```
+server: add quickshell_search_all tool
+
+Runs one query across every source group.
+
+Semver: minor
+Closes #24
+```
