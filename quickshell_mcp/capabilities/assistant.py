@@ -31,4 +31,5 @@ CAPABILITY_DEPENDS_ON = (
     "testing",
     "performance",
     "adapters",
+    "ecosystem",
 )

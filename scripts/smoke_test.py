@@ -169,6 +169,14 @@ def main() -> int:
         "quickshell_best_practice",
         "quickshell_pattern_compare",
         "quickshell_provenance",
+        "quickshell_nix_diagnostics",
+        "quickshell_runtime_dependencies",
+        "quickshell_profile_save",
+        "quickshell_profile_list",
+        "quickshell_profile_get",
+        "quickshell_profile_delete",
+        "quickshell_profile_export",
+        "quickshell_profile_import",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

@@ -61,6 +61,16 @@ from .capabilities.debugging import (  # noqa: F401
     _runtime_errors,
     _trace,
 )
+from .capabilities.ecosystem import (  # noqa: F401
+    _nix_diagnostics,
+    _profile_delete,
+    _profile_export,
+    _profile_get,
+    _profile_import,
+    _profile_list,
+    _profile_save,
+    _runtime_dependencies,
+)
 from .capabilities.generation import (  # noqa: F401
     _apply_patch,
     _build_section,
@@ -1601,6 +1611,93 @@ def quickshell_provenance(query: str, version: str = "latest", limit: int = 5) -
     can cite them. Read-only."""
     _record_tool("quickshell_provenance")
     return _provenance(query, version=version, limit=limit)
+
+
+@mcp.tool()
+def quickshell_nix_diagnostics(project: str) -> dict:
+    """Detect the Nix infrastructure of a Quickshell project: flake.nix
+    presence, devShells, nixpkgs inputs, and whether the flake is locked.
+    File-based detection only (no nix evaluation). Falls back to the system
+    package manager when no flake.nix is present. Read-only."""
+    _record_tool("quickshell_nix_diagnostics")
+    return _nix_diagnostics(project)
+
+
+@mcp.tool()
+def quickshell_runtime_dependencies(project: str) -> dict:
+    """Detect what a Quickshell project needs at runtime, statically and
+    safely: QML types (Process, IpcHandler, ...), config keywords, imports,
+    compositor, services, and which system binaries are on PATH. Nothing is
+    executed. Read-only."""
+    _record_tool("quickshell_runtime_dependencies")
+    return _runtime_dependencies(project)
+
+
+@mcp.tool()
+def quickshell_profile_save(
+    name: str,
+    project: str,
+    entrypoint: str | None = None,
+    config_dir: str | None = None,
+    compositor: str | None = None,
+    arguments: list[str] | None = None,
+    environment: dict[str, str] | None = None,
+) -> dict:
+    """Save a named runtime launch profile in this server's in-memory
+    registry. Profiles are pure data (never launched by saving); combine
+    them with quickshell_runtime_start. Mutates the profile registry only."""
+    _record_tool("quickshell_profile_save")
+    return _profile_save(
+        name=name,
+        project_root=project,
+        entrypoint=entrypoint,
+        config_dir=config_dir,
+        compositor=compositor,
+        arguments=arguments,
+        environment=environment,
+    )
+
+
+@mcp.tool()
+def quickshell_profile_list() -> dict:
+    """List all saved runtime profiles with summary info: name, project
+    root, entrypoint, compositor, and schema version. Read-only."""
+    _record_tool("quickshell_profile_list")
+    return _profile_list()
+
+
+@mcp.tool()
+def quickshell_profile_get(name: str) -> dict:
+    """Get a single saved runtime profile by name, with its full launch
+    configuration and schema version. Read-only."""
+    _record_tool("quickshell_profile_get")
+    return _profile_get(name)
+
+
+@mcp.tool()
+def quickshell_profile_delete(name: str) -> dict:
+    """Delete a saved runtime profile from the in-memory registry by name.
+    Mutates the profile registry only."""
+    _record_tool("quickshell_profile_delete")
+    return _profile_delete(name)
+
+
+@mcp.tool()
+def quickshell_profile_export(name: str) -> dict:
+    """Export a saved runtime profile as a JSON-serializable dict (with its
+    schema version), for backup or sharing between servers. Read-only."""
+    _record_tool("quickshell_profile_export")
+    return _profile_export(name)
+
+
+@mcp.tool()
+def quickshell_profile_import(name: str, data: dict) -> dict:
+    """Import a runtime profile into the registry from a dict (e.g. the
+    output of quickshell_profile_export). A payload with a newer schema
+    version than this server supports is refused. Mutates the profile
+    registry only."""
+    _record_tool("quickshell_profile_import")
+    return _profile_import(name, data)
 
 
 @mcp.tool()

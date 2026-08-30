@@ -29,6 +29,7 @@ from . import (
     adapters,
     assistant,
     debugging,
+    ecosystem,
     generation,
     inspection,
     knowledge,
@@ -95,6 +96,7 @@ _CAPABILITY_MODULES = (
     testing,
     performance,
     adapters,
+    ecosystem,
     assistant,
 )
 
