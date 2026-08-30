@@ -18,4 +18,11 @@ from ..sources.project import _build_project_context  # noqa: F401
 
 CAPABILITY_NAME = "assistant"
 CAPABILITY_TOOLS = ("quickshell_coding_assistant",)
-CAPABILITY_DEPENDS_ON = ("knowledge", "validation", "generation", "migration", "debugging")
+CAPABILITY_DEPENDS_ON = (
+    "knowledge",
+    "validation",
+    "generation",
+    "migration",
+    "debugging",
+    "project",
+)

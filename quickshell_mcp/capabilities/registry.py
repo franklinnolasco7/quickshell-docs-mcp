@@ -7,9 +7,9 @@ declarations into a single map plus a cycle-checked topological ordering, so
 server.py and tests can answer "which capability owns this tool?" and prove
 the capability graph is acyclic.
 
-Capabilities that are planned but not implemented yet (project, runtime,
-inspection, testing, performance) are registered with ``status="planned"`` and
-no tools. No modules are created for them until the features land.
+Capabilities that are planned but not implemented yet (runtime, inspection,
+testing, performance) are registered with ``status="planned"`` and no tools.
+No modules are created for them until the features land.
 
 Every capability carries a ``safety_level``:
 
@@ -25,7 +25,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import assistant, debugging, generation, knowledge, migration, validation
+from . import assistant, debugging, generation, knowledge, migration, project, validation
 
 __all__ = [
     "ALL_CAPABILITIES",
@@ -65,6 +65,7 @@ _CAPABILITY_MODULES = (
     generation,
     migration,
     debugging,
+    project,
     assistant,
 )
 
@@ -86,7 +87,7 @@ PLANNED_CAPABILITIES: dict[str, Capability] = {
         status="planned",
         safety_level=_safety_level(name),
     )
-    for name in ("project", "runtime", "inspection", "testing", "performance")
+    for name in ("runtime", "inspection", "testing", "performance")
 }
 
 ALL_CAPABILITIES: dict[str, Capability] = {**CAPABILITIES, **PLANNED_CAPABILITIES}

@@ -47,6 +47,11 @@ EXPECTED_TOOLS = {
     "quickshell_stats",
     "quickshell_generate_component",
     "quickshell_coding_assistant",
+    "quickshell_project_analyze",
+    "quickshell_project_map",
+    "quickshell_project_find",
+    "quickshell_project_dependencies",
+    "quickshell_project_config",
 }
 
 # Tools that report session telemetry / live in server.py, not a domain capability.

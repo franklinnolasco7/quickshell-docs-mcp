@@ -101,6 +101,13 @@ from .capabilities.migration import (  # noqa: F401
     _migration_plan,
     _symbol_issue,
 )
+from .capabilities.project import (  # noqa: F401
+    _analyze_project,
+    _config_conventions,
+    _map_project,
+    _project_dependencies,
+    _search_project,
+)
 from .capabilities.validation import (  # noqa: F401
     _api_in_version,
     _changelog_hits,
@@ -772,6 +779,81 @@ def quickshell_coding_assistant(
         context=context,
         project=project,
     )
+
+
+@mcp.tool()
+def quickshell_project_analyze(project: str) -> dict:
+    """Inspect a Quickshell project and produce a structured project overview
+    containing, where detectable: Quickshell version, Qt version, entrypoints,
+    QML files, JS files, imports, Quickshell modules, components, services,
+    compositor integrations, runtime dependencies, and project configuration.
+
+    Builds on the shared ProjectContext. Unknown or undetected values are
+    explicitly marked; no information is fabricated. File listings are capped
+    to a reasonable sample; the full list is available via the specialized
+    project tools.
+    """
+    _record_tool("quickshell_project_analyze")
+    return _analyze_project(project)
+
+
+@mcp.tool()
+def quickshell_project_map(project: str) -> dict:
+    """Build a machine-readable project graph showing relationships between
+    QML components, imports, service dependencies, entrypoints, and module
+    dependencies. Relies on reliable static relationships.
+
+    The output clearly distinguishes:
+    - confirmed relationships (directly observed import statements, type
+      matches against local file stems)
+    - inferred relationships (references that could not be proven local)
+
+    Reports cyclic component usage and references that match no local file
+    and no known namespace.
+    """
+    _record_tool("quickshell_project_map")
+    return _map_project(project)
+
+
+@mcp.tool()
+def quickshell_project_find(project: str, query: str) -> dict:
+    """Project-aware search: find where a concept, API, type, or property
+    is used in a Quickshell project. Supports both exact textual matching
+    and semantic/project-aware matching (type names, import modules).
+
+    Returns file, location, match context, and why the result matched.
+    Exact textual matches are ranked first; semantic matches follow.
+    """
+    _record_tool("quickshell_project_find")
+    return _search_project(project, query)
+
+
+@mcp.tool()
+def quickshell_project_dependencies(project: str) -> dict:
+    """Detect a Quickshell project's dependencies from source and
+    configuration, without executing anything.
+
+    Classes are:
+    - required: Quickshell and Qt modules the project imports
+    - optional: imports that match known namespaces without local files
+    - detected: runtime hooks, services, config keywords, environment
+      variable references
+    - missing: imports that resolve to neither a known namespace nor a
+      local component
+    """
+    _record_tool("quickshell_project_dependencies")
+    return _project_dependencies(project)
+
+
+@mcp.tool()
+def quickshell_project_config(project: str) -> dict:
+    """Detect a Quickshell project's configuration conventions:
+    entrypoints, configuration files, environment variables, structural
+    conventions, and runtime hints. Inferred values include confidence
+    levels; directly observed values carry high confidence.
+    """
+    _record_tool("quickshell_project_config")
+    return _config_conventions(project)
 
 
 @mcp.tool()
