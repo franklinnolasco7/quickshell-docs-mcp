@@ -139,6 +139,15 @@ from .capabilities.runtime import (  # noqa: F401
     _status_session,
     _stop_session,
 )
+from .capabilities.testing import (  # noqa: F401
+    _assert_snapshot,
+    _run_macro_test,
+    _run_test,
+    _run_test_suite,
+    _test_macro,
+    _test_record,
+    _test_report,
+)
 from .capabilities.validation import (  # noqa: F401
     _api_in_version,
     _changelog_hits,
@@ -1222,6 +1231,68 @@ def quickshell_ui_eval(session_id: str, js_code: str, timeout: int = 5) -> dict:
     and calls."""
     _record_tool("quickshell_ui_eval")
     return _ui_eval(session_id, js_code, timeout=timeout)
+
+
+@mcp.tool()
+def quickshell_test(session_id: str, test: dict) -> dict:
+    """Run a single machine-readable runtime test against a managed
+    Quickshell session.
+
+    A test has a name, a list of steps (wait, invoke, set_property), and a
+    list of assertions (object_exists, property_equals, property_contains,
+    property_matches, visible, enabled, text_matches, window_exists). Returns
+    pass/fail, per-step and per-assertion results, duration, and an optional
+    screenshot on failure. Mutating (drives the runtime)."""
+    _record_tool("quickshell_test")
+    return _run_test(session_id, test)
+
+
+@mcp.tool()
+def quickshell_test_suite(session_id: str, tests: list[dict]) -> dict:
+    """Run multiple named runtime tests in isolation. One failing test never
+    corrupts the rest of the suite. Returns pass/fail totals and per-test
+    results. Mutating."""
+    _record_tool("quickshell_test_suite")
+    return _run_test_suite(session_id, tests)
+
+
+@mcp.tool()
+def quickshell_assert(session_id: str, assertion: dict) -> dict:
+    """Run a single reusable assertion primitive against a managed runtime
+    session: object_exists, property_equals, property_contains,
+    property_matches, visible, enabled, text_matches, window_exists.
+
+    Returns a structured pass/fail with useful context. Read-only."""
+    _record_tool("quickshell_assert")
+    return _assert_snapshot(session_id, assertion)
+
+
+@mcp.tool()
+def quickshell_test_macro(name: str, steps: list[dict] | None = None) -> dict:
+    """Define or retrieve a reusable parameterized runtime macro: a named
+    sequence of safe runtime steps that tests can invoke. Pass steps= to
+    save a macro; omit steps to load one by name. Macros are project-scoped
+    for the process. Read-only."""
+    _record_tool("quickshell_test_macro")
+    return _test_macro(name, steps)
+
+
+@mcp.tool()
+def quickshell_test_record(session_id: str, actions: list[dict]) -> dict:
+    """Record a list of runtime actions into a reproducible test
+    representation. Uses stable selectors (target + method/property), not
+    fragile generated object ids. Read-only."""
+    _record_tool("quickshell_test_record")
+    return _test_record(session_id, actions)
+
+
+@mcp.tool()
+def quickshell_test_report(session_id: str, suite: dict) -> dict:
+    """Produce a structured test report: passed/failed tests, durations,
+    assertions, runtime logs, screenshots, and diagnostics. Suitable for
+    both an LLM and human CI output. Read-only."""
+    _record_tool("quickshell_test_report")
+    return _test_report(session_id, suite)
 
 
 @mcp.tool()

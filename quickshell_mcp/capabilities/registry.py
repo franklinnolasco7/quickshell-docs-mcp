@@ -34,6 +34,7 @@ from . import (
     migration,
     project,
     runtime,
+    testing,
     validation,
 )
 
@@ -87,6 +88,7 @@ _CAPABILITY_MODULES = (
     project,
     runtime,
     inspection,
+    testing,
     assistant,
 )
 
@@ -108,7 +110,7 @@ PLANNED_CAPABILITIES: dict[str, Capability] = {
         status="planned",
         safety_level=_safety_level(name),
     )
-    for name in ("testing", "performance")
+    for name in ("performance",)
 }
 
 ALL_CAPABILITIES: dict[str, Capability] = {**CAPABILITIES, **PLANNED_CAPABILITIES}

@@ -138,6 +138,12 @@ def main() -> int:
         "quickshell_ui_set_property",
         "quickshell_ui_invoke",
         "quickshell_ui_eval",
+        "quickshell_test",
+        "quickshell_test_suite",
+        "quickshell_assert",
+        "quickshell_test_macro",
+        "quickshell_test_record",
+        "quickshell_test_report",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

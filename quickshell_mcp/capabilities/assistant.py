@@ -27,4 +27,5 @@ CAPABILITY_DEPENDS_ON = (
     "project",
     "runtime",
     "inspection",
+    "testing",
 )
