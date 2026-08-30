@@ -26,4 +26,5 @@ CAPABILITY_DEPENDS_ON = (
     "debugging",
     "project",
     "runtime",
+    "inspection",
 )

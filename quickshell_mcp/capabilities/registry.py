@@ -29,6 +29,7 @@ from . import (
     assistant,
     debugging,
     generation,
+    inspection,
     knowledge,
     migration,
     project,
@@ -67,6 +68,9 @@ _MUTATING_CAPABILITIES = ("runtime", "testing")
 # capability's default safety level.
 _TOOL_SAFETY_LEVELS: dict[str, str] = {
     "quickshell_apply_patch": "mutating",
+    "quickshell_ui_set_property": "mutating",
+    "quickshell_ui_invoke": "mutating",
+    "quickshell_ui_eval": "high-risk",
 }
 
 
@@ -82,6 +86,7 @@ _CAPABILITY_MODULES = (
     debugging,
     project,
     runtime,
+    inspection,
     assistant,
 )
 
@@ -103,7 +108,7 @@ PLANNED_CAPABILITIES: dict[str, Capability] = {
         status="planned",
         safety_level=_safety_level(name),
     )
-    for name in ("inspection", "testing", "performance")
+    for name in ("testing", "performance")
 }
 
 ALL_CAPABILITIES: dict[str, Capability] = {**CAPABILITIES, **PLANNED_CAPABILITIES}

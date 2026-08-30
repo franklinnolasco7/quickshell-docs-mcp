@@ -129,6 +129,15 @@ def main() -> int:
         "quickshell_runtime_status",
         "quickshell_runtime_logs",
         "quickshell_runtime_ping",
+        "quickshell_windows",
+        "quickshell_screenshot",
+        "quickshell_screenshot_diff",
+        "quickshell_ui_tree",
+        "quickshell_ui_find",
+        "quickshell_ui_get_property",
+        "quickshell_ui_set_property",
+        "quickshell_ui_invoke",
+        "quickshell_ui_eval",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

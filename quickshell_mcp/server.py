@@ -61,6 +61,17 @@ from .capabilities.generation import (  # noqa: F401
     _refactor,
     _style_match,
 )
+from .capabilities.inspection import (  # noqa: F401
+    _screenshot,
+    _screenshot_diff,
+    _ui_eval,
+    _ui_find,
+    _ui_get_property,
+    _ui_invoke,
+    _ui_set_property,
+    _ui_tree,
+    _ui_windows,
+)
 from .capabilities.knowledge import (  # noqa: F401
     _GITHUB_API,
     _IMPL_QUERY_STOPWORDS,
@@ -1120,6 +1131,97 @@ def quickshell_runtime_ping(session_id: str) -> dict:
     _record_tool("quickshell_runtime_ping")
     session = _require_session(session_id)
     return _ping(session)
+
+
+@mcp.tool()
+def quickshell_windows(session_id: str) -> dict:
+    """Enumerate windows/surfaces belonging to a managed Quickshell runtime
+    session. Read-only. Requires a compositor adapter; when unavailable
+    returns an empty list with an explanatory note (never fails)."""
+    _record_tool("quickshell_windows")
+    return _ui_windows(session_id)
+
+
+@mcp.tool()
+def quickshell_screenshot(session_id: str) -> dict:
+    """Capture a screenshot from a managed Quickshell runtime session.
+
+    Requires the ``grim`` compositor screenshot tool on PATH. Returns the
+    image path or an "unavailable" note. Read-only."""
+    _record_tool("quickshell_screenshot")
+    return _screenshot(session_id)
+
+
+@mcp.tool()
+def quickshell_screenshot_diff(baseline: str, actual: str, output: str | None = None) -> dict:
+    """Compare two runtime screenshots with ImageMagick ``compare``.
+
+    Returns whether they differ, the diff image path, and a metric.
+    Deterministic for CI. Read-only."""
+    _record_tool("quickshell_screenshot_diff")
+    return _screenshot_diff(baseline, actual, output=output)
+
+
+@mcp.tool()
+def quickshell_ui_tree(session_id: str, depth: int = 3) -> dict:
+    """Inspect the live QML object tree of a managed runtime session.
+
+    Returns a compact, depth-limited hierarchy from the injected
+    'inspector' IpcHandler target. Read-only."""
+    _record_tool("quickshell_ui_tree")
+    return _ui_tree(session_id, depth=depth)
+
+
+@mcp.tool()
+def quickshell_ui_find(session_id: str, query: str) -> dict:
+    """Search the live QML object tree of a managed runtime session by name,
+    type, text, or property. Returns stable references for later runtime
+    tools. Read-only."""
+    _record_tool("quickshell_ui_find")
+    return _ui_find(session_id, query)
+
+
+@mcp.tool()
+def quickshell_ui_get_property(session_id: str, target: str, property_name: str) -> dict:
+    """Read a live QML property value from a managed runtime object via
+    ``qs ipc prop get``. Validates the object/property exist. Read-only."""
+    _record_tool("quickshell_ui_get_property")
+    return _ui_get_property(session_id, target, property_name)
+
+
+@mcp.tool()
+def quickshell_ui_set_property(
+    session_id: str, target: str, property_name: str, value: str
+) -> dict:
+    """Set a live QML property on a managed runtime object. Mutating.
+
+    Requires an explicit runtime session, validates the property exists,
+    returns the old and new values, and never modifies project files."""
+    _record_tool("quickshell_ui_set_property")
+    return _ui_set_property(session_id, target, property_name, value)
+
+
+@mcp.tool()
+def quickshell_ui_invoke(
+    session_id: str, target: str, method: str, arguments: list[str] | None = None
+) -> dict:
+    """Invoke a QML method on a managed runtime object via ``qs ipc call``.
+    Mutating. Validates the method and arguments; enforces runtime session
+    boundaries; no arbitrary process/system calls."""
+    _record_tool("quickshell_ui_invoke")
+    return _ui_invoke(session_id, target, method, arguments=arguments)
+
+
+@mcp.tool()
+def quickshell_ui_eval(session_id: str, js_code: str, timeout: int = 5) -> dict:
+    """HIGH-RISK: evaluate QML/JavaScript in a managed runtime session.
+
+    Explicitly opt-in, session-scoped, with an execution timeout and output
+    limits. No filesystem or process access is granted. Prefer
+    quickshell_ui_get_property / quickshell_ui_invoke for controlled reads
+    and calls."""
+    _record_tool("quickshell_ui_eval")
+    return _ui_eval(session_id, js_code, timeout=timeout)
 
 
 @mcp.tool()
