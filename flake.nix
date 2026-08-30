@@ -66,6 +66,19 @@
               twine
             ];
           };
+          # Headless CI env: a Quickshell binary plus a virtual display and
+          # screenshot tooling so the CI entrypoints (scripts/ci_*.py) can run
+          # validation, runtime tests, and screenshot regression with no
+          # desktop. Uses pkgs.quickshell (the shell toolkit), weston (virtual
+          # display), and grim/imagemagick (capture + compare).
+          ci = pkgs.mkShell {
+            packages = [
+              pkgs.quickshell
+              pkgs.weston
+              pkgs.grim
+              pkgs.imagemagick
+            ];
+          };
         });
     };
 }
