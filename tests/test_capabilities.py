@@ -102,6 +102,11 @@ EXPECTED_TOOLS = {
     "quickshell_pipewire_info",
     "quickshell_dbus_services",
     "quickshell_system_diagnostics",
+    "quickshell_api_diff",
+    "quickshell_api_graph",
+    "quickshell_best_practice",
+    "quickshell_pattern_compare",
+    "quickshell_provenance",
 }
 
 # Tools that report session telemetry / live in server.py, not a domain capability.

@@ -32,6 +32,7 @@ from . import (
     generation,
     inspection,
     knowledge,
+    knowledge2,
     migration,
     performance,
     project,
@@ -83,6 +84,7 @@ def _safety_level(name: str) -> str:
 
 _CAPABILITY_MODULES = (
     knowledge,
+    knowledge2,
     validation,
     generation,
     migration,

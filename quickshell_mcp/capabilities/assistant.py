@@ -20,6 +20,7 @@ CAPABILITY_NAME = "assistant"
 CAPABILITY_TOOLS = ("quickshell_coding_assistant",)
 CAPABILITY_DEPENDS_ON = (
     "knowledge",
+    "knowledge2",
     "validation",
     "generation",
     "migration",

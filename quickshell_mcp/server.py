@@ -123,6 +123,13 @@ from .capabilities.knowledge import (  # noqa: F401
     _search_type_content,
     _type_page,
 )
+from .capabilities.knowledge2 import (  # noqa: F401
+    _api_diff,
+    _api_graph,
+    _best_practice,
+    _pattern_compare,
+    _provenance,
+)
 from .capabilities.migration import (  # noqa: F401
     _behavioral_scan,
     _collect_api_refs,
@@ -1548,6 +1555,52 @@ def quickshell_system_diagnostics() -> dict:
     Read-only."""
     _record_tool("quickshell_system_diagnostics")
     return _detect_adapter("System diagnostics")
+
+
+@mcp.tool()
+def quickshell_api_diff(from_version: str, to_version: str) -> dict:
+    """Compare two Quickshell versions and report added, removed, renamed,
+    and deprecated APIs, each with provenance (changelog and type-page
+    URLs). Read-only."""
+    _record_tool("quickshell_api_diff")
+    return _api_diff(from_version, to_version)
+
+
+@mcp.tool()
+def quickshell_api_graph(api: str, version: str = "latest") -> dict:
+    """Build a documented API dependency graph for a type: its declared
+    properties (with their types) and its documented base type. Only
+    documented relationships are included — no speculative edges. Read-only."""
+    _record_tool("quickshell_api_graph")
+    return _api_graph(api, version=version)
+
+
+@mcp.tool()
+def quickshell_best_practice(query: str, version: str = "latest") -> dict:
+    """Return evidence-backed implementation guidance ranked by authority:
+    official docs > official examples > real-world shells. Documented
+    behavior is separated from community convention. Read-only."""
+    _record_tool("quickshell_best_practice")
+    return _best_practice(query, version=version)
+
+
+@mcp.tool()
+def quickshell_pattern_compare(query: str, version: str = "latest") -> dict:
+    """Compare how the indexed real-world shells (Caelestia, Noctalia,
+    dots-hyprland) solve the same problem: per-project matches and source
+    locations. Presents differences for comparison; never declares one
+    implementation correct. Read-only."""
+    _record_tool("quickshell_pattern_compare")
+    return _pattern_compare(query, version=version)
+
+
+@mcp.tool()
+def quickshell_provenance(query: str, version: str = "latest", limit: int = 5) -> dict:
+    """Return provenance for knowledge results: source, version, URL, and
+    authority level (docs > examples > real-world), so higher-level results
+    can cite them. Read-only."""
+    _record_tool("quickshell_provenance")
+    return _provenance(query, version=version, limit=limit)
 
 
 @mcp.tool()

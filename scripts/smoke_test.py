@@ -164,6 +164,11 @@ def main() -> int:
         "quickshell_pipewire_info",
         "quickshell_dbus_services",
         "quickshell_system_diagnostics",
+        "quickshell_api_diff",
+        "quickshell_api_graph",
+        "quickshell_best_practice",
+        "quickshell_pattern_compare",
+        "quickshell_provenance",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"
