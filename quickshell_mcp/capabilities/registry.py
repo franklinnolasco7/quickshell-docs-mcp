@@ -32,6 +32,7 @@ from . import (
     inspection,
     knowledge,
     migration,
+    performance,
     project,
     runtime,
     testing,
@@ -89,6 +90,7 @@ _CAPABILITY_MODULES = (
     runtime,
     inspection,
     testing,
+    performance,
     assistant,
 )
 
@@ -102,16 +104,7 @@ CAPABILITIES: dict[str, Capability] = {
     for mod in _CAPABILITY_MODULES
 }
 
-PLANNED_CAPABILITIES: dict[str, Capability] = {
-    name: Capability(
-        name=name,
-        tools=(),
-        depends_on=(),
-        status="planned",
-        safety_level=_safety_level(name),
-    )
-    for name in ("performance",)
-}
+PLANNED_CAPABILITIES: dict[str, Capability] = {}
 
 ALL_CAPABILITIES: dict[str, Capability] = {**CAPABILITIES, **PLANNED_CAPABILITIES}
 

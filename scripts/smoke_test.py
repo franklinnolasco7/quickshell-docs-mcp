@@ -153,6 +153,12 @@ def main() -> int:
         "quickshell_visual_diff",
         "quickshell_screenshot_region",
         "quickshell_ui_snapshot",
+        "quickshell_profile",
+        "quickshell_profile_component",
+        "quickshell_profile_bindings",
+        "quickshell_profile_timers",
+        "quickshell_profile_object_tree",
+        "quickshell_performance_diagnose",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

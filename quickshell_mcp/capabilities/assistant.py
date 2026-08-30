@@ -28,4 +28,5 @@ CAPABILITY_DEPENDS_ON = (
     "runtime",
     "inspection",
     "testing",
+    "performance",
 )

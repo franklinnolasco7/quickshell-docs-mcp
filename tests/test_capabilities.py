@@ -91,6 +91,12 @@ EXPECTED_TOOLS = {
     "quickshell_visual_diff",
     "quickshell_screenshot_region",
     "quickshell_ui_snapshot",
+    "quickshell_profile",
+    "quickshell_profile_component",
+    "quickshell_profile_bindings",
+    "quickshell_profile_timers",
+    "quickshell_profile_object_tree",
+    "quickshell_performance_diagnose",
 }
 
 # Tools that report session telemetry / live in server.py, not a domain capability.

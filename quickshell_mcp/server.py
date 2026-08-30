@@ -126,6 +126,14 @@ from .capabilities.migration import (  # noqa: F401
     _migration_plan,
     _symbol_issue,
 )
+from .capabilities.performance import (  # noqa: F401
+    _performance_diagnose,
+    _profile,
+    _profile_bindings,
+    _profile_component,
+    _profile_object_tree,
+    _profile_timers,
+)
 from .capabilities.project import (  # noqa: F401
     _analyze_project,
     _config_conventions,
@@ -1397,6 +1405,60 @@ def quickshell_ui_snapshot(session_id: str, include_tree: bool = True) -> dict:
     regression detection. Read-only."""
     _record_tool("quickshell_ui_snapshot")
     return _ui_snapshot(session_id, include_tree=include_tree)
+
+
+@mcp.tool()
+def quickshell_profile(session_id: str, seconds: float = 2.0) -> dict:
+    """Measure runtime characteristics of a managed session: CPU usage,
+    memory (RSS), and sample duration via bounded /proc sampling. Reports
+    methodology and limitations. Read-only."""
+    _record_tool("quickshell_profile")
+    return _profile(session_id, seconds=seconds)
+
+
+@mcp.tool()
+def quickshell_profile_component(project: str) -> dict:
+    """Identify components with potential performance concerns from static
+    evidence: timer/animation counts and layout bindings. Never attributes
+    cost without evidence. Read-only."""
+    _record_tool("quickshell_profile_component")
+    return _profile_component(project)
+
+
+@mcp.tool()
+def quickshell_profile_bindings(project: str) -> dict:
+    """Identify high-frequency or broad property bindings statically (potential
+    re-evaluation chains). Static only; re-evaluation frequency needs runtime
+    instrumentation. Read-only."""
+    _record_tool("quickshell_profile_bindings")
+    return _profile_bindings(project)
+
+
+@mcp.tool()
+def quickshell_profile_timers(project: str) -> dict:
+    """Find timers with potentially suspicious configuration (very short
+    intervals, repeat disabled). Frequent timers are not labeled bugs by
+    themselves. Read-only."""
+    _record_tool("quickshell_profile_timers")
+    return _profile_timers(project)
+
+
+@mcp.tool()
+def quickshell_profile_object_tree(project: str) -> dict:
+    """Report object-tree statistics from static QML structure: total objects,
+    repeated component patterns, and nesting depth. Useful for optimization;
+    large trees are not automatically bad. Read-only."""
+    _record_tool("quickshell_profile_object_tree")
+    return _profile_object_tree(project)
+
+
+@mcp.tool()
+def quickshell_performance_diagnose(project: str) -> dict:
+    """Correlate static project evidence (bindings, timers, object tree) into
+    prioritized performance hypotheses with evidence and confidence. Never
+    modifies source. Read-only."""
+    _record_tool("quickshell_performance_diagnose")
+    return _performance_diagnose(project)
 
 
 @mcp.tool()
