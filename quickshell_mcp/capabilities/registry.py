@@ -33,6 +33,7 @@ from . import (
     ecosystem,
     generation,
     inspection,
+    intelligence,
     knowledge,
     knowledge2,
     migration,
@@ -98,6 +99,7 @@ _CAPABILITY_MODULES = (
     performance,
     adapters,
     ecosystem,
+    intelligence,
     agent,
     assistant,
 )

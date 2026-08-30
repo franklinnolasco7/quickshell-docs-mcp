@@ -105,6 +105,17 @@ from .capabilities.inspection import (  # noqa: F401
     _visual_check,
     _visual_diff,
 )
+from .capabilities.intelligence import (  # noqa: F401
+    _architecture,
+    _memory_clear,
+    _memory_get,
+    _memory_list,
+    _memory_reset,
+    _memory_save,
+    _regression,
+    _root_cause,
+    _task_plan,
+)
 from .capabilities.knowledge import (  # noqa: F401
     _GITHUB_API,
     _IMPL_QUERY_STOPWORDS,
@@ -1822,6 +1833,108 @@ def quickshell_optimize(
     Cost is never attributed without evidence. Read-only."""
     _record_tool("quickshell_optimize")
     return _optimize(project=project, session_id=session_id, seconds=seconds)
+
+
+@mcp.tool()
+def quickshell_project_memory(
+    project: str,
+    action: str = "list",
+    key: str | None = None,
+    content: str | None = None,
+    evidence: list[str] | None = None,
+    scope: str = "general",
+) -> dict:
+    """Project memory: explicit, evidence-backed notes about a project
+    (13.1). action= is one of save (store a keyed entry with evidence),
+    list (summarize), get (one entry), clear (one key), or reset (all).
+    Memory is session-scoped, inspectable, and resettable. Read-only except
+    the registry mutations it performs."""
+    _record_tool("quickshell_project_memory")
+    action = (action or "list").lower()
+    if action == "save":
+        if not key or content is None:
+            raise ValueError("save requires key= and content=")
+        return _memory_save(project, key, content, evidence=evidence, scope=scope)
+    if action == "get":
+        if not key:
+            raise ValueError("get requires key=")
+        return _memory_get(project, key)
+    if action == "clear":
+        if not key:
+            raise ValueError("clear requires key=")
+        return _memory_clear(project, key)
+    if action == "reset":
+        return _memory_reset(project)
+    return _memory_list(project)
+
+
+@mcp.tool()
+def quickshell_project_architecture(project: str, version: str = "latest") -> dict:
+    """Produce evidence-backed architecture recommendations for a project:
+    confirmed cycles, unresolved references, and docs-grounded guidance.
+    Every recommendation cites its evidence and basis. Read-only."""
+    _record_tool("quickshell_project_architecture")
+    return _architecture(project, version=version)
+
+
+@mcp.tool()
+def quickshell_regression_detect(
+    project: str,
+    baseline_screenshot: str | None = None,
+    actual_screenshot: str | None = None,
+    version: str = "latest",
+    threshold: int = 0,
+) -> dict:
+    """Detect regressions by comparing the current state against a baseline:
+    validation of every QML file plus an optional screenshot comparison.
+    Only confirmed changes are reported; absent baselines are surfaced, not
+    fabricated. Read-only."""
+    _record_tool("quickshell_regression_detect")
+    return _regression(
+        project,
+        baseline_screenshot=baseline_screenshot,
+        actual_screenshot=actual_screenshot,
+        version=version,
+        threshold=threshold,
+    )
+
+
+@mcp.tool()
+def quickshell_root_cause(
+    error: str | None = None,
+    code: str | None = None,
+    session_id: str | None = None,
+    project: str | None = None,
+    version: str = "latest",
+    filename: str | None = None,
+) -> dict:
+    """Correlate evidence into a root cause, separating inferred hypotheses
+    from observed evidence. Combines static doc-grounded explanation with
+    live runtime diagnosis; never fabricates a cause without evidence.
+    Read-only."""
+    _record_tool("quickshell_root_cause")
+    return _root_cause(
+        error=error,
+        code=code,
+        session_id=session_id,
+        project=project,
+        version=version,
+        filename=filename,
+    )
+
+
+@mcp.tool()
+def quickshell_task_plan(
+    request: str,
+    project: str | None = None,
+    version: str = "latest",
+) -> dict:
+    """Plan a development request with the minimal tool set: inspect the
+    project first, select the fewest tools that accomplish the intent, and
+    stop when verification would confirm the change. Advisory and read-only;
+    planning never executes anything."""
+    _record_tool("quickshell_task_plan")
+    return _task_plan(request, project=project, version=version)
 
 
 @mcp.tool()

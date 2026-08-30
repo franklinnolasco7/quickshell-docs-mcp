@@ -32,5 +32,6 @@ CAPABILITY_DEPENDS_ON = (
     "performance",
     "adapters",
     "ecosystem",
+    "intelligence",
     "agent",
 )

@@ -182,6 +182,11 @@ def main() -> int:
         "quickshell_migrate_project",
         "quickshell_test_feature",
         "quickshell_optimize",
+        "quickshell_project_memory",
+        "quickshell_project_architecture",
+        "quickshell_regression_detect",
+        "quickshell_root_cause",
+        "quickshell_task_plan",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"
