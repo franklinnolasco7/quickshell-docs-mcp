@@ -163,6 +163,119 @@ def test_version_declared_on_quickshell_import(tmp_path):
     assert ctx.detection_status("quickshell_version") == "inferred"
 
 
+# ---------------------------------------------------------------------------
+# Components
+# ---------------------------------------------------------------------------
+
+
+def test_components_detected_under_components_and_widgets(tmp_path):
+    _minimal_shell(tmp_path)
+    _write(tmp_path / "components" / "VolumeWidget.qml", "import QtQuick\nItem {}\n")
+    _write(tmp_path / "widgets" / "ClockWidget.qml", "import QtQuick\nItem {}\n")
+    ctx = _build_project_context(str(tmp_path))
+    info = ctx.discover({"components"})
+    names = {c["name"] for c in info["components"]}
+    assert names == {"VolumeWidget", "ClockWidget"}
+    assert ctx.detection_status("components") == "detected"
+
+
+def test_components_empty_when_no_component_dirs(tmp_path):
+    _minimal_shell(tmp_path)
+    ctx = _build_project_context(str(tmp_path))
+    info = ctx.discover({"components"})
+    assert info["components"] == []
+    assert ctx.detection_status("components") == "unknown"
+
+
+# ---------------------------------------------------------------------------
+# Services
+# ---------------------------------------------------------------------------
+
+
+def test_services_detected_from_imports_and_objects(tmp_path):
+    _write(
+        tmp_path / "main.qml",
+        "import Quickshell\n"
+        "import Quickshell.Services.Pipewire\n"
+        "import QtQuick\n"
+        "PanelWindow {\n"
+        "    VolumeService {}\n"
+        "}\n",
+    )
+    ctx = _build_project_context(str(tmp_path))
+    info = ctx.discover({"services"})
+    assert "Quickshell.Services.Pipewire" in info["services"]["modules"]
+    assert "VolumeService" in info["services"]["objects"]
+    assert ctx.detection_status("services") == "detected"
+
+
+def test_services_unknown_when_no_evidence(tmp_path):
+    _minimal_shell(tmp_path)
+    ctx = _build_project_context(str(tmp_path))
+    info = ctx.discover({"services"})
+    assert info["services"] == {"modules": [], "objects": []}
+    assert ctx.detection_status("services") == "unknown"
+
+
+# ---------------------------------------------------------------------------
+# Runtime dependencies
+# ---------------------------------------------------------------------------
+
+
+def test_runtime_dependencies_detected_from_qml_types(tmp_path):
+    _write(
+        tmp_path / "main.qml",
+        "import Quickshell\n"
+        "import QtQuick\n"
+        "PanelWindow {\n"
+        "    Process {}\n"
+        "    IpcHandler { target: 'test' }\n"
+        "}\n",
+    )
+    ctx = _build_project_context(str(tmp_path))
+    info = ctx.discover({"runtime_dependencies"})
+    assert "Process" in info["runtime_dependencies"]["qml_types"]
+    assert "IpcHandler" in info["runtime_dependencies"]["qml_types"]
+    assert ctx.detection_status("runtime_dependencies") == "detected"
+
+
+def test_runtime_dependencies_unknown_when_no_evidence(tmp_path):
+    _minimal_shell(tmp_path)
+    ctx = _build_project_context(str(tmp_path))
+    info = ctx.discover({"runtime_dependencies"})
+    assert info["runtime_dependencies"] == {"qml_types": [], "config": []}
+    assert ctx.detection_status("runtime_dependencies") == "unknown"
+
+
+# ---------------------------------------------------------------------------
+# Environment
+# ---------------------------------------------------------------------------
+
+
+def test_environment_inferred_from_process_env(tmp_path):
+    _write(
+        tmp_path / "main.qml",
+        "import Quickshell\n"
+        "PanelWindow {\n"
+        "    property string home: process.env.HOME\n"
+        '    property string runtime: process.env["XDG_RUNTIME_DIR"]\n'
+        "}\n",
+    )
+    ctx = _build_project_context(str(tmp_path))
+    info = ctx.discover({"environment"})
+    assert "HOME" in info["environment"]
+    assert "XDG_RUNTIME_DIR" in info["environment"]
+    assert ctx.detection_status("environment") == "inferred"
+
+
+def test_environment_unknown_when_no_env_refs(tmp_path):
+    _minimal_shell(tmp_path)
+    ctx = _build_project_context(str(tmp_path))
+    info = ctx.discover({"environment"})
+    assert info["environment"] == []
+    assert ctx.detection_status("environment") == "unknown"
+
+
 def test_missing_entrypoint_is_empty(tmp_path):
     _write(tmp_path / "Comp.qml", "import Quickshell\nItem {}\n")
     ctx = _build_project_context(str(tmp_path))

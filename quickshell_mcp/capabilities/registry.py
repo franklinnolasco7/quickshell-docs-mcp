@@ -10,6 +10,15 @@ the capability graph is acyclic.
 Capabilities that are planned but not implemented yet (project, runtime,
 inspection, testing, performance) are registered with ``status="planned"`` and
 no tools. No modules are created for them until the features land.
+
+Every capability carries a ``safety_level``:
+
+* **read-only** — analysis only; no state changes, no file writes, no process
+  execution (default for all capabilities today).
+* **mutating** — alters live state (runtime sessions, explicit file writes via
+  ``apply_patch``). Requires explicit invocation.
+* **high-risk** — arbitrary evaluation or destructive filesystem operations.
+  Reserved for future eval/patch capabilities; not yet assigned.
 """
 
 from __future__ import annotations
@@ -23,8 +32,11 @@ __all__ = [
     "CAPABILITIES",
     "Capability",
     "PLANNED_CAPABILITIES",
+    "SAFETY_LEVELS",
     "capability_for_tool",
+    "classify_capability",
     "dependency_order",
+    "safety_level_for_tool",
 ]
 
 
@@ -34,6 +46,17 @@ class Capability:
     tools: tuple[str, ...]
     depends_on: tuple[str, ...]
     status: str = "implemented"
+    safety_level: str = "read-only"
+
+
+# Mutating capabilities alter live state rather than only reading project/docs.
+# high-risk is not yet assigned to any capability; it is reserved for future
+# evaluation/patch capabilities.
+_MUTATING_CAPABILITIES = ("runtime", "testing")
+
+
+def _safety_level(name: str) -> str:
+    return "mutating" if name in _MUTATING_CAPABILITIES else "read-only"
 
 
 _CAPABILITY_MODULES = (
@@ -50,16 +73,26 @@ CAPABILITIES: dict[str, Capability] = {
         name=mod.CAPABILITY_NAME,
         tools=mod.CAPABILITY_TOOLS,
         depends_on=mod.CAPABILITY_DEPENDS_ON,
+        safety_level=_safety_level(mod.CAPABILITY_NAME),
     )
     for mod in _CAPABILITY_MODULES
 }
 
 PLANNED_CAPABILITIES: dict[str, Capability] = {
-    name: Capability(name=name, tools=(), depends_on=(), status="planned")
+    name: Capability(
+        name=name,
+        tools=(),
+        depends_on=(),
+        status="planned",
+        safety_level=_safety_level(name),
+    )
     for name in ("project", "runtime", "inspection", "testing", "performance")
 }
 
 ALL_CAPABILITIES: dict[str, Capability] = {**CAPABILITIES, **PLANNED_CAPABILITIES}
+
+# Convenience dict derived from the authoritative dataclass fields.
+SAFETY_LEVELS: dict[str, str] = {name: cap.safety_level for name, cap in ALL_CAPABILITIES.items()}
 
 # `quickshell_stats` reports session telemetry and lives entirely in server.py;
 # it is not owned by any domain capability.
@@ -72,6 +105,32 @@ def capability_for_tool(tool: str) -> str | None:
         if tool in cap.tools:
             return cap.name
     return None
+
+
+def classify_capability(name: str) -> str:
+    """Return the safety level of a registered capability.
+
+    Levels: ``read-only`` (analysis), ``mutating`` (changes live state),
+    ``high-risk`` (arbitrary evaluation or file mutation; not yet assigned).
+    """
+    cap = ALL_CAPABILITIES.get(name)
+    if cap is None:
+        raise ValueError(f"Unknown capability '{name}'")
+    return cap.safety_level
+
+
+def safety_level_for_tool(tool: str) -> str:
+    """Return the safety level of the capability owning *tool*.
+
+    System tools (e.g. ``quickshell_stats``) are telemetry and are always
+    classified read-only.
+    """
+    cap = capability_for_tool(tool)
+    if cap is not None:
+        return classify_capability(cap)
+    if tool in _SYSTEM_TOOLS:
+        return "read-only"
+    raise ValueError(f"Unknown tool '{tool}'")
 
 
 def dependency_order() -> list[str]:

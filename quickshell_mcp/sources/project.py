@@ -18,6 +18,11 @@ Fields are one of three statuses:
 * **detected** — directly observed in the filesystem
 * **inferred** — derived from detected data
 * **unknown** — no data could be found
+
+Available fields (all lazy): ``qml_files``, ``js_files``, ``entrypoints``,
+``imports``, ``quickshell_modules``, ``quickshell_version``, ``qt_version``,
+``compositor``, ``config_paths``, ``dependencies``, ``conventions``,
+``components``, ``services``, ``runtime_dependencies``, ``environment``.
 """
 
 from __future__ import annotations
@@ -54,6 +59,33 @@ _QUICKSHELL_CORE = frozenset(
 # Config file extensions to scan for at the project root.
 _CONFIG_EXTENSIONS = frozenset({".json", ".toml", ".yaml", ".yml", ".conf", ".ini"})
 
+# Directory names that hold reusable UI parts.
+_COMPONENT_DIRS = frozenset({"components", "widgets"})
+
+# QML types that wire the shell to external runtime infrastructure.  Only
+# types named exactly like these count; anything else is not a runtime hook.
+_RUNTIME_QML_TYPES = frozenset(
+    {"Process", "IpcHandler", "Socket", "SocketServer", "DataStream", "StdioCollector", "FileView"}
+)
+
+# Config keywords that hint at external runtime dependencies.
+_CONFIG_DEP_KEYWORDS = (
+    "command",
+    "exec",
+    "binary",
+    "dbus",
+    "socket",
+    "pipewire",
+    "systemctl",
+    "hyprctl",
+    "wayland",
+)
+
+_ENV_VAR_RE = re.compile(
+    r"process\.env\.([A-Za-z_][A-Za-z0-9_]*)"
+    r"|process\.env\[\s*['\"]([A-Za-z_][A-Za-z0-9_]*)['\"]\s*\]"
+)
+
 _ALL_FIELDS = frozenset(
     {
         "qml_files",
@@ -67,6 +99,10 @@ _ALL_FIELDS = frozenset(
         "config_paths",
         "dependencies",
         "conventions",
+        "components",
+        "services",
+        "runtime_dependencies",
+        "environment",
     }
 )
 
@@ -79,6 +115,19 @@ def _is_quickshell_module(module: str) -> bool:
 
 def _is_qt_module(module: str) -> bool:
     return module.startswith("Qt") and module != "Qt"
+
+
+def _is_service_module(module: str) -> bool:
+    return module.startswith("Quickshell.Services.")
+
+
+def _find_env_vars(source: str) -> set[str]:
+    names: set[str] = set()
+    for match in _ENV_VAR_RE.finditer(source):
+        name = match.group(1) or match.group(2)
+        if name:
+            names.add(name)
+    return names
 
 
 @dataclass
@@ -141,6 +190,9 @@ class _ProjectContext:
         imports: list[dict] = []
         entrypoints: list[str] = []
         config_paths: list[str] = []
+        objects: list[dict] = []
+        env_vars: set[str] = set()
+        config_deps: list[dict] = []
 
         for path in self.root.rglob("*"):
             if not path.is_file():
@@ -157,6 +209,7 @@ class _ProjectContext:
                 source = Path(str_path).read_text(encoding="utf-8")
             except (OSError, UnicodeDecodeError):
                 continue
+            env_vars.update(_find_env_vars(source))
             parsed = _parse_structure(_tokenize(source))
             for imp in parsed.imports:
                 imports.append(
@@ -169,8 +222,19 @@ class _ProjectContext:
                         "col": imp.col,
                     }
                 )
+            for obj in parsed.objects:
+                objects.append({"base_name": obj.base_name, "file": str_path})
             if parsed.objects and parsed.objects[0].base_name in _ENTRYPOINT_TYPES:
                 entrypoints.append(str_path)
+
+        for str_path in config_paths:
+            try:
+                text = Path(str_path).read_text(encoding="utf-8").lower()
+            except (OSError, UnicodeDecodeError):
+                continue
+            for keyword in _CONFIG_DEP_KEYWORDS:
+                if keyword in text:
+                    config_deps.append({"keyword": keyword, "file": str_path})
 
         result = {
             "qml_files": qml_files,
@@ -178,6 +242,9 @@ class _ProjectContext:
             "imports": imports,
             "entrypoints": entrypoints,
             "config_paths": config_paths,
+            "objects": objects,
+            "env_vars": sorted(env_vars),
+            "config_deps": config_deps,
         }
         _cache_set(cache_key, result)
         return result
@@ -246,6 +313,51 @@ class _ProjectContext:
             if second not in _QUICKSHELL_CORE:
                 segments.add(second)
         self._set_inferred("compositor", sorted(segments))
+
+    def _discover_components(self) -> None:
+        info = self._scan()
+        components = [
+            {"path": str_path, "name": Path(str_path).stem}
+            for str_path in info["qml_files"]
+            if any(segment in _COMPONENT_DIRS for segment in Path(str_path).parts)
+        ]
+        self._set("components", components, status="detected" if components else "unknown")
+
+    def _discover_services(self) -> None:
+        info = self._scan()
+        modules = sorted(
+            {imp["module"] for imp in info["imports"] if _is_service_module(imp["module"])}
+        )
+        objects = sorted(
+            {obj["base_name"] for obj in info["objects"] if obj["base_name"].endswith("Service")}
+        )
+        value = {"modules": modules, "objects": objects}
+        if modules:
+            status = "detected"
+        elif objects:
+            status = "inferred"
+        else:
+            status = "unknown"
+        self._set("services", value, status=status)
+
+    def _discover_runtime_dependencies(self) -> None:
+        info = self._scan()
+        qml_types = sorted(
+            {obj["base_name"] for obj in info["objects"] if obj["base_name"] in _RUNTIME_QML_TYPES}
+        )
+        config_keywords = sorted({dep["keyword"] for dep in info["config_deps"]})
+        value = {"qml_types": qml_types, "config": config_keywords}
+        if qml_types:
+            status = "detected"
+        elif config_keywords:
+            status = "inferred"
+        else:
+            status = "unknown"
+        self._set("runtime_dependencies", value, status=status)
+
+    def _discover_environment(self) -> None:
+        info = self._scan()
+        self._set_inferred("environment", info["env_vars"])
 
     def _discover_conventions(self) -> None:
         info = self._scan()

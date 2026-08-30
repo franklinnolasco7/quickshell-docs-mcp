@@ -321,6 +321,8 @@ class _Diagnostic:
     confidence: str  # high | medium | low
     could_not_verify: bool
     suggestion: str | None = None
+    file: str | None = None
+    related_location: dict | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -336,6 +338,8 @@ class _Diagnostic:
             "confidence": self.confidence,
             "could_not_verify": self.could_not_verify,
             "suggestion": self.suggestion,
+            "file": self.file,
+            "related_location": self.related_location,
         }
 
 
@@ -1319,6 +1323,8 @@ def _diag(
     confidence: str,
     could_not_verify: bool = False,
     suggestion: str | None = None,
+    file: str | None = None,
+    related_location: dict | None = None,
 ) -> _Diagnostic:
     return _Diagnostic(
         severity=severity,
@@ -1333,6 +1339,8 @@ def _diag(
         confidence=confidence,
         could_not_verify=could_not_verify,
         suggestion=suggestion,
+        file=file,
+        related_location=related_location,
     )
 
 
@@ -1415,6 +1423,10 @@ def _validate(source: str, version: str = "latest", filename: str | None = None)
                         confidence="medium",
                     )
                 )
+
+    if filename:
+        for d in diagnostics:
+            d.file = filename
 
     diagnostics.sort(
         key=lambda d: (

@@ -45,6 +45,7 @@ _SEVERITY_ORDER = {"error": 0, "warning": 1, "info": 2}
 class _MigrationIssue(TypedDict):
     line: int | None
     column: int | None
+    file: str | None
     severity: str  # error | warning | info
     classification: str  # definite | likely | manual_review
     confidence: str  # high | medium | low
@@ -142,10 +143,12 @@ def _issue(
     suggestion: str,
     changed_in_version: str | None,
     source: dict | None,
+    file: str | None = None,
 ) -> _MigrationIssue:
     return {
         "line": location["line"] if location else None,
         "column": location["column"] if location else None,
+        "file": file,
         "severity": severity,
         "classification": classification,
         "confidence": confidence,
@@ -826,6 +829,8 @@ def _migrate(
     counts = {"definite": 0, "likely": 0, "manual_review": 0}
     for issue in issues:
         counts[issue["classification"]] += 1
+        if filename:
+            issue["file"] = filename
 
     issues.sort(
         key=lambda issue: (

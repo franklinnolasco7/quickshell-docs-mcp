@@ -119,6 +119,53 @@ def test_planned_capabilities_are_metadata_only():
         assert not importlib.util.find_spec(f"quickshell_mcp.capabilities.{name}")
 
 
+# --- Safety level classification -------------------------------------------
+
+
+def test_implemented_capability_safety_levels():
+    for name, cap in registry.CAPABILITIES.items():
+        assert cap.safety_level == "read-only", f"{name} should be read-only"
+
+
+def test_planned_capability_safety_levels():
+    for name, cap in registry.PLANNED_CAPABILITIES.items():
+        if name in ("runtime", "testing"):
+            assert cap.safety_level == "mutating", f"{name} should be mutating"
+        else:
+            assert cap.safety_level == "read-only", f"{name} should be read-only"
+
+
+def test_classify_capability():
+    assert registry.classify_capability("knowledge") == "read-only"
+    assert registry.classify_capability("runtime") == "mutating"
+    assert registry.classify_capability("testing") == "mutating"
+
+
+def test_classify_capability_unknown_raises():
+    with pytest.raises(ValueError, match="Unknown capability"):
+        registry.classify_capability("nonexistent")
+
+
+def test_safety_level_for_tool_inherits_from_capability():
+    assert registry.safety_level_for_tool("quickshell_search") == "read-only"
+    assert registry.safety_level_for_tool("quickshell_coding_assistant") == "read-only"
+
+
+def test_safety_level_for_tool_system_tool_read_only():
+    assert registry.safety_level_for_tool("quickshell_stats") == "read-only"
+
+
+def test_safety_level_for_tool_unknown_raises():
+    with pytest.raises(ValueError, match="Unknown tool"):
+        registry.safety_level_for_tool("nonexistent_tool")
+
+
+def test_safety_levels_map_consistent_with_capabilities():
+    for name, cap in registry.ALL_CAPABILITIES.items():
+        assert registry.SAFETY_LEVELS[name] == cap.safety_level
+    assert set(registry.SAFETY_LEVELS) == set(registry.ALL_CAPABILITIES)
+
+
 # --- Import validity / no circular imports ---------------------------------
 
 

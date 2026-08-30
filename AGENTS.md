@@ -151,6 +151,10 @@ info = ctx.discover({"qml_files", "imports", "compositor"})
 | `config_paths` | detected | Config files at the project root |
 | `dependencies` | detected | All distinct import modules |
 | `conventions` | inferred | Naming, layout, structure patterns |
+| `components` | detected / unknown | QML files under `components/` or `widgets/` dirs |
+| `services` | detected / inferred / unknown | `Quickshell.Services.*` imports + `*Service`-named objects |
+| `runtime_dependencies` | detected / inferred / unknown | Runtime-hook QML types (Process, IpcHandler, ...) + config keyword hints |
+| `environment` | inferred / unknown | `process.env.*` variables referenced in QML |
 
 ### Status semantics
 
