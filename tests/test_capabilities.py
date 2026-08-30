@@ -233,6 +233,12 @@ def test_safety_level_for_tool_inherits_from_capability():
     assert registry.safety_level_for_tool("quickshell_coding_assistant") == "read-only"
 
 
+def test_reload_classified_mutating():
+    # _reload stops and relaunches a managed session process, so it must be
+    # mutating even though it lives under the read-only debugging capability.
+    assert registry.safety_level_for_tool("quickshell_reload") == "mutating"
+
+
 def test_safety_level_for_tool_system_tool_read_only():
     assert registry.safety_level_for_tool("quickshell_stats") == "read-only"
 

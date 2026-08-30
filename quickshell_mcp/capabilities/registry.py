@@ -78,6 +78,9 @@ _TOOL_SAFETY_LEVELS: dict[str, str] = {
     "quickshell_ui_set_property": "mutating",
     "quickshell_ui_invoke": "mutating",
     "quickshell_ui_eval": "high-risk",
+    # reload stops and relaunches a managed session process, so it mutates
+    # live state even though it lives under the debugging capability.
+    "quickshell_reload": "mutating",
 }
 
 

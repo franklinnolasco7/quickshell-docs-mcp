@@ -16,6 +16,7 @@ module.exports = {
         releaseRules: [
           { notes: [{ title: "Semver", text: "minor" }], release: "minor" },
           { notes: [{ title: "Semver", text: "major" }], release: "major" },
+          { notes: [{ title: "Semver", text: "patch" }], release: "patch" },
         ],
       },
     ],
