@@ -159,6 +159,11 @@ def main() -> int:
         "quickshell_profile_timers",
         "quickshell_profile_object_tree",
         "quickshell_performance_diagnose",
+        "quickshell_hyprland_info",
+        "quickshell_wayland_layers",
+        "quickshell_pipewire_info",
+        "quickshell_dbus_services",
+        "quickshell_system_diagnostics",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

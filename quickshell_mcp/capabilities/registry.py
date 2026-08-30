@@ -26,6 +26,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from . import (
+    adapters,
     assistant,
     debugging,
     generation,
@@ -91,6 +92,7 @@ _CAPABILITY_MODULES = (
     inspection,
     testing,
     performance,
+    adapters,
     assistant,
 )
 

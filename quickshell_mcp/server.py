@@ -37,6 +37,11 @@ from . import utils
 # and external callers survive unchanged. Tool logic is routed through the
 # capability layer, which re-exports the shared-service helpers it needs.
 from .caches import _cache, _cache_get, _cache_set  # noqa: F401
+from .capabilities.adapters import (  # noqa: F401
+    _ADAPTERS,
+    _Adapter,
+    _detect_adapter,
+)
 from .capabilities.assistant import (  # noqa: F401
     _build_project_context,
     _classify_intent,
@@ -1500,6 +1505,49 @@ def quickshell_performance_diagnose(project: str) -> dict:
     modifies source. Read-only."""
     _record_tool("quickshell_performance_diagnose")
     return _performance_diagnose(project)
+
+
+@mcp.tool()
+def quickshell_hyprland_info() -> dict:
+    """Inspect the Hyprland compositor read-only: monitors, workspaces, the
+    active workspace, and clients, via ``hyprctl -j``. Returns an explanatory
+    note when Hyprland/hyprctl is unavailable. Never modifies the compositor."""
+    _record_tool("quickshell_hyprland_info")
+    return _detect_adapter("Hyprland")
+
+
+@mcp.tool()
+def quickshell_wayland_layers() -> dict:
+    """Inspect Wayland layer/surface information for the managed runtime.
+    Requires a compositor adapter; reports a note when unavailable. Read-only."""
+    _record_tool("quickshell_wayland_layers")
+    return _detect_adapter("Wayland layers")
+
+
+@mcp.tool()
+def quickshell_pipewire_info() -> dict:
+    """Inspect PipeWire read-only: sinks, sources, and device identity via
+    ``pw-cli``. Returns a note when PipeWire/pw-cli is unavailable. Never
+    changes device state."""
+    _record_tool("quickshell_pipewire_info")
+    return _detect_adapter("PipeWire")
+
+
+@mcp.tool()
+def quickshell_dbus_services() -> dict:
+    """List user-session D-Bus services read-only via ``busctl``. Discovery
+    only — method invocation is never performed. Read-only."""
+    _record_tool("quickshell_dbus_services")
+    return _detect_adapter("D-Bus")
+
+
+@mcp.tool()
+def quickshell_system_diagnostics() -> dict:
+    """Report verified-only environment problems for Quickshell development:
+    missing commands and services. Only evidence-backed issues are reported.
+    Read-only."""
+    _record_tool("quickshell_system_diagnostics")
+    return _detect_adapter("System diagnostics")
 
 
 @mcp.tool()

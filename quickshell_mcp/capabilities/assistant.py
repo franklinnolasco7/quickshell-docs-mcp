@@ -29,4 +29,5 @@ CAPABILITY_DEPENDS_ON = (
     "inspection",
     "testing",
     "performance",
+    "adapters",
 )
