@@ -82,6 +82,11 @@ EXPECTED_TOOLS = {
     "quickshell_test_macro",
     "quickshell_test_record",
     "quickshell_test_report",
+    "quickshell_runtime_diagnose",
+    "quickshell_runtime_errors",
+    "quickshell_trace",
+    "quickshell_binding_inspect",
+    "quickshell_reload",
 }
 
 # Tools that report session telemetry / live in server.py, not a domain capability.

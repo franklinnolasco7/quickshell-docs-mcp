@@ -47,9 +47,14 @@ from .capabilities.assistant import (  # noqa: F401
     _safe_step,
 )
 from .capabilities.debugging import (  # noqa: F401
+    _binding_inspect,
     _categorize_error,
+    _diagnose,
     _explain_error,
     _extract_type_from_code,
+    _reload,
+    _runtime_errors,
+    _trace,
 )
 from .capabilities.generation import (  # noqa: F401
     _apply_patch,
@@ -1293,6 +1298,53 @@ def quickshell_test_report(session_id: str, suite: dict) -> dict:
     both an LLM and human CI output. Read-only."""
     _record_tool("quickshell_test_report")
     return _test_report(session_id, suite)
+
+
+@mcp.tool()
+def quickshell_runtime_diagnose(session_id: str) -> dict:
+    """Diagnose a managed runtime session: combine runtime logs, errors,
+    project context, and version info into a probable root cause with
+    confidence. Never fabricates a cause when evidence is insufficient.
+    Read-only."""
+    _record_tool("quickshell_runtime_diagnose")
+    return _diagnose(session_id)
+
+
+@mcp.tool()
+def quickshell_runtime_errors(session_id: str, limit: int = 50) -> dict:
+    """Extract and normalize common Quickshell/QML runtime problems from a
+    session's stderr: import failures, undefined properties, type mismatches,
+    binding loops, component load failures, JS exceptions, and signal/method
+    errors. Original error text is preserved. Read-only."""
+    _record_tool("quickshell_runtime_errors")
+    return _runtime_errors(session_id, limit=limit)
+
+
+@mcp.tool()
+def quickshell_trace(session_id: str, action: str, steps: int = 10) -> dict:
+    """Trace a selected runtime interaction across observable state
+    transitions. Reports observed log events; inferred transitions are always
+    kept separate from observed evidence. Read-only."""
+    _record_tool("quickshell_trace")
+    return _trace(session_id, action, steps=steps)
+
+
+@mcp.tool()
+def quickshell_binding_inspect(session_id: str, target: str, property_name: str) -> dict:
+    """Inspect a binding on a managed runtime object: current live value,
+    likely source expression (from the project QML), and files that
+    reference it. Read-only."""
+    _record_tool("quickshell_binding_inspect")
+    return _binding_inspect(session_id, target, property_name)
+
+
+@mcp.tool()
+def quickshell_reload(session_id: str, hard: bool = False) -> dict:
+    """Reload a managed runtime session, preserving session tracking. Reuses
+    the lifecycle implementation; cleans up after failed reloads. Never
+    touches production Quickshell processes. Mutating."""
+    _record_tool("quickshell_reload")
+    return _reload(session_id, hard=hard)
 
 
 @mcp.tool()

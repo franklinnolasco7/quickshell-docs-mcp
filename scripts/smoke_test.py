@@ -144,6 +144,11 @@ def main() -> int:
         "quickshell_test_macro",
         "quickshell_test_record",
         "quickshell_test_report",
+        "quickshell_runtime_diagnose",
+        "quickshell_runtime_errors",
+        "quickshell_trace",
+        "quickshell_binding_inspect",
+        "quickshell_reload",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"
