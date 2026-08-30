@@ -23,6 +23,12 @@ from ..sources.project_intel import (  # noqa: F401
     _project_dependencies,
     _search_project,
 )
+from ..sources.project_validate import (  # noqa: F401
+    _lint_project,
+    _migrate_project,
+    _project_compatibility,
+    _validate_project,
+)
 
 CAPABILITY_NAME = "project"
 CAPABILITY_TOOLS = (
@@ -31,5 +37,9 @@ CAPABILITY_TOOLS = (
     "quickshell_project_find",
     "quickshell_project_dependencies",
     "quickshell_project_config",
+    "quickshell_project_validate",
+    "quickshell_project_lint",
+    "quickshell_project_compatibility",
+    "quickshell_project_migrate",
 )
-CAPABILITY_DEPENDS_ON = ("knowledge",)
+CAPABILITY_DEPENDS_ON = ("knowledge", "validation")

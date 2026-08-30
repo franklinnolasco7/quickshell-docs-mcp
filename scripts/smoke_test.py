@@ -114,6 +114,10 @@ def main() -> int:
         "quickshell_project_find",
         "quickshell_project_dependencies",
         "quickshell_project_config",
+        "quickshell_project_validate",
+        "quickshell_project_lint",
+        "quickshell_project_compatibility",
+        "quickshell_project_migrate",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

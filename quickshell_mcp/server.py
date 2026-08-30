@@ -104,9 +104,13 @@ from .capabilities.migration import (  # noqa: F401
 from .capabilities.project import (  # noqa: F401
     _analyze_project,
     _config_conventions,
+    _lint_project,
     _map_project,
+    _migrate_project,
+    _project_compatibility,
     _project_dependencies,
     _search_project,
+    _validate_project,
 )
 from .capabilities.validation import (  # noqa: F401
     _api_in_version,
@@ -854,6 +858,62 @@ def quickshell_project_config(project: str) -> dict:
     """
     _record_tool("quickshell_project_config")
     return _config_conventions(project)
+
+
+@mcp.tool()
+def quickshell_project_validate(project: str, version: str = "latest") -> dict:
+    """Run the static QML validator across an entire Quickshell project and
+    aggregate syntax errors, import problems, type problems, property and
+    signal issues, version mismatches, and deprecated or unavailable APIs.
+
+    Results are grouped by file and severity. One bad file never prevents
+    analysis of the rest: unreadable files are reported and skipped. Reuses
+    the existing validator rather than duplicating logic.
+    """
+    _record_tool("quickshell_project_validate")
+    return _validate_project(project, version=version)
+
+
+@mcp.tool()
+def quickshell_project_lint(project: str) -> dict:
+    """Run quality-oriented lint checks across a Quickshell project.
+
+    Every rule has a stable diagnostic code, severity, explanation, and
+    remediation. Rules are conservative and evidence-based; they flag
+    suspicious patterns (duplicate imports, duplicate object ids, suspicious
+    timers) rather than subjective style opinions. The rule table is
+    extensible for future additions.
+    """
+    _record_tool("quickshell_project_lint")
+    return _lint_project(project)
+
+
+@mcp.tool()
+def quickshell_project_compatibility(project: str, version: str = "latest") -> dict:
+    """Analyze a whole project's Quickshell API compatibility against a
+    target version: unavailable, deprecated, or changed APIs with affected
+    files and concrete locations.
+
+    Reuses the version compatibility engine. A verdict of 'uncertain' means
+    the docs did not prove availability either way — it is never reported as
+    a runtime incompatibility.
+    """
+    _record_tool("quickshell_project_compatibility")
+    return _project_compatibility(project, version=version)
+
+
+@mcp.tool()
+def quickshell_project_migrate(project: str, from_version: str, to_version: str) -> dict:
+    """Analyze a whole Quickshell project for what must change to move from
+    one Quickshell version to another: breaking and deprecated APIs, required
+    changes, and a machine-readable proposed-edit list.
+
+    Never modifies files. Every proposed edit carries file, line, and
+    old/new API context so it can be applied safely. Reuses the existing
+    migration engine per file.
+    """
+    _record_tool("quickshell_project_migrate")
+    return _migrate_project(project, from_version=from_version, to_version=to_version)
 
 
 @mcp.tool()
