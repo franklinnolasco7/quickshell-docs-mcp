@@ -303,7 +303,9 @@ def test_rename_with_location(monkeypatch, docs_fixture_urls):
     assert issue["severity"] == "error"
     assert issue["confidence"] == "high"
     assert issue["changed_in_version"] == "v0.2.0"
-    assert issue["location"] == {"line": 3, "column": 5}
+    assert issue["line"] == 3
+    assert issue["column"] == 5
+    assert issue["code"] == "migration_renamed"
     assert issue["source"] and "changelog" in issue["source"]["text"]
     assert report["migration_plan"][0] == (
         "Rename Quickshell.shellRoot to Quickshell.shellDir (renamed in v0.2.0). [definite]"
@@ -414,7 +416,9 @@ def test_changed_import(monkeypatch, docs_fixture_urls):
     assert issue["old_api"] == "import Quickshell.OldStuff"
     assert issue["classification"] == "manual_review"
     assert issue["severity"] == "warning"
-    assert issue["location"] == {"line": 2, "column": 8}
+    assert issue["line"] == 2
+    assert issue["column"] == 8
+    assert issue["code"] == "migration_import_removed"
 
 
 def test_multi_version_migration_plan_ordered(monkeypatch, docs_fixture_urls):
@@ -525,7 +529,9 @@ def test_api_input_has_no_location(monkeypatch, docs_fixture_urls):
         to_version="v0.3.1",
     )
     issue = _issue_for(report, "renamed")[0]
-    assert issue["location"] is None
+    assert issue["line"] is None
+    assert issue["column"] is None
+    assert issue["code"] == "migration_renamed"
     assert issue["new_api"] == "Quickshell.shellDir"
 
 

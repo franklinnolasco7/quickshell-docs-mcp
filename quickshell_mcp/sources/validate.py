@@ -320,6 +320,7 @@ class _Diagnostic:
     source: dict | None
     confidence: str  # high | medium | low
     could_not_verify: bool
+    suggestion: str | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -334,6 +335,7 @@ class _Diagnostic:
             "source": self.source,
             "confidence": self.confidence,
             "could_not_verify": self.could_not_verify,
+            "suggestion": self.suggestion,
         }
 
 
@@ -1060,6 +1062,7 @@ def _resolve_type_refs(
                     alternatives=[f"import {ns}"],
                     source=None,
                     confidence="medium",
+                    suggestion=f"Add 'import {ns}' at the top of the file.",
                 )
             )
 
@@ -1315,6 +1318,7 @@ def _diag(
     source: dict | None,
     confidence: str,
     could_not_verify: bool = False,
+    suggestion: str | None = None,
 ) -> _Diagnostic:
     return _Diagnostic(
         severity=severity,
@@ -1328,6 +1332,7 @@ def _diag(
         source=source,
         confidence=confidence,
         could_not_verify=could_not_verify,
+        suggestion=suggestion,
     )
 
 

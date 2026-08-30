@@ -1057,7 +1057,7 @@ def _stage_migrate(state: _PipelineState) -> None:
                             + (f" -> {new}" if new else "")
                             + f" ({issue.get('reason', '')})"
                         ),
-                        "line": (issue.get("location") or {}).get("line"),
+                        "line": issue.get("line"),
                         "source": issue.get("source"),
                     }
                 )

@@ -43,12 +43,14 @@ _SEVERITY_ORDER = {"error": 0, "warning": 1, "info": 2}
 
 
 class _MigrationIssue(TypedDict):
-    location: dict | None  # {"line": int, "column": int}
+    line: int | None
+    column: int | None
     severity: str  # error | warning | info
     classification: str  # definite | likely | manual_review
     confidence: str  # high | medium | low
     status: str  # renamed | removed | deprecated | changed | introduced |
     #              not_found | import_removed | behavior | malformed | cannot_verify
+    code: str
     old_api: str
     new_api: str | None
     reason: str
@@ -129,7 +131,7 @@ def _drop_local_refs(refs: list[_ApiRef], filename: str | None) -> list[_ApiRef]
 
 def _issue(
     *,
-    location: dict | None,
+    location: dict | None,  # {"line": int, "column": int}
     severity: str,
     classification: str,
     confidence: str,
@@ -142,11 +144,13 @@ def _issue(
     source: dict | None,
 ) -> _MigrationIssue:
     return {
-        "location": location,
+        "line": location["line"] if location else None,
+        "column": location["column"] if location else None,
         "severity": severity,
         "classification": classification,
         "confidence": confidence,
         "status": status,
+        "code": f"migration_{status}",
         "old_api": old_api,
         "new_api": new_api,
         "reason": reason,
@@ -826,7 +830,7 @@ def _migrate(
     issues.sort(
         key=lambda issue: (
             _SEVERITY_ORDER.get(issue["severity"], 3),
-            (issue["location"] or {}).get("line") if issue["location"] else 10**9,
+            issue["line"] or 10**9,
         )
     )
 

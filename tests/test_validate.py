@@ -341,6 +341,7 @@ def test_missing_import_is_warning(monkeypatch, docs_fixture_urls):
     assert len(diags) == 1
     assert diags[0]["severity"] == "warning"
     assert diags[0]["alternatives"] == ["import Quickshell.Hyprland"]
+    assert diags[0]["suggestion"] == "Add 'import Quickshell.Hyprland' at the top of the file."
 
 
 def test_import_present_suppresses_missing_import(monkeypatch, docs_fixture_urls):
