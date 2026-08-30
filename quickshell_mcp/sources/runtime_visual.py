@@ -40,16 +40,31 @@ def _dimensions(path: str) -> tuple[int, int] | None:
     return None
 
 
-def _visual_check(session_id: str, screenshot_path: str | None = None) -> dict[str, Any]:
+def _visual_check(
+    session_id: str,
+    screenshot_path: str | None = None,
+    rectangle: dict[str, int] | None = None,
+    object_name: str | None = None,
+) -> dict[str, Any]:
     """Analyze a runtime screenshot for objective UI problems.
 
     Reports observations (clipping, overflow, empty areas, off-screen
     content) with confidence and affected regions; it does not claim to prove
-    semantic correctness.
+    semantic correctness. Pass an explicit screenshot_path to analyze an
+    existing file, or rectangle=/object_name= to capture a bounded region.
     """
     _require_session(session_id)
-    path = screenshot_path or (_screenshot(session_id) or {}).get("screenshot_path")
-    if not path or not Path(path).is_file():
+    path = screenshot_path
+    if not path:
+        captured = _screenshot(session_id, rectangle=rectangle, object_name=object_name)
+        path = captured.get("screenshot_path")
+        if not path:
+            return {
+                "session_id": session_id,
+                "observations": [],
+                "note": captured.get("note", "No screenshot available to analyze."),
+            }
+    if not Path(path).is_file():
         return {
             "session_id": session_id,
             "observations": [],
@@ -110,32 +125,41 @@ def _screenshot_region(
     grim when available; otherwise reports unavailable.
     """
     _require_session(session_id)
-    full = _screenshot(session_id)
-    if not full.get("screenshot_path"):
+    captured = _screenshot(session_id, rectangle=rectangle, object_name=object_name)
+    if not captured.get("screenshot_path"):
         return {
             "session_id": session_id,
             "screenshot_path": None,
-            "note": "Region capture requires grim; unavailable here.",
+            "object_name": object_name,
+            "rectangle": rectangle,
+            "note": captured.get("note") or "Region capture unavailable.",
         }
     return {
         "session_id": session_id,
-        "screenshot_path": full["screenshot_path"],
+        "screenshot_path": captured["screenshot_path"],
         "object_name": object_name,
         "rectangle": rectangle,
-        "note": "Region capture returns the full screenshot; object cropping is future work.",
+        "geometry": captured.get("geometry"),
+        "note": "Region capture targets the bounded region specified by rectangle.",
     }
 
 
-def _ui_snapshot(session_id: str, include_tree: bool = True) -> dict[str, Any]:
+def _ui_snapshot(
+    session_id: str,
+    include_tree: bool = True,
+    rectangle: dict[str, int] | None = None,
+    object_name: str | None = None,
+) -> dict[str, Any]:
     """Produce a serializable, comparable UI snapshot: screenshot, UI tree,
     runtime state, timestamp, and project/version metadata."""
     _require_session(session_id)
-    shot = _screenshot(session_id)
+    shot = _screenshot(session_id, rectangle=rectangle, object_name=object_name)
     tree = _ui_tree(session_id) if include_tree else {"tree": None}
     return {
         "session_id": session_id,
         "timestamp": time.time(),
         "screenshot_path": shot.get("screenshot_path"),
+        "screenshot_note": shot.get("note"),
         "ui_tree": tree.get("tree"),
         "note": "Snapshot is serializable and comparable for regression detection.",
     }

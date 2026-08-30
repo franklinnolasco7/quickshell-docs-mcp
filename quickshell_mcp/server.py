@@ -1169,13 +1169,23 @@ def quickshell_windows(session_id: str) -> dict:
 
 
 @mcp.tool()
-def quickshell_screenshot(session_id: str) -> dict:
-    """Capture a screenshot from a managed Quickshell runtime session.
+def quickshell_screenshot(
+    session_id: str,
+    rectangle: dict[str, int] | None = None,
+    object_name: str | None = None,
+) -> dict:
+    """Capture a bounded screenshot of a managed Quickshell runtime session.
 
-    Requires the ``grim`` compositor screenshot tool on PATH. Returns the
-    image path or an "unavailable" note. Read-only."""
+    Requires the ``grim`` compositor screenshot tool on PATH. **Full-desktop
+    capture is disabled by default.** Pass ``rectangle=`` with ``x``, ``y``,
+    ``width``, ``height`` to target a specific region. Object-derived
+    geometry is not yet available and will report an explanatory note.
+
+    Set ``QUICKSHELL_DOCS_MCP_ALLOW_FULLSCREEN_CAPTURE=1`` at server launch
+    to allow full-screen captures (high-risk: includes all desktop content).
+    Read-only."""
     _record_tool("quickshell_screenshot")
-    return _screenshot(session_id)
+    return _screenshot(session_id, rectangle=rectangle, object_name=object_name)
 
 
 @mcp.tool()
@@ -1360,13 +1370,27 @@ def quickshell_reload(session_id: str, hard: bool = False) -> dict:
 
 
 @mcp.tool()
-def quickshell_visual_check(session_id: str, screenshot_path: str | None = None) -> dict:
+def quickshell_visual_check(
+    session_id: str,
+    screenshot_path: str | None = None,
+    rectangle: dict[str, int] | None = None,
+    object_name: str | None = None,
+) -> dict:
     """Analyze a runtime screenshot for objective UI problems: clipping,
     overflow, missing expected elements, unexpected empty areas, misalignment,
     or off-screen content. Returns observations with confidence and affected
-    regions. It does not claim to prove semantic correctness. Read-only."""
+    regions. It does not claim to prove semantic correctness. Read-only.
+
+    Pass an explicit screenshot_path to analyze an existing file, or
+    rectangle= to capture a bounded region. Full-desktop capture is disabled
+    by default (see quickshell_screenshot)."""
     _record_tool("quickshell_visual_check")
-    return _visual_check(session_id, screenshot_path=screenshot_path)
+    return _visual_check(
+        session_id,
+        screenshot_path=screenshot_path,
+        rectangle=rectangle,
+        object_name=object_name,
+    )
 
 
 @mcp.tool()
@@ -1393,18 +1417,35 @@ def quickshell_screenshot_region(
     rectangle: dict[str, int] | None = None,
 ) -> dict:
     """Capture a region-based screenshot of a managed runtime, preferring an
-    object-derived region over manual coordinates. Read-only; requires grim."""
+    object-derived region over manual coordinates. Read-only; requires grim.
+
+    Pass ``rectangle=`` (x, y, width, height) to capture a bounded region.
+    Full-desktop capture is disabled by default; object-derived geometry
+    requires a compositor adapter (reports an explanatory note)."""
     _record_tool("quickshell_screenshot_region")
     return _screenshot_region(session_id, object_name=object_name, rectangle=rectangle)
 
 
 @mcp.tool()
-def quickshell_ui_snapshot(session_id: str, include_tree: bool = True) -> dict:
+def quickshell_ui_snapshot(
+    session_id: str,
+    include_tree: bool = True,
+    rectangle: dict[str, int] | None = None,
+    object_name: str | None = None,
+) -> dict:
     """Create a single serializable UI snapshot: screenshot, UI tree, live
     properties, runtime state, timestamp, and project metadata. Comparable for
-    regression detection. Read-only."""
+    regression detection. Read-only.
+
+    Pass ``rectangle=`` to capture a bounded screenshot region; full-desktop
+    capture is disabled by default (see quickshell_screenshot)."""
     _record_tool("quickshell_ui_snapshot")
-    return _ui_snapshot(session_id, include_tree=include_tree)
+    return _ui_snapshot(
+        session_id,
+        include_tree=include_tree,
+        rectangle=rectangle,
+        object_name=object_name,
+    )
 
 
 @mcp.tool()

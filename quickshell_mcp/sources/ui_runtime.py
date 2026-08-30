@@ -9,6 +9,7 @@ IpcHandler's introspection methods.
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 import tempfile
@@ -16,6 +17,11 @@ from pathlib import Path
 from typing import Any
 
 from .runtime_session import _SESSION_REGISTRY, _qs_binary
+
+# Full-desktop capture is deny-by-default.  A capture must target a bounded
+# region (rectangle or resolvable object geometry); the whole desktop is only
+# captured when this env var is set by the operator at launch time.
+_FULLSCREEN_ENV = "QUICKSHELL_DOCS_MCP_ALLOW_FULLSCREEN_CAPTURE"
 
 
 def _ipc_cmd(pid: int, *args: str) -> list[str]:
@@ -59,15 +65,42 @@ def _compare_available() -> bool:
     return shutil.which("compare") is not None
 
 
-def _capture_screenshot(path: str | Path) -> str | None:
-    """Capture a full-screen screenshot to *path*. Returns None if grim is unavailable."""
+def _fullscreen_allowed() -> bool:
+    """Whether full-desktop capture is explicitly allowed by the operator."""
+    return os.environ.get(_FULLSCREEN_ENV, "").strip().lower() in ("1", "true", "yes")
+
+
+def _rectangle_to_geometry(rectangle: dict[str, int] | None) -> str | None:
+    """Convert {x,y,width,height} to grim's WxH+X+Y geometry."""
+    if not rectangle:
+        return None
+    x, y = rectangle.get("x", 0), rectangle.get("y", 0)
+    width, height = rectangle.get("width"), rectangle.get("height")
+    if not width or not height:
+        return None
+    return f"{width}x{height}+{x}+{y}"
+
+
+def _capture_screenshot(path: str | Path, geometry: str | None) -> tuple[str | None, str | None]:
+    """Capture a bounded region (or the full desktop if the operator opts in).
+
+    Returns ``(path, note)``.  ``path`` is None when the capture was refused or
+    failed; the note explains exactly why and how to unblock.
+    """
     if not _grim_available():
-        return None
+        return None, "Screenshot capture requires grim; unavailable here."
+    if geometry is None and not _fullscreen_allowed():
+        return None, (
+            f"Full-desktop capture is disabled by default. Pass rectangle={{x, y, "
+            f"width, height}} to capture a bounded region, or set {_FULLSCREEN_ENV}=1 "
+            "to allow full-screen capture at server launch."
+        )
     try:
-        subprocess.run(["grim", str(path)], capture_output=True, timeout=10, check=True)
-        return str(path)
-    except (subprocess.TimeoutExpired, subprocess.SubprocessError, OSError):
-        return None
+        cmd = ["grim", "-g", geometry, str(path)] if geometry else ["grim", str(path)]
+        subprocess.run(cmd, capture_output=True, timeout=10, check=True)
+        return str(path), None
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError, OSError) as exc:
+        return None, f"Screenshot capture failed: {exc}"
 
 
 # ---------------------------------------------------------------------------
@@ -89,11 +122,16 @@ def _ui_windows(session_id: str) -> dict[str, Any]:
     }
 
 
-def _screenshot(session_id: str) -> dict[str, Any]:
-    """Capture a screenshot of the managed session's output.
+def _screenshot(
+    session_id: str,
+    rectangle: dict[str, int] | None = None,
+    object_name: str | None = None,
+) -> dict[str, Any]:
+    """Capture a bounded screenshot of the managed session's output.
 
-    Requires ``grim`` on PATH. Returns the screenshot path or an
-    "unavailable" note.
+    Requires ``grim`` on PATH. Pass ``rectangle=`` to target a specific
+    region; full-desktop capture is disabled by default. Returns the
+    screenshot path or an "unavailable" / "blocked" note.
     """
     _require_session(session_id)
     if not _grim_available():
@@ -102,18 +140,24 @@ def _screenshot(session_id: str) -> dict[str, Any]:
             "screenshot_path": None,
             "note": "Screenshot capture requires grim; not available in this environment.",
         }
-    path = Path(tempfile.gettempdir()) / f"qs-mcp-screenshot-{session_id}.png"
-    result = _capture_screenshot(str(path))
-    if result is None:
+    if object_name and not rectangle:
         return {
             "session_id": session_id,
             "screenshot_path": None,
-            "note": "Screenshot capture failed (grim returned no output).",
+            "note": (
+                "Object-derived screenshot geometry requires a compositor adapter; "
+                "pass rectangle={x, y, width, height} instead."
+            ),
         }
+    geometry = _rectangle_to_geometry(rectangle)
+    path = Path(tempfile.gettempdir()) / f"qs-mcp-screenshot-{session_id}.png"
+    result_path, note = _capture_screenshot(str(path), geometry)
     return {
         "session_id": session_id,
-        "screenshot_path": result,
-        "note": None,
+        "screenshot_path": result_path,
+        "note": note,
+        "geometry": geometry,
+        "region": rectangle,
     }
 
 

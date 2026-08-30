@@ -8,6 +8,7 @@ UI tools require a managed session; without one they raise ValueError.
 
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -78,6 +79,78 @@ def test_screenshot_unavailable_without_grim(fake_qs, tmp_path, monkeypatch):
     result = srv.quickshell_screenshot(session.session_id)
     assert result["screenshot_path"] is None
     assert "grim" in result["note"]
+    rs._stop_session(session)
+
+
+def test_rectangle_to_geometry():
+    assert ui._rectangle_to_geometry({"x": 0, "y": 0, "width": 100, "height": 50}) == "100x50+0+0"
+    assert ui._rectangle_to_geometry({"x": 5, "y": 3, "width": 40, "height": 20}) == "40x20+5+3"
+    assert ui._rectangle_to_geometry(None) is None
+    assert ui._rectangle_to_geometry({"x": 0, "y": 0}) is None  # missing w/h
+
+
+def test_screenshot_blocked_without_geometry(fake_qs, tmp_path, monkeypatch):
+    """Full-desktop capture is deny-by-default even when grim is available."""
+    session = _session(tmp_path, fake_qs)
+    monkeypatch.setattr(ui, "_grim_available", lambda: True)
+    monkeypatch.setattr(ui, "_fullscreen_allowed", lambda: False)
+    result = srv.quickshell_screenshot(session.session_id)
+    assert result["screenshot_path"] is None
+    assert "disabled by default" in result["note"]
+    assert "QUICKSHELL_DOCS_MCP_ALLOW_FULLSCREEN_CAPTURE" in result["note"]
+    rs._stop_session(session)
+
+
+def test_capture_screenshot_requires_geometry_by_default(monkeypatch, tmp_path):
+    """_capture_screenshot refuses full-desktop without the env opt-in."""
+    monkeypatch.setattr(ui, "_grim_available", lambda: True)
+    monkeypatch.setattr(ui, "_fullscreen_allowed", lambda: False)
+    path = tmp_path / "out.png"
+    result_path, note = ui._capture_screenshot(str(path), None)
+    assert result_path is None
+    assert "disabled by default" in note
+
+
+def test_capture_screenshot_fullscreen_with_opt_in(monkeypatch, tmp_path):
+    monkeypatch.setattr(ui, "_grim_available", lambda: True)
+    monkeypatch.setattr(ui, "_fullscreen_allowed", lambda: True)
+    calls = {}
+
+    def fake_run(cmd, **kwargs):
+        calls["cmd"] = cmd
+        raise subprocess.TimeoutExpired("grim", 10)
+
+    monkeypatch.setattr(ui.subprocess, "run", fake_run)
+    path = tmp_path / "out.png"
+    result_path, note = ui._capture_screenshot(str(path), None)
+    # Full-screen capture is attempted without -g geometry.
+    assert calls.get("cmd") == ["grim", str(path)]
+    assert result_path is None  # capture failed after attempt
+    assert note and "failed" in note
+
+
+def test_capture_screenshot_bounded_geometry(monkeypatch, tmp_path):
+    monkeypatch.setattr(ui, "_grim_available", lambda: True)
+    calls = {}
+
+    def fake_run(cmd, **kwargs):
+        calls["cmd"] = cmd
+        raise subprocess.TimeoutExpired("grim", 10)
+
+    monkeypatch.setattr(ui.subprocess, "run", fake_run)
+    path = tmp_path / "out.png"
+    result_path, note = ui._capture_screenshot(str(path), "100x50+0+0")
+    assert calls.get("cmd") == ["grim", "-g", "100x50+0+0", str(path)]
+    assert result_path is None  # capture failed after attempt
+    assert note and "failed" in note
+
+
+def test_screenshot_object_name_unavailable(fake_qs, tmp_path, monkeypatch):
+    session = _session(tmp_path, fake_qs)
+    monkeypatch.setattr(ui, "_grim_available", lambda: True)
+    result = srv.quickshell_screenshot(session.session_id, object_name="someRect")
+    assert result["screenshot_path"] is None
+    assert "compositor adapter" in result["note"]
     rs._stop_session(session)
 
 

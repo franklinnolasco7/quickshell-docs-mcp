@@ -47,7 +47,7 @@ def session(fake_qs, tmp_path) -> rs._RuntimeSession:
 
 
 def test_visual_check_no_screenshot(session, monkeypatch):
-    monkeypatch.setattr(rv, "_screenshot", lambda sid: {"screenshot_path": None})
+    monkeypatch.setattr(rv, "_screenshot", lambda sid, **kw: {"screenshot_path": None})
     result = srv.quickshell_visual_check(session.session_id)
     assert result["observations"] == []
     assert "No screenshot" in result["note"]
@@ -111,10 +111,25 @@ def test_visual_diff_threshold(monkeypatch):
 
 
 def test_screenshot_region_unavailable(session, monkeypatch):
-    monkeypatch.setattr(rv, "_screenshot", lambda sid: {"screenshot_path": None})
+    monkeypatch.setattr(rv, "_screenshot", lambda sid, **kw: {"screenshot_path": None})
     result = srv.quickshell_screenshot_region(session.session_id, object_name="bar")
     assert result["screenshot_path"] is None
-    assert "grim" in result["note"]
+    assert result["note"]
+
+
+def test_screenshot_region_object_requires_adapter(session, monkeypatch):
+    # An object name without a rectangle cannot be resolved to geometry yet.
+    monkeypatch.setattr(
+        rv,
+        "_screenshot",
+        lambda sid, **kw: {
+            "screenshot_path": None,
+            "note": "Object-derived geometry requires a compositor adapter; pass rectangle=...",
+        },
+    )
+    result = srv.quickshell_screenshot_region(session.session_id, object_name="bar")
+    assert result["screenshot_path"] is None
+    assert "compositor adapter" in result["note"]
 
 
 def test_screenshot_region_unknown_session():
@@ -128,7 +143,7 @@ def test_screenshot_region_unknown_session():
 
 
 def test_ui_snapshot_shape(session, monkeypatch):
-    monkeypatch.setattr(rv, "_screenshot", lambda sid: {"screenshot_path": None})
+    monkeypatch.setattr(rv, "_screenshot", lambda sid, **kw: {"screenshot_path": None})
     monkeypatch.setattr(rv, "_ui_tree", lambda sid: {"tree": None})
     result = srv.quickshell_ui_snapshot(session.session_id)
     assert result["session_id"] == session.session_id
