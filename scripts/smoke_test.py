@@ -149,6 +149,10 @@ def main() -> int:
         "quickshell_trace",
         "quickshell_binding_inspect",
         "quickshell_reload",
+        "quickshell_visual_check",
+        "quickshell_visual_diff",
+        "quickshell_screenshot_region",
+        "quickshell_ui_snapshot",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

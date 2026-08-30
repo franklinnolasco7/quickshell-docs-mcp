@@ -11,6 +11,12 @@ Depends on: knowledge, project, runtime.
 
 from __future__ import annotations
 
+from ..sources.runtime_visual import (  # noqa: F401
+    _screenshot_region,
+    _ui_snapshot,
+    _visual_check,
+    _visual_diff,
+)
 from ..sources.ui_runtime import (  # noqa: F401
     _screenshot,
     _screenshot_diff,
@@ -34,5 +40,9 @@ CAPABILITY_TOOLS = (
     "quickshell_ui_set_property",
     "quickshell_ui_invoke",
     "quickshell_ui_eval",
+    "quickshell_visual_check",
+    "quickshell_visual_diff",
+    "quickshell_screenshot_region",
+    "quickshell_ui_snapshot",
 )
 CAPABILITY_DEPENDS_ON = ("knowledge", "project", "runtime")

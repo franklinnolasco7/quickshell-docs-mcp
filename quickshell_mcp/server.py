@@ -69,13 +69,17 @@ from .capabilities.generation import (  # noqa: F401
 from .capabilities.inspection import (  # noqa: F401
     _screenshot,
     _screenshot_diff,
+    _screenshot_region,
     _ui_eval,
     _ui_find,
     _ui_get_property,
     _ui_invoke,
     _ui_set_property,
+    _ui_snapshot,
     _ui_tree,
     _ui_windows,
+    _visual_check,
+    _visual_diff,
 )
 from .capabilities.knowledge import (  # noqa: F401
     _GITHUB_API,
@@ -1345,6 +1349,54 @@ def quickshell_reload(session_id: str, hard: bool = False) -> dict:
     touches production Quickshell processes. Mutating."""
     _record_tool("quickshell_reload")
     return _reload(session_id, hard=hard)
+
+
+@mcp.tool()
+def quickshell_visual_check(session_id: str, screenshot_path: str | None = None) -> dict:
+    """Analyze a runtime screenshot for objective UI problems: clipping,
+    overflow, missing expected elements, unexpected empty areas, misalignment,
+    or off-screen content. Returns observations with confidence and affected
+    regions. It does not claim to prove semantic correctness. Read-only."""
+    _record_tool("quickshell_visual_check")
+    return _visual_check(session_id, screenshot_path=screenshot_path)
+
+
+@mcp.tool()
+def quickshell_visual_diff(
+    baseline: str,
+    actual: str,
+    output: str | None = None,
+    threshold: int = 0,
+    ignored_regions: list[dict] | None = None,
+) -> dict:
+    """Compare baseline and actual screenshots deterministically for
+    visual-regression testing: diff image, differing pixels metric,
+    configurable threshold, and ignored regions. Read-only."""
+    _record_tool("quickshell_visual_diff")
+    return _visual_diff(
+        baseline, actual, output=output, threshold=threshold, ignored_regions=ignored_regions
+    )
+
+
+@mcp.tool()
+def quickshell_screenshot_region(
+    session_id: str,
+    object_name: str | None = None,
+    rectangle: dict[str, int] | None = None,
+) -> dict:
+    """Capture a region-based screenshot of a managed runtime, preferring an
+    object-derived region over manual coordinates. Read-only; requires grim."""
+    _record_tool("quickshell_screenshot_region")
+    return _screenshot_region(session_id, object_name=object_name, rectangle=rectangle)
+
+
+@mcp.tool()
+def quickshell_ui_snapshot(session_id: str, include_tree: bool = True) -> dict:
+    """Create a single serializable UI snapshot: screenshot, UI tree, live
+    properties, runtime state, timestamp, and project metadata. Comparable for
+    regression detection. Read-only."""
+    _record_tool("quickshell_ui_snapshot")
+    return _ui_snapshot(session_id, include_tree=include_tree)
 
 
 @mcp.tool()
