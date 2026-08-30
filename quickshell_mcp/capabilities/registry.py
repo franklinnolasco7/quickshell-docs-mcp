@@ -27,6 +27,7 @@ from dataclasses import dataclass
 
 from . import (
     adapters,
+    agent,
     assistant,
     debugging,
     ecosystem,
@@ -97,6 +98,7 @@ _CAPABILITY_MODULES = (
     performance,
     adapters,
     ecosystem,
+    agent,
     assistant,
 )
 

@@ -115,6 +115,11 @@ EXPECTED_TOOLS = {
     "quickshell_profile_delete",
     "quickshell_profile_export",
     "quickshell_profile_import",
+    "quickshell_build_feature",
+    "quickshell_debug",
+    "quickshell_migrate_project",
+    "quickshell_test_feature",
+    "quickshell_optimize",
 }
 
 # Tools that report session telemetry / live in server.py, not a domain capability.

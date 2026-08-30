@@ -177,6 +177,11 @@ def main() -> int:
         "quickshell_profile_delete",
         "quickshell_profile_export",
         "quickshell_profile_import",
+        "quickshell_build_feature",
+        "quickshell_debug",
+        "quickshell_migrate_project",
+        "quickshell_test_feature",
+        "quickshell_optimize",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

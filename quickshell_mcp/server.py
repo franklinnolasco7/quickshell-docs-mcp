@@ -42,6 +42,15 @@ from .capabilities.adapters import (  # noqa: F401
     _Adapter,
     _detect_adapter,
 )
+from .capabilities.agent import (  # noqa: F401
+    _build_feature,
+    _debug,
+    _optimize,
+    _test_feature,
+)
+from .capabilities.agent import (
+    _migrate_project as _agent_migrate_project,
+)
 from .capabilities.assistant import (  # noqa: F401
     _build_project_context,
     _classify_intent,
@@ -920,6 +929,8 @@ def quickshell_coding_assistant(
     to_version: str | None = None,
     context: str | None = None,
     project: str | None = None,
+    permitted_execution: bool = False,
+    edits: list[dict] | None = None,
 ) -> dict:
     """High-level Quickshell development assistant for AI coding agents.
 
@@ -947,7 +958,13 @@ def quickshell_coding_assistant(
     compositor from the project's QML imports and uses them as defaults, and
     returns a 'project' section describing what was detected (version,
     compositor, QML files, each marked detected/inferred/unknown). An invalid
-    path is reported in that section instead of failing the request."""
+    path is reported in that section instead of failing the request.
+
+    Execution is off by default: the assistant never modifies files. To let
+    it apply an explicit, validated edit set to the project, pass
+    permitted_execution=True together with edits=[...] (same shape as
+    quickshell_apply_patch) and a project= path. Non-permitted requests
+    record an execution step and continue read-only."""
     _record_tool("quickshell_coding_assistant")
     return _coding_assistant(
         request=request,
@@ -960,6 +977,8 @@ def quickshell_coding_assistant(
         to_version=to_version,
         context=context,
         project=project,
+        permitted_execution=permitted_execution,
+        edits=edits,
     )
 
 
@@ -1698,6 +1717,111 @@ def quickshell_profile_import(name: str, data: dict) -> dict:
     registry only."""
     _record_tool("quickshell_profile_import")
     return _profile_import(name, data)
+
+
+@mcp.tool()
+def quickshell_build_feature(
+    description: str,
+    project: str | None = None,
+    version: str = "latest",
+    compositor: str | None = None,
+    style: str | None = None,
+    context: str | None = None,
+    filename: str | None = None,
+    apply: bool = False,
+    edits: list[dict] | None = None,
+) -> dict:
+    """Build a feature end-to-end: analyze the project, research the APIs,
+    generate a verified component, validate it, and optionally apply a
+    permitted edit set. Returns the full staged plan. Read-only unless
+    apply=True and an explicit edit set is given (then mutating)."""
+    _record_tool("quickshell_build_feature")
+    return _build_feature(
+        description,
+        project=project,
+        version=version,
+        compositor=compositor,
+        style=style,
+        context=context,
+        filename=filename,
+        apply=apply,
+        edits=edits,
+    )
+
+
+@mcp.tool()
+def quickshell_debug(
+    error: str | None = None,
+    code: str | None = None,
+    project: str | None = None,
+    session_id: str | None = None,
+    version: str = "latest",
+    filename: str | None = None,
+    target: str | None = None,
+    property_name: str | None = None,
+) -> dict:
+    """Debug a failure end-to-end: explain the error from the docs, then
+    correlate live runtime evidence (errors, diagnosis, trace, binding)
+    when a session id is given. Inferred causes are kept separate from
+    observed evidence. Read-only."""
+    _record_tool("quickshell_debug")
+    return _debug(
+        error=error,
+        code=code,
+        project=project,
+        session_id=session_id,
+        version=version,
+        filename=filename,
+        target=target,
+        property_name=property_name,
+    )
+
+
+@mcp.tool()
+def quickshell_migrate_project(project: str, from_version: str, to_version: str) -> dict:
+    """Migrate a whole project between Quickshell versions: summarize the
+    API delta, run the per-file migration engine, and report confirmed
+    breaking issues with sources. Read-only."""
+    _record_tool("quickshell_migrate_project")
+    return _agent_migrate_project(project, from_version, to_version)
+
+
+@mcp.tool()
+def quickshell_test_feature(
+    project: str,
+    tests: list[dict],
+    entrypoint: str | None = None,
+    compositor: str | None = None,
+    config_dir: str | None = None,
+    environment: dict[str, str] | None = None,
+    screenshot_on_fail: bool = True,
+) -> dict:
+    """Test a feature end-to-end: start an isolated Quickshell session, run
+    the machine-readable test suite, capture a screenshot on failure, and
+    stop the session. Mutating (launches and stops a session)."""
+    _record_tool("quickshell_test_feature")
+    return _test_feature(
+        project,
+        tests,
+        entrypoint=entrypoint,
+        compositor=compositor,
+        config_dir=config_dir,
+        environment=environment,
+        screenshot_on_fail=screenshot_on_fail,
+    )
+
+
+@mcp.tool()
+def quickshell_optimize(
+    project: str | None = None,
+    session_id: str | None = None,
+    seconds: float = 2.0,
+) -> dict:
+    """Optimize a project: profile a live session (when given) and run
+    static component/binding/timer analysis plus a correlated diagnosis.
+    Cost is never attributed without evidence. Read-only."""
+    _record_tool("quickshell_optimize")
+    return _optimize(project=project, session_id=session_id, seconds=seconds)
 
 
 @mcp.tool()

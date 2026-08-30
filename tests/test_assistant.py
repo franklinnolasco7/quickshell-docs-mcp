@@ -529,3 +529,55 @@ def test_pipeline_stage_activation(monkeypatch, docs_fixture_urls):
     assert "quickshell_generate_component" not in tools
     assert "quickshell_validate_qml" not in tools
     assert "quickshell_migrate" not in tools
+
+
+def test_assistant_adds_provenance(monkeypatch, docs_fixture_urls):
+    """The research stage adds structured provenance (source/URL/authority)."""
+    _install(monkeypatch, docs_fixture_urls)
+    out = srv._coding_assistant("What is PanelWindow?")
+    tools = _tools(out)
+    assert "quickshell_provenance" in tools
+    provenance = out.get("provenance") or {}
+    assert "entries" in provenance
+    for entry in provenance["entries"]:
+        assert "source" in entry
+        assert "url" in entry
+        assert "authority_level" in entry
+
+
+def test_assistant_execution_denied_by_default(monkeypatch, docs_fixture_urls):
+    """Without permitted_execution, apply_patch records a step and does nothing."""
+    _install(monkeypatch, docs_fixture_urls)
+    out = srv._coding_assistant("Build a Hyprland workspace bar")
+    tools = _tools(out)
+    assert "quickshell_apply_patch" in tools
+    assert out.get("execution") is None
+    step = next(e for e in out["orchestration"] if e["tool"] == "quickshell_apply_patch")
+    assert "not permitted" in step["reason"]
+
+
+def test_assistant_execution_permitted_applies(monkeypatch, docs_fixture_urls, tmp_path):
+    _install(monkeypatch, docs_fixture_urls)
+    qml = tmp_path / "shell.qml"
+    qml.write_text("import Quickshell\nPanelWindow {}\n", encoding="utf-8")
+    edits = [{"file": "shell.qml", "old": "PanelWindow {}", "new": "PanelWindow { color: '#fff' }"}]
+    out = srv._coding_assistant(
+        "Build a status bar",
+        project=str(tmp_path),
+        permitted_execution=True,
+        edits=edits,
+    )
+    assert out["execution"]["applied"] is True
+    assert "PanelWindow { color: '#fff' }" in qml.read_text(encoding="utf-8")
+
+
+def test_assistant_execution_permitted_but_no_edits(monkeypatch, docs_fixture_urls, tmp_path):
+    _install(monkeypatch, docs_fixture_urls)
+    out = srv._coding_assistant(
+        "Build a status bar",
+        project=str(tmp_path),
+        permitted_execution=True,
+        edits=None,
+    )
+    step = next(e for e in out["orchestration"] if e["tool"] == "quickshell_apply_patch")
+    assert "no edits" in step["reason"]

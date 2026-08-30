@@ -28,8 +28,10 @@ from .explain_error import _explain_error
 from .find_pattern import _find_pattern
 from .generate import _generate_component
 from .implementations import _impl_file
+from .knowledge2 import _provenance
 from .migrate import _breaking_lines, _migrate
 from .project import _build_project_context
+from .refactor import _apply_patch
 from .search_all import _search_everything
 from .validate import _validate
 
@@ -284,6 +286,8 @@ def _assemble(
     validation: dict[str, Any] | None = None,
     remaining: list[dict[str, Any]] | None = None,
     sources: list[dict[str, str]] | None = None,
+    execution: dict[str, Any] | None = None,
+    provenance: dict[str, Any] | None = None,
     note: str = "",
 ) -> dict[str, Any]:
     if understanding is not None:
@@ -302,6 +306,10 @@ def _assemble(
         result["remaining_issues"] = remaining
     if sources is not None:
         result["sources"] = sources
+    if execution is not None:
+        result["execution"] = execution
+    if provenance is not None:
+        result["provenance"] = provenance
     if note:
         result["note"] = note
     return result
@@ -432,6 +440,11 @@ class _PipelineState:
     compat_checks: list[dict[str, Any]] = field(default_factory=list)
     validation: dict[str, Any] | None = None
     compatibility_verdict: str | None = None
+    # Permitted execution (mutating) and provenance.
+    permitted_execution: bool = False
+    execution_edits: list[dict[str, Any]] | None = None
+    execution_result: dict[str, Any] | None = None
+    provenance: dict[str, Any] | None = None
     # Assembly output, appended by stages as discovered.
     understanding: list[str] = field(default_factory=list)
     relevant_apis: list[dict[str, Any]] = field(default_factory=list)
@@ -1097,6 +1110,83 @@ def _stage_migrate(state: _PipelineState) -> None:
     state.note_parts.append("migration analysis recommends changes; it never rewrites files")
 
 
+def _stage_research(state: _PipelineState) -> None:
+    """Enrich results with provenance: source, version, URL, and authority
+    level. Already-collected sources are kept; provenance adds structured
+    authority metadata for the request."""
+    if state.provenance is not None:
+        return
+    version = state.resolved_version or "latest"
+    state.provenance = _safe_step(
+        state.trace,
+        state.errors,
+        "quickshell_provenance",
+        "gather source provenance for the request",
+        lambda: _provenance(state.request, version=version, limit=3),
+        "dict",
+    )
+    if state.provenance:
+        urls = {existing["url"] for existing in state.sources}
+        for entry in state.provenance.get("entries") or []:
+            if entry.get("url") and entry["url"] not in urls:
+                state.sources.append(
+                    {
+                        "title": f"provenance: {entry.get('title') or entry.get('source')}",
+                        "url": entry["url"],
+                    }
+                )
+        state.note_parts.append(
+            "provenance sources carry authority level; docs outrank examples outrank real-world."
+        )
+
+
+def _stage_execute(state: _PipelineState) -> None:
+    """Apply permitted edits to the project. Only runs when
+    ``permitted_execution`` is True and explicit edits are provided.
+    Non-permitted invocations record a step and continue."""
+    if not state.permitted_execution:
+        _safe_step(
+            state.trace,
+            state.errors,
+            "quickshell_apply_patch",
+            "execution not permitted (set permitted_execution=True and provide edits to enable)",
+            lambda: None,
+            "dict",
+        )
+        return
+    if not state.project_info:
+        _safe_step(
+            state.trace,
+            state.errors,
+            "quickshell_apply_patch",
+            "execution requires a project= path",
+            lambda: None,
+            "dict",
+        )
+        return
+    if not state.execution_edits:
+        _safe_step(
+            state.trace,
+            state.errors,
+            "quickshell_apply_patch",
+            "execution permitted but no edits provided; nothing to apply",
+            lambda: None,
+            "dict",
+        )
+        return
+    state.execution_result = _safe_step(
+        state.trace,
+        state.errors,
+        "quickshell_apply_patch",
+        "apply permitted edits",
+        lambda: _apply_patch(state.project_info["root"], state.execution_edits),
+        "dict",
+    )
+    if state.execution_result:
+        changed = len(state.execution_result.get("changed") or [])
+        state.note_parts.append(f"permitted execution: {changed} file(s) changed.")
+
+
 def _stage_orchestrate(state: _PipelineState) -> dict[str, Any]:
     """Assemble the final structured result, including the grounded terminal
     output the pipeline produced."""
@@ -1133,6 +1223,12 @@ def _stage_orchestrate(state: _PipelineState) -> dict[str, Any]:
         validation=state.validation,
         remaining=state.remaining,
         sources=state.sources,
+        execution=(
+            {"applied": state.execution_result is not None, "result": state.execution_result}
+            if state.permitted_execution
+            else None
+        ),
+        provenance=state.provenance,
         note=note,
     ) | {"grounded_result": grounded}
 
@@ -1244,6 +1340,8 @@ def _coding_assistant(
     to_version: str | None = None,
     context: str | None = None,
     project: str | None = None,
+    permitted_execution: bool = False,
+    edits: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Route a development request through the pipeline and return a grounded
     result. See the ``quickshell_coding_assistant`` tool docstring."""
@@ -1288,6 +1386,8 @@ def _coding_assistant(
         to_version=to_version,
     )
     state.project_info = project_info
+    state.permitted_execution = permitted_execution
+    state.execution_edits = edits
 
     # Understand: classify (done above), then resolve the version(s). The
     # migrate intent resolves its own range; the rest resolve one target.
@@ -1350,4 +1450,6 @@ def _coding_assistant(
     _stage_generate(state)
     _stage_validate(state)
     _stage_migrate(state)
+    _stage_research(state)
+    _stage_execute(state)
     return _stage_orchestrate(state)
