@@ -13,11 +13,11 @@
 
 ---
 
-Search APIs, discover implementation patterns, explain errors, and validate QML **before** your agent writes or runs code.
+Search APIs, discover implementation patterns, explain errors, validate QML, inspect a project, run tests, and profile a live shell **before** your agent writes or runs code.
 
 ## Why
 
-Quickshell changes quickly, and AI coding agents can generate QML from outdated or incomplete training data. `quickshell-mcp` lets agents verify APIs against current documentation, find existing implementation patterns, and validate generated QML instead of guessing from memory.
+Quickshell changes quickly, and AI coding agents can generate QML from outdated or incomplete training data. `quickshell-mcp` lets agents verify APIs against current documentation, find existing implementation patterns, validate generated QML, and inspect or test a project instead of guessing from memory.
 
 > [!IMPORTANT]
 > When sources disagree, official documentation always takes precedence.
@@ -26,6 +26,7 @@ Quickshell changes quickly, and AI coding agents can generate QML from outdated 
 
 - [Quick start](#quick-start)
 - [What it provides](#what-it-provides)
+- [External tools](#external-tools)
 - [Knowledge sources](#knowledge-sources)
 - [Configure](#configure)
 - [Tools](#tools)
@@ -88,42 +89,35 @@ docker run --rm -i quickshell-mcp     # speaks MCP over stdio
 | **Version compatibility** | Whether an API or QML snippet works on a specific Quickshell release |
 | **Migration** | Analyze what a QML config must change to keep working after an upgrade |
 | **Component generation** | Minimal, source-grounded QML components from a plain-language description |
-| **Unified search** | Search across multiple sources in one call |
+| **Project intelligence** | Analyze, map, search, and classify a project on disk |
+| **Project validation** | Validate, lint, check compatibility, and migrate a whole project per file |
+| **Runtime sessions** | Start and inspect isolated `qs` processes, opt-in and mutating |
+| **Visual and UI inspection** | Windows, screenshots, UI tree, properties, and snapshots |
+| **Runtime testing** | Machine-readable test steps, suites, and assertions against a live session |
+| **Performance profiling** | Bounded sampling plus static component, binding, and timer analysis |
+| **Desktop adapters** | Read-only Hyprland, PipeWire, D-Bus, and system inspection |
+| **Knowledge 2.0** | Version diffs, API graphs, best practices, pattern comparison, provenance |
+| **Intelligence** | Project memory, architecture recommendations, regression detection, task plans |
+| **Agent orchestration** | Build, debug, migrate, test, and optimize a feature end to end |
 | **Coding assistant** | One plain-language request routed through the right tools, returning a structured, source-grounded result |
+| **CI entrypoints** | Headless validation, screenshot, runtime-test, compat, and migration scripts |
+
+## External tools
+
+Most tools need nothing beyond the `quickshell-mcp` package. The ones that inspect a real desktop detect their dependency at runtime and report it as unavailable when missing, instead of failing. This applies to runtime sessions, UI inspection, and the desktop adapters.
+
+| Dependency | Used by |
+|---|---|
+| `qs` (Quickshell binary) | Runtime sessions, UI inspection, testing, `qs ipc` |
+| `grim` | Screenshots |
+| ImageMagick (`compare`, `identify`) | Screenshot diff, visual checks |
+| `hyprctl`, `pw-cli`, `busctl` | Desktop adapters (each optional, degrades gracefully) |
+
+The headless CI shell (`nix develop .#ci`) packages `quickshell`, `weston`, `grim`, and `imagemagick` for running runtime-test and screenshot jobs without a desktop.
 
 ## Knowledge sources
 
-```mermaid
-flowchart LR
-    A[Quickshell docs]
-    B[Qt/QML docs]
-    C[Official examples]
-    D[Caelestia]
-    E[Noctalia]
-    F[dots-hyprland]
-    M((quickshell-mcp))
-    Agent[AI coding agent]
-
-    A --> M
-    B --> M
-    C --> M
-    D --> M
-    E --> M
-    F --> M
-    M --> Agent
-
-    classDef official fill:#cdeaff,stroke:#1c6dd0,stroke-width:1px,color:#0b3661
-    classDef community fill:#ffe3c2,stroke:#d8871b,stroke-width:1px,color:#5c3a05
-    classDef core fill:#c9f2d8,stroke:#1f9e5c,stroke-width:2px,color:#0b3d24
-    classDef agent fill:#ead6ff,stroke:#8a3ff0,stroke-width:1px,color:#3a1466
-
-    class A,B,C official
-    class D,E,F community
-    class M core
-    class Agent agent
-```
-
-Official documentation is authoritative. Examples and real-world implementations provide practical reference material (see [Source priority](#source-priority)).
+Six sources back the server: Quickshell docs, Qt/QML docs, official Quickshell examples, and three real-world shells (Caelestia, Noctalia, dots-hyprland). The shells are practical reference material, not authoritative API definitions. See [Source priority](#source-priority) for how conflicts resolve.
 
 ## Configure
 
@@ -152,50 +146,7 @@ For HTTP transport, set `QUICKSHELL_DOCS_MCP_TRANSPORT=http` (plus optional `HOS
 
 ## Tools
 
-#### Discovery
-
-| Tool | What it does |
-|---|---|
-| `quickshell_search` | Search Quickshell type names, namespaces, and guide slugs; optionally full-text including deep search over type pages |
-| `quickshell_search_all` | One-call unified search across Quickshell docs/types, Qt types, official examples, and all implementation shells |
-| `quickshell_find_pattern` | Describe a feature in plain words and get matching real-world implementations with per-pattern API hints |
-
-#### Documentation
-
-| Tool | What it does |
-|---|---|
-| `quickshell_list_versions` | List published documentation versions and the latest |
-| `quickshell_list_types` / `quickshell_get_type` | Browse and fetch Quickshell QML type docs |
-| `quickshell_list_guide_pages` / `quickshell_get_guide_page` | Fetch usage guide pages as Markdown |
-| `quickshell_about` / `quickshell_changelog` | Fetch project metadata and changelog |
-
-#### Qt / QML
-
-| Tool | What it does |
-|---|---|
-| `quickshell_list_qt_types` / `quickshell_get_qt_type` | Browse and fetch Qt-side types (QtQuick, Controls, Layouts, ...) |
-| `quickshell_validate_qml` | Statically validate QML source |
-
-#### Examples & implementations
-
-| Tool | What it does |
-|---|---|
-| `quickshell_list_examples` / `quickshell_get_example` | Browse and read official example configs |
-| `quickshell_search_implementations` | Search Caelestia, Noctalia, and dots-hyprland for patterns (bar, OSD, IPC, ...) |
-| `quickshell_get_implementation` | Read implementation files, narrowed via `find=` |
-
-#### Debugging & session
-
-| Tool | What it does |
-|---|---|
-| `quickshell_explain_error` | Explain a QML/Quickshell error and suggest a fix, grounded in actual docs |
-| `quickshell_check_compatibility` | Check whether an API, type, or QML snippet is compatible with a specific Quickshell version |
-| `quickshell_migrate` | Analyze what a QML config must change to keep working after a Quickshell upgrade |
-| `quickshell_generate_component` | Generate a minimal QML component from a plain-language description, with every API verified against the docs |
-| `quickshell_coding_assistant` | Route a plain-language development request (build, debug, migrate, adapt, research) through the right tools and get a structured, source-grounded result |
-| `quickshell_stats` | Session call counts and cache-hit ratio |
-
-> Page-fetching tools accept `version="latest"` (default) or an explicit version like `"v0.3.0"`. Cache-backed tools accept `refresh=True` to bypass the 30-minute cache.
+For the full per-tool list, grouped by capability with mutating and high-risk tools flagged, see [docs/TOOLS.md](docs/TOOLS.md).
 
 ## Typical workflow
 
@@ -320,7 +271,7 @@ The result includes the generated QML plus:
 
 ### Coding assistant
 
-`quickshell_coding_assistant` is an orchestration layer over the other tools, for tasks that span several of them. Give it one plain-language development request and it runs a fixed pipeline of stages: search, verify, generate, validate, migrate, orchestrate. Each stage activates only the tools the request needs. The result is structured and source-grounded, with sections for understanding, relevant APIs, recommended approach, implementation references, compatibility, validation, remaining issues, sources, and a terminal `grounded_result`.
+`quickshell_coding_assistant` is an orchestration layer over the other tools, for tasks that span several of them. Give it one plain-language development request and it runs a fixed pipeline of stages: search, verify, generate, validate, migrate, research (provenance), and optionally execute. Each stage activates only the tools the request needs. The result is structured and source-grounded, with sections for understanding, relevant APIs, recommended approach, implementation references, compatibility, validation, remaining issues, sources, provenance, and a terminal `grounded_result`.
 
 ```json
 {"request": "Build a Hyprland workspace bar"}
@@ -337,9 +288,56 @@ Requests map to five intents, each running the relevant pipeline stages:
 - **pattern** ("find an implementation ... and adapt it") runs search (`quickshell_find_pattern`, with a short excerpt of the top implementation) and verify (compatibility of the hinted APIs); `grounded_result` is the excerpt plus verified APIs.
 - **research** ("what is X?", "how do I ...?") runs search (all sources) and verify (top type and guide pages + compatibility); `grounded_result` lists the resolved types and guides.
 
-Version and compositor come from the request text (`0.2`, `hyprland`) or from the `version`/`compositor`/`from_version`/`to_version` parameters. Loose version hints resolve at runtime against the published list. Each step runs in isolation, so a failing source shows up in `errors` instead of failing the whole request. The result carries an `orchestration` trace of the tools used and a deduplicated `sources` list. The `basis` tags on approach steps and the `verified` flag on API entries separate verified facts (from the official docs) from recommendations. The assistant writes nothing to disk.
+Execution is off by default: the assistant never modifies files. To let it apply an explicit, validated edit set, pass `permitted_execution=True` together with `edits=[...]` (same shape as `quickshell_apply_patch`) and a `project=` path. Non-permitted requests record an execution step and continue read-only.
+
+Version and compositor come from the request text (`0.2`, `hyprland`) or from the `version`/`compositor`/`from_version`/`to_version` parameters. Loose version hints resolve at runtime against the published list. Each step runs in isolation, so a failing source shows up in `errors` instead of failing the whole request. The result carries an `orchestration` trace of the tools used and a deduplicated `sources` list. The `basis` tags on approach steps and the `verified` flag on API entries separate verified facts (from the official docs) from recommendations.
 
 **When to use it:** multi-step development requests, or when you do not yet know which single tool fits. For a single, focused lookup (one type page, one error message, one version check) call the specific tool directly; it is cheaper and gives the raw answer.
+
+</details>
+
+<details>
+<summary><b>Project, runtime, inspection, testing, performance, and agents</b>: work on a real project on disk and a live shell</summary>
+
+### Project analysis
+
+`quickshell_project_analyze`, `quickshell_project_map`, and `quickshell_project_find` read a project on disk without executing anything. Analysis marks unknown values explicitly, the map distinguishes confirmed from inferred edges (and reports cycles), and find searches project files with location and context. `quickshell_project_dependencies` classifies imports as required, optional, detected, or missing.
+
+```json
+{"project": "/path/to/shell"}
+```
+
+`quickshell_project_validate`, `quickshell_project_lint`, `quickshell_project_compatibility`, and `quickshell_project_migrate` run the same engines used by the single-file tools across every QML file, grouped by file and severity. Lint uses an extensible rule table; compatibility never overclaims runtime incompatibility; migrate produces machine-readable proposed edits and never writes.
+
+### Runtime sessions
+
+Runtime tools launch real `qs` processes in isolated XDG directories so a managed shell never touches your desktop session. They are opt-in and mutating, and require `qs` on PATH.
+
+```json
+{"project": "/path/to/shell", "entrypoint": "main.qml"}
+```
+
+`quickshell_runtime_start` returns a session id; `quickshell_runtime_status`, `quickshell_runtime_logs`, and `quickshell_runtime_ping` inspect it; `quickshell_runtime_stop` and `quickshell_runtime_reset` manage the lifecycle. Profiles are named and versioned via the ecosystem `quickshell_profile_*` tools and can be reused by start.
+
+### Visual and UI inspection
+
+`quickshell_windows`, `quickshell_ui_tree`, and `quickshell_ui_find` inspect a running session. Screenshots need `grim` and a compositor; UI introspection needs an `inspector` IpcHandler target in the shell. `quickshell_ui_set_property` and `quickshell_ui_invoke` mutate the session through IPC and return the old/new state; `quickshell_ui_eval` is high-risk (explicit opt-in, time-limited, output-bounded) and never touches the filesystem.
+
+### Testing
+
+`quickshell_test` runs a machine-readable test (steps then assertions, screenshot on failure); `quickshell_test_suite` runs several tests in isolation; `quickshell_assert`, `quickshell_test_macro`, and `quickshell_test_record` build up steps; `quickshell_test_report` summarizes a suite.
+
+```json
+{"session_id": "abc123", "tests": [{"name": "bar shows", "assertions": [{"type": "visible", "target": "bar"}]}]}
+```
+
+### Performance
+
+`quickshell_profile` samples a session's CPU/memory over a bounded window. `quickshell_profile_component`, `quickshell_profile_bindings`, `quickshell_profile_timers`, and `quickshell_profile_object_tree` analyze a project statically. `quickshell_performance_diagnose` correlates the evidence into hypotheses with confidence, and never attributes cost without evidence.
+
+### Agents
+
+`quickshell_build_feature`, `quickshell_debug`, `quickshell_migrate_project`, `quickshell_test_feature`, `quickshell_optimize`, and `quickshell_engineer` each run an explicit staged plan over the lower-level tools. Every stage is isolated, so one failure never sinks the plan. `quickshell_engineer` composes the whole loop (build, test, debug, optimize, verify) and returns every stage's result plus a flattened plan.
 
 </details>
 
@@ -378,23 +376,7 @@ Use `refresh=True` to bypass the short-lived cache where supported. The cache lo
 
 ## Development
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, workflow, and how to submit changes.
-
-### Internal architecture
-
-The server is structured into four layers:
-
-```
-MCP tool (server.py, tool registration + docstrings)
-    ↓
-capabilities/ (domain layer: knowledge, validation, generation, migration, debugging, assistant)
-    ↓
-sources/ (shared services: data-source access, index building, parsing, compatibility)
-    ↓
-config, caches, utils, versions, extraction (infrastructure)
-```
-
-Each capability module declares its tools and its explicit dependencies on other capabilities. The dependency graph is acyclic and verified by `tests/test_capabilities.py`. Planned capabilities (project, runtime, inspection, testing, performance) are documented in the registry; no empty modules are created until features land.
+See [AGENTS.md](AGENTS.md) for the internal architecture (the four-layer capability/source stack, the CI script list, and coding/commit conventions) and [CONTRIBUTING.md](CONTRIBUTING.md) for setup and workflow.
 
 ## Limitations
 
@@ -403,6 +385,7 @@ Each capability module declares its tools and its explicit dependencies on other
 - Official examples may target different Quickshell versions.
 - Deep documentation searches can be slower on a cold cache.
 - Real-world implementations are references and may contain outdated patterns.
+- Runtime and inspection tools are opt-in and need `qs` on PATH; screenshots also need a compositor, and UI introspection needs an `inspector` IpcHandler target.
 
 ## License
 
