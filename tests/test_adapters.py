@@ -78,6 +78,14 @@ def test_hyprland_unavailable(monkeypatch):
     assert "not found" in result["note"]
 
 
+def _force_binary(monkeypatch) -> None:
+    """Pretend the adapter's binary exists so ``available()`` is True
+    regardless of the host environment (CI lacks hyprctl/pw-cli)."""
+    import shutil
+
+    monkeypatch.setattr(shutil, "which", lambda cmd: f"/usr/bin/{cmd}")
+
+
 def test_hyprland_detect(monkeypatch):
     from quickshell_mcp.sources.adapters import hyprland
 
@@ -90,6 +98,7 @@ def test_hyprland_detect(monkeypatch):
         "_hyprctl_json",
         lambda args: json.loads(payload) if args == ["monitors"] else [],
     )
+    _force_binary(monkeypatch)
     result = _detect_adapter("Hyprland")
     assert result["available"] is True
     assert result["monitors"][0]["name"] == "DP-1"
@@ -100,6 +109,7 @@ def test_hyprland_detect_returns_lists(monkeypatch):
     from quickshell_mcp.sources.adapters import hyprland
 
     monkeypatch.setattr(hyprland, "_hyprctl_json", lambda args: [])
+    _force_binary(monkeypatch)
     result = _detect_adapter("Hyprland")
     assert result["monitors"] == []
     assert result["workspaces"] == []
@@ -124,6 +134,7 @@ def test_parse_nodes():
 
 def test_pipewire_unavailable(monkeypatch):
     monkeypatch.setattr(pw, "_pw_nodes", lambda: "")
+    _force_binary(monkeypatch)
     result = _detect_adapter("PipeWire")
     assert result["available"] is True
     assert result["sinks"] == []
@@ -137,6 +148,7 @@ def test_pipewire_unavailable(monkeypatch):
 
 def test_dbus_services(monkeypatch):
     monkeypatch.setattr("quickshell_mcp.sources.adapters.dbus._busctl_list", lambda: BUSCTL_SAMPLE)
+    _force_binary(monkeypatch)
     result = srv.quickshell_dbus_services()
     assert "org.freedesktop.portal.Desktop" in result["services"]
     assert "org.freedesktop.Notifications" in result["services"]
@@ -144,6 +156,7 @@ def test_dbus_services(monkeypatch):
 
 def test_dbus_empty(monkeypatch):
     monkeypatch.setattr("quickshell_mcp.sources.adapters.dbus._busctl_list", lambda: "")
+    _force_binary(monkeypatch)
     result = srv.quickshell_dbus_services()
     assert result["services"] == []
 
