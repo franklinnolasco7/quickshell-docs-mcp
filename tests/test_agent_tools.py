@@ -308,6 +308,59 @@ def test_optimize_no_args_returns_empty_plan():
 
 
 # ---------------------------------------------------------------------------
+# Engineer (full loop, 16.1)
+# ---------------------------------------------------------------------------
+
+
+def test_engineer_runs_all_stages(monkeypatch):
+    generated = {"component": {"qml": "PanelWindow {}", "filename": "M.qml", "verified": True}}
+    monkeypatch.setattr(
+        at, "_build_feature", lambda *a, **k: {"generated": generated, "errors": {}}
+    )
+    monkeypatch.setattr(
+        at,
+        "_test_feature",
+        lambda *a, **k: {"suite": {"total": 1, "passed": 1, "failed": 0}, "errors": {}},
+    )
+    monkeypatch.setattr(at, "_debug", lambda *a, **k: {"hypothesis": None, "errors": {}})
+    monkeypatch.setattr(at, "_optimize", lambda *a, **k: {"diagnosis": [], "errors": {}})
+    monkeypatch.setattr(at, "_validate", lambda *a, **k: {"diagnostics": []})
+
+    result = at._engineer("build a bar", project="/tmp/x", tests=[{"name": "t"}], version="v0.3.1")
+    assert result["stage_order"] == ["build", "test", "optimize", "verify"]
+    assert result["stages"]["verify"] == {"diagnostics": []}
+    # Sub-stage traces are flattened into the outer plan.
+    assert result["stages"]["build"]["generated"] == generated
+
+
+def test_engineer_skips_test_without_project(monkeypatch):
+    monkeypatch.setattr(at, "_build_feature", lambda *a, **k: {"generated": None, "errors": {}})
+    monkeypatch.setattr(at, "_optimize", lambda *a, **k: {"diagnosis": [], "errors": {}})
+    result = at._engineer("build a bar", tests=[{"name": "t"}], version="v0.3.1")
+    assert "test" not in result["stage_order"]
+    assert result["stages"]["verify"] is None
+
+
+def test_engineer_debug_when_build_errors(monkeypatch):
+    monkeypatch.setattr(
+        at,
+        "_build_feature",
+        lambda *a, **k: {"generated": None, "errors": {"quickshell_generate_component": "boom"}},
+    )
+    monkeypatch.setattr(at, "_debug", lambda *a, **k: {"hypothesis": None, "errors": {}})
+    monkeypatch.setattr(at, "_optimize", lambda *a, **k: {"diagnosis": [], "errors": {}})
+    result = at._engineer("build a bar", project="/tmp/x", version="v0.3.1")
+    assert "debug" in result["stage_order"]
+
+
+def test_engineer_verify_skips_without_component(monkeypatch):
+    monkeypatch.setattr(at, "_build_feature", lambda *a, **k: {"generated": None, "errors": {}})
+    monkeypatch.setattr(at, "_optimize", lambda *a, **k: {"diagnosis": [], "errors": {}})
+    result = at._engineer("build a bar", project="/tmp/x", version="v0.3.1")
+    assert result["stages"]["verify"] is None
+
+
+# ---------------------------------------------------------------------------
 # Tool wrappers record stats
 # ---------------------------------------------------------------------------
 
@@ -318,6 +371,7 @@ def test_agent_tool_wrappers_record_stats(monkeypatch):
     monkeypatch.setattr(srv, "_migrate_project", lambda *a, **k: {})
     monkeypatch.setattr(srv, "_test_feature", lambda *a, **k: {})
     monkeypatch.setattr(srv, "_optimize", lambda *a, **k: {})
+    monkeypatch.setattr(srv, "_engineer", lambda *a, **k: {})
 
     before = dict(srv._TOOL_CALLS)
     srv.quickshell_build_feature("bar")
@@ -325,11 +379,13 @@ def test_agent_tool_wrappers_record_stats(monkeypatch):
     srv.quickshell_migrate_project("/tmp/x", "v0.2.0", "v0.3.1")
     srv.quickshell_test_feature("/tmp/x", [])
     srv.quickshell_optimize(project="/tmp/x")
+    srv.quickshell_engineer("build a bar")
     for tool in (
         "quickshell_build_feature",
         "quickshell_debug",
         "quickshell_migrate_project",
         "quickshell_test_feature",
         "quickshell_optimize",
+        "quickshell_engineer",
     ):
         assert srv._TOOL_CALLS[tool] == before.get(tool, 0) + 1

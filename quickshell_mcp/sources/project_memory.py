@@ -11,6 +11,7 @@ and screenshots against stored baselines.
 
 from __future__ import annotations
 
+import threading
 import time
 from pathlib import Path
 from typing import Any, cast
@@ -22,6 +23,10 @@ from .ui_runtime import _screenshot_diff
 from .validate import _validate
 
 _MEMORY_SCHEMA_VERSION = 1
+
+# Registry mutations are guarded because the MCP server can dispatch
+# concurrent requests; a torn read must never hand out a half-written entry.
+_MEMORY_LOCK = threading.RLock()
 
 # In-memory, session-scoped: project_root -> key -> entry.
 _PROJECT_MEMORIES: dict[str, dict[str, dict[str, Any]]] = {}
@@ -55,7 +60,8 @@ def _memory_save(
         "created_at": now,
         "updated_at": now,
     }
-    _PROJECT_MEMORIES.setdefault(root, {})[key] = entry
+    with _MEMORY_LOCK:
+        _PROJECT_MEMORIES.setdefault(root, {})[key] = entry
     return {"project": root, "memory": entry}
 
 
@@ -63,45 +69,51 @@ def _memory_list(project: str) -> dict[str, Any]:
     """List memory entries for a project with summary metadata."""
     root = _canonical(project)
     entries = []
-    for entry in sorted(_PROJECT_MEMORIES.get(root, {}).values(), key=lambda e: e["updated_at"]):
-        entries.append(
-            {
-                "key": entry["key"],
-                "content": entry["content"],
-                "scope": entry["scope"],
-                "evidence_count": len(entry["evidence"]),
-                "updated_at": entry["updated_at"],
-            }
-        )
+    with _MEMORY_LOCK:
+        for entry in sorted(
+            _PROJECT_MEMORIES.get(root, {}).values(), key=lambda e: e["updated_at"]
+        ):
+            entries.append(
+                {
+                    "key": entry["key"],
+                    "content": entry["content"],
+                    "scope": entry["scope"],
+                    "evidence_count": len(entry["evidence"]),
+                    "updated_at": entry["updated_at"],
+                }
+            )
     return {"project": root, "count": len(entries), "memories": entries}
 
 
 def _memory_get(project: str, key: str) -> dict[str, Any]:
     """Get a single memory entry, or raise with the available keys."""
     root = _canonical(project)
-    entry = (_PROJECT_MEMORIES.get(root) or {}).get(key)
-    if entry is None:
-        available = sorted(_PROJECT_MEMORIES.get(root) or {})
-        raise ValueError(f"Memory '{key}' not found for {root}. Available: {available}")
-    return {"project": root, "memory": entry}
+    with _MEMORY_LOCK:
+        entry = (_PROJECT_MEMORIES.get(root) or {}).get(key)
+        if entry is None:
+            available = sorted(_PROJECT_MEMORIES.get(root) or {})
+            raise ValueError(f"Memory '{key}' not found for {root}. Available: {available}")
+        return {"project": root, "memory": entry}
 
 
 def _memory_clear(project: str, key: str) -> dict[str, Any]:
     """Clear one memory entry from the registry."""
     root = _canonical(project)
-    if key not in (_PROJECT_MEMORIES.get(root) or {}):
-        available = sorted(_PROJECT_MEMORIES.get(root) or {})
-        raise ValueError(f"Memory '{key}' not found for {root}. Available: {available}")
-    del _PROJECT_MEMORIES[root][key]
-    if not _PROJECT_MEMORIES[root]:
-        del _PROJECT_MEMORIES[root]
-    return {"project": root, "cleared": key, "remaining": len(_PROJECT_MEMORIES.get(root, {}))}
+    with _MEMORY_LOCK:
+        if key not in (_PROJECT_MEMORIES.get(root) or {}):
+            available = sorted(_PROJECT_MEMORIES.get(root) or {})
+            raise ValueError(f"Memory '{key}' not found for {root}. Available: {available}")
+        del _PROJECT_MEMORIES[root][key]
+        if not _PROJECT_MEMORIES[root]:
+            del _PROJECT_MEMORIES[root]
+        return {"project": root, "cleared": key, "remaining": len(_PROJECT_MEMORIES.get(root, {}))}
 
 
 def _memory_reset(project: str) -> dict[str, Any]:
     """Reset all memory for a project (inspectable, explicit reset)."""
     root = _canonical(project)
-    count = len(_PROJECT_MEMORIES.pop(root, {}))
+    with _MEMORY_LOCK:
+        count = len(_PROJECT_MEMORIES.pop(root, {}))
     return {"project": root, "cleared": count, "remaining": 0}
 
 

@@ -14,6 +14,7 @@ from __future__ import annotations
 from ..sources.agent_tools import (  # noqa: F401
     _build_feature,
     _debug,
+    _engineer,
     _migrate_project,
     _optimize,
     _test_feature,
@@ -26,6 +27,7 @@ CAPABILITY_TOOLS = (
     "quickshell_migrate_project",
     "quickshell_test_feature",
     "quickshell_optimize",
+    "quickshell_engineer",
 )
 CAPABILITY_DEPENDS_ON = (
     "knowledge",

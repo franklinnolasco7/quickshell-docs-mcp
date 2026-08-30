@@ -526,3 +526,93 @@ def _optimize(
         timer_analysis=timers,
         diagnosis=diagnosis,
     )
+
+
+# ---------------------------------------------------------------------------
+# Engineer: full engineering-loop orchestration (16.1)
+# ---------------------------------------------------------------------------
+
+
+def _engineer(
+    description: str,
+    project: str | None = None,
+    version: str = "latest",
+    compositor: str | None = None,
+    tests: list[dict[str, Any]] | None = None,
+    seconds: float = 2.0,
+) -> dict[str, Any]:
+    """Full engineering-loop orchestration: compose the agent tools into a
+    feedback cycle (build → test → debug → optimize → verify). Every stage
+    is isolated; one failure never sinks the whole loop."""
+    trace: list[dict[str, Any]] = []
+    errors: dict[str, str] = {}
+    resolved = _resolve_version(version)
+
+    stages: dict[str, Any] = {}
+    stage_order: list[str] = []
+
+    def _run_stage(name: str, fn) -> Any:
+        result = fn()
+        stage_order.append(name)
+        stages[name] = result
+        # Flatten the stage's own orchestration into the outer trace so the
+        # returned plan reflects the full engineering loop.
+        sub_trace = (result or {}).get("stages") or []
+        for entry in sub_trace:
+            entry["stage"] = name
+            trace.append(entry)
+        sub_errors = (result or {}).get("errors") or {}
+        errors.update(sub_errors)
+        return result
+
+    # 1. Build
+    _run_stage(
+        "build",
+        lambda: _build_feature(
+            description, project=project, version=version, compositor=compositor
+        ),
+    )
+
+    # 2. Test (if tests provided)
+    if tests and project:
+        _run_stage(
+            "test",
+            lambda: _test_feature(project, tests, compositor=compositor, screenshot_on_fail=True),
+        )
+
+    # 3. Debug (if build had issues)
+    build_errors = stages.get("build", {}).get("errors", {})
+    if build_errors and project:
+        _run_stage(
+            "debug",
+            lambda: _debug(
+                error="; ".join(build_errors.values()),
+                project=project,
+                version=version,
+            ),
+        )
+
+    # 4. Optimize
+    _run_stage("optimize", lambda: _optimize(project=project, seconds=seconds))
+
+    # 5. Verify (validate what was built)
+    generated = (stages.get("build") or {}).get("generated") or {}
+    component = generated.get("component") or {}
+    validation: dict[str, Any] | None = None
+    if component.get("qml"):
+        validation = _validate(
+            component["qml"], version=resolved, filename=component.get("filename")
+        )
+    stages["verify"] = validation
+    stage_order.append("verify")
+
+    return _base_result(
+        description,
+        trace,
+        errors,
+        "Engineering loop: build → test → debug → optimize → verify. "
+        "Each stage runs independently; one failure never sinks the rest.",
+        version=resolved,
+        stage_order=stage_order,
+        stages=stages,
+    )

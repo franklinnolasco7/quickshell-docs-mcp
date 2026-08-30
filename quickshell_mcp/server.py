@@ -45,6 +45,7 @@ from .capabilities.adapters import (  # noqa: F401
 from .capabilities.agent import (  # noqa: F401
     _build_feature,
     _debug,
+    _engineer,
     _optimize,
     _test_feature,
 )
@@ -1833,6 +1834,31 @@ def quickshell_optimize(
     Cost is never attributed without evidence. Read-only."""
     _record_tool("quickshell_optimize")
     return _optimize(project=project, session_id=session_id, seconds=seconds)
+
+
+@mcp.tool()
+def quickshell_engineer(
+    description: str,
+    project: str | None = None,
+    version: str = "latest",
+    compositor: str | None = None,
+    tests: list[dict] | None = None,
+    seconds: float = 2.0,
+) -> dict:
+    """Run the full engineering loop end-to-end: build → test → debug →
+    optimize → verify, composing the agent tools with per-stage isolation
+    so one failing stage never sinks the rest. Pass tests= a machine-
+    readable suite to enable the test stage; the loop is otherwise
+    read-only. Returns every stage's result plus the flattened plan."""
+    _record_tool("quickshell_engineer")
+    return _engineer(
+        description,
+        project=project,
+        version=version,
+        compositor=compositor,
+        tests=tests,
+        seconds=seconds,
+    )
 
 
 @mcp.tool()

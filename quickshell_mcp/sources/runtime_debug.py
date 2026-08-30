@@ -12,7 +12,7 @@ import re
 from pathlib import Path
 from typing import Any, cast
 
-from .runtime_session import _SESSION_REGISTRY, _start_session, _stop_session
+from .runtime_session import _SESSION_LOCK, _SESSION_REGISTRY, _start_session, _stop_session
 
 # ---------------------------------------------------------------------------
 # Normalized error extraction
@@ -232,7 +232,8 @@ def _reload(session_id: str, hard: bool = False) -> dict[str, Any]:
     profile = session.profile
     # Stop cleanly, then relaunch under the same profile with a fresh id.
     _stop_session(session)
-    _SESSION_REGISTRY.pop(session_id, None)
+    with _SESSION_LOCK:
+        _SESSION_REGISTRY.pop(session_id, None)
     fresh = _start_session(profile)
     return {
         "session_id": fresh.session_id,

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import re
 import shutil
+import threading
 from pathlib import Path
 from typing import Any, cast
 
@@ -137,6 +138,10 @@ def _runtime_dependencies(project: str) -> dict[str, Any]:
 # reinterpreted.
 _PROFILE_SCHEMA_VERSION = 1
 
+# Registry mutations are guarded because the MCP server can dispatch
+# concurrent requests; a torn read must never hand out a half-written entry.
+_PROFILE_LOCK = threading.RLock()
+
 _PROFILE_REGISTRY: dict[str, _RuntimeProfile] = {}
 
 
@@ -160,57 +165,61 @@ def _profile_save(
         environment=environment or {},
         fixture_data=fixture_data or {},
     )
-    _PROFILE_REGISTRY[name] = profile
+    with _PROFILE_LOCK:
+        _PROFILE_REGISTRY[name] = profile
     return _profile_entry(name, profile)
 
 
 def _profile_entry(name: str, profile: _RuntimeProfile) -> dict[str, Any]:
-    """Serialize one registry entry: the profile plus its schema version."""
     return {"name": name, "schema_version": _PROFILE_SCHEMA_VERSION, "profile": profile.to_dict()}
 
 
 def _profile_list() -> dict[str, Any]:
     """List saved profiles with summary info."""
     entries = []
-    for name, profile in sorted(_PROFILE_REGISTRY.items()):
-        d = profile.to_dict()
-        entries.append(
-            {
-                "name": name,
-                "schema_version": _PROFILE_SCHEMA_VERSION,
-                "project_root": d["project_root"],
-                "entrypoint": d["entrypoint"],
-                "compositor": d["compositor"],
-            }
-        )
+    with _PROFILE_LOCK:
+        for name, profile in sorted(_PROFILE_REGISTRY.items()):
+            d = profile.to_dict()
+            entries.append(
+                {
+                    "name": name,
+                    "schema_version": _PROFILE_SCHEMA_VERSION,
+                    "project_root": d["project_root"],
+                    "entrypoint": d["entrypoint"],
+                    "compositor": d["compositor"],
+                }
+            )
     return {"profiles": entries, "count": len(entries)}
 
 
 def _profile_get(name: str) -> dict[str, Any]:
     """Get a single profile by name, or raise."""
-    profile = _PROFILE_REGISTRY.get(name)
-    if profile is None:
-        available = sorted(_PROFILE_REGISTRY)
-        raise ValueError(f"Profile '{name}' not found. Available: {available}")
-    return _profile_entry(name, profile)
+    with _PROFILE_LOCK:
+        profile = _PROFILE_REGISTRY.get(name)
+        if profile is None:
+            available = sorted(_PROFILE_REGISTRY)
+            raise ValueError(f"Profile '{name}' not found. Available: {available}")
+        return _profile_entry(name, profile)
 
 
 def _profile_delete(name: str) -> dict[str, Any]:
     """Delete a named profile from the registry."""
-    if name not in _PROFILE_REGISTRY:
-        available = sorted(_PROFILE_REGISTRY)
-        raise ValueError(f"Profile '{name}' not found. Available: {available}")
-    del _PROFILE_REGISTRY[name]
-    return {"deleted": name, "remaining": len(_PROFILE_REGISTRY)}
+    with _PROFILE_LOCK:
+        if name not in _PROFILE_REGISTRY:
+            available = sorted(_PROFILE_REGISTRY)
+            raise ValueError(f"Profile '{name}' not found. Available: {available}")
+        del _PROFILE_REGISTRY[name]
+        return {"deleted": name, "remaining": len(_PROFILE_REGISTRY)}
 
 
 def _profile_export(name: str) -> dict[str, Any]:
     """Export a profile as a JSON-serializable dict (with schema version)."""
-    profile = _PROFILE_REGISTRY.get(name)
-    if profile is None:
-        available = sorted(_PROFILE_REGISTRY)
-        raise ValueError(f"Profile '{name}' not found. Available: {available}")
-    return _profile_entry(name, profile)
+    with _PROFILE_LOCK:
+        profile = _PROFILE_REGISTRY.get(name)
+        if profile is None:
+            available = sorted(_PROFILE_REGISTRY)
+            raise ValueError(f"Profile '{name}' not found. Available: {available}")
+        return _profile_entry(name, profile)
 
 
 def _profile_import(name: str, data: dict[str, Any]) -> dict[str, Any]:
@@ -234,5 +243,6 @@ def _profile_import(name: str, data: dict[str, Any]) -> dict[str, Any]:
         environment=data.get("environment", {}),
         fixture_data=data.get("fixture_data", {}),
     )
-    _PROFILE_REGISTRY[name] = profile
+    with _PROFILE_LOCK:
+        _PROFILE_REGISTRY[name] = profile
     return _profile_entry(name, profile)

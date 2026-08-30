@@ -14,6 +14,7 @@ import os
 import shutil
 import signal
 import subprocess
+import threading
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -25,6 +26,11 @@ from .runtime_profile import _RuntimeProfile
 _LOG_BUF_SIZE = 10_000
 _POLL_INTERVAL = 0.1
 _KILL_TIMEOUT = 5.0
+
+# Registry mutations are guarded by a lock because the MCP server can dispatch
+# concurrent requests (HTTP transport); a torn read of _SESSION_REGISTRY must
+# never hand out a half-registered session.
+_SESSION_LOCK = threading.RLock()
 
 _SESSION_REGISTRY: dict[str, _RuntimeSession] = {}
 
@@ -122,7 +128,8 @@ def _start_session(profile: _RuntimeProfile) -> _RuntimeSession:
             exit_code=-1,
         )
         session.append_log("stderr", f"Failed to launch: {exc}")
-        _SESSION_REGISTRY[session_id] = session
+        with _SESSION_LOCK:
+            _SESSION_REGISTRY[session_id] = session
         return session
 
     session = _RuntimeSession(
@@ -132,7 +139,8 @@ def _start_session(profile: _RuntimeProfile) -> _RuntimeSession:
         pid=proc.pid,
         _process=proc,
     )
-    _SESSION_REGISTRY[session_id] = session
+    with _SESSION_LOCK:
+        _SESSION_REGISTRY[session_id] = session
     return session
 
 
@@ -178,7 +186,8 @@ def _reset_session(session: _RuntimeSession) -> _RuntimeSession:
     _stop_session(session)
     _cleanup_temp(session)
     old_id = session.session_id
-    _SESSION_REGISTRY.pop(old_id, None)
+    with _SESSION_LOCK:
+        _SESSION_REGISTRY.pop(old_id, None)
     return _start_session(session.profile)
 
 
