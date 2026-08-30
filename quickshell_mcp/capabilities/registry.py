@@ -54,6 +54,12 @@ class Capability:
 # evaluation/patch capabilities.
 _MUTATING_CAPABILITIES = ("runtime", "testing")
 
+# Per-tool safety overrides.  A tool listed here overrides its owning
+# capability's default safety level.
+_TOOL_SAFETY_LEVELS: dict[str, str] = {
+    "quickshell_apply_patch": "mutating",
+}
+
 
 def _safety_level(name: str) -> str:
     return "mutating" if name in _MUTATING_CAPABILITIES else "read-only"
@@ -123,9 +129,12 @@ def classify_capability(name: str) -> str:
 def safety_level_for_tool(tool: str) -> str:
     """Return the safety level of the capability owning *tool*.
 
-    System tools (e.g. ``quickshell_stats``) are telemetry and are always
-    classified read-only.
+    A per-tool override (``_TOOL_SAFETY_LEVELS``) wins; otherwise the level
+    is inherited from the owning capability. System tools (e.g.
+    ``quickshell_stats``) are telemetry and are always classified read-only.
     """
+    if tool in _TOOL_SAFETY_LEVELS:
+        return _TOOL_SAFETY_LEVELS[tool]
     cap = capability_for_tool(tool)
     if cap is not None:
         return classify_capability(cap)

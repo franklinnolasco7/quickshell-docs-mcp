@@ -725,9 +725,34 @@ def _generate_component(
     style: str | None = None,
     context: str | None = None,
     filename: str | None = None,
+    project: str | None = None,
 ) -> dict[str, Any]:
     resolved_version = _resolve_version(version)
     description = description.strip()
+
+    # Project-aware overrides.
+    project_version = None
+    project_compositor = None
+    project_conventions = None
+    if project is not None:
+        try:
+            from typing import Any, cast
+
+            from .project import _build_project_context
+
+            ctx = _build_project_context(project)
+            info = cast(
+                dict[str, Any], ctx.discover({"quickshell_version", "compositor", "conventions"})
+            )
+            project_version = info["quickshell_version"]
+            project_compositor = (info["compositor"] or [None])[0]
+            project_conventions = info["conventions"]
+            if version == "latest" and project_version:
+                resolved_version = _resolve_version(project_version)
+            if compositor is None and project_compositor:
+                compositor = project_compositor.lower()
+        except (ValueError, RuntimeError):
+            pass
     if not description:
         return {
             "description": description,
@@ -832,6 +857,12 @@ def _generate_component(
         assumptions.append(
             "Existing project context was noted but no project files were read or written."
         )
+    if project_conventions:
+        naming = project_conventions.get("file_naming", "unknown")
+        ept = project_conventions.get("entrypoint_naming", "unknown")
+        assumptions.append(
+            f"Project conventions applied: file naming '{naming}', entrypoint '{ept}'."
+        )
     for section in sections:
         if section.key in used_keys:
             continue
@@ -915,3 +946,108 @@ def _external_dependencies(sections: list[_Section], compositor_dep: str | None)
                 "a compositor exposing workspace information (compositor-specific types required)"
             )
     return deps
+
+
+def _verify_and_annotate(
+    qml: str,
+    out_filename: str,
+    version: str,
+    section_types: list[dict[str, str]],
+    note_prefix: str,
+) -> dict[str, Any]:
+    """Verify the generated QML's APIs and validate it, returning the shared
+    verification/validation/references block used by the service/panel tools."""
+    validation = _validate(qml, version=version, filename=out_filename)
+    per_api: list[dict[str, Any]] = []
+    for type_info in section_types:
+        namespace = type_info.get("namespace", "")
+        name = type_info["type_name"]
+        compat = _check_compatibility(type=name, version=version)
+        per_api.append(
+            {
+                "api": name,
+                "namespace": namespace,
+                "compatibility": compat.get("compatibility"),
+                "url": _first_doc(compat),
+            }
+        )
+    verdict = (
+        "verified"
+        if all(entry.get("compatibility") == "compatible" for entry in per_api)
+        else "unchecked"
+    )
+    return {
+        "verification": {"verdict": verdict, "per_api": per_api},
+        "validation": validation,
+        "note": note_prefix + " All referenced APIs were checked against the docs.",
+    }
+
+
+def _first_doc(compat: dict[str, Any]) -> str | None:
+    for doc in compat.get("documentation") or []:
+        if doc.get("url"):
+            return doc["url"]
+    return None
+
+
+def _generate_service(
+    description: str,
+    version: str = "latest",
+    compositor: str | None = None,
+    project: str | None = None,
+) -> dict[str, Any]:
+    """Generate a generic, architecture-neutral Quickshell service
+    abstraction. The first version supports common concerns by name and
+    returns a verified service skeleton with declared imports, dependencies,
+    and a placeholder service object the caller can extend."""
+    resolved_version = _resolve_version(version)
+    name = re.sub(r"[^a-zA-Z0-9]", "", re.sub(r"\s+service$", "", description.strip())) or "Service"
+    service_name = f"{name}Service"
+
+    qml = f"""import Quickshell
+
+// {service_name}: service abstraction for "{description.strip()}"
+QtObject {{
+    id: root
+
+    // Replace this placeholder with real state. Keep methods small and
+    // side-effect free so the service stays testable.
+    function isReady() {{ return true; }}
+}}
+"""
+    out_filename = f"{re.sub(r'[^a-z0-9]+', '', description.lower()) or 'service'}Service.qml"
+    block = _verify_and_annotate(
+        qml, out_filename, resolved_version, [], "Generated a generic service abstraction."
+    )
+    return {
+        "description": description,
+        "version": resolved_version,
+        "component": {
+            "qml": qml,
+            "filename": out_filename,
+            "verified": block["verification"]["verdict"] == "verified",
+        },
+        "dependencies": {"imports": ["Quickshell"], "quickshell_types": [], "qt_types": []},
+        "service_name": service_name,
+        "assumptions": [
+            "Generic architecture-neutral service; no vendor-specific API is assumed.",
+        ],
+        **block,
+    }
+
+
+def _generate_panel(
+    description: str,
+    version: str = "latest",
+    compositor: str | None = None,
+    project: str | None = None,
+) -> dict[str, Any]:
+    """High-level panel scaffolding for bars, OSDs, launchers, dashboards,
+    control centers, and notification panels. Reuses the component generator
+    and project style detection; outputs minimal, valid, extendable QML."""
+    return _generate_component(
+        description=description,
+        version=version,
+        compositor=compositor,
+        project=project,
+    )

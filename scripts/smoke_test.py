@@ -118,6 +118,11 @@ def main() -> int:
         "quickshell_project_lint",
         "quickshell_project_compatibility",
         "quickshell_project_migrate",
+        "quickshell_generate_service",
+        "quickshell_generate_panel",
+        "quickshell_refactor",
+        "quickshell_apply_patch",
+        "quickshell_style_match",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

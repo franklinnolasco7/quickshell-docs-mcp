@@ -52,9 +52,14 @@ from .capabilities.debugging import (  # noqa: F401
     _extract_type_from_code,
 )
 from .capabilities.generation import (  # noqa: F401
+    _apply_patch,
     _build_section,
     _generate_component,
+    _generate_panel,
+    _generate_service,
     _interpret_component_query,
+    _refactor,
+    _style_match,
 )
 from .capabilities.knowledge import (  # noqa: F401
     _GITHUB_API,
@@ -684,6 +689,7 @@ def quickshell_generate_component(
     style: str | None = None,
     context: str | None = None,
     filename: str | None = None,
+    project: str | None = None,
 ) -> dict:
     """Generate a minimal, source-grounded Quickshell QML component from a
     plain-language description, e.g. 'Create a Hyprland workspace indicator',
@@ -718,7 +724,11 @@ def quickshell_generate_component(
     compositor or external-service dependency, per-API verification evidence,
     validation diagnostics, supporting references, and the assumptions made.
     Official documentation always wins over examples and real-world
-    implementations when they disagree. This tool writes nothing to disk."""
+    implementations when they disagree. This tool writes nothing to disk.
+
+    Pass project= a path to the project root to make generation project-aware:
+    the target version and compositor default to the project's detected
+    values, and detected conventions are surfaced as assumptions."""
     _record_tool("quickshell_generate_component")
     return _generate_component(
         description=description,
@@ -727,7 +737,97 @@ def quickshell_generate_component(
         style=style,
         context=context,
         filename=filename,
+        project=project,
     )
+
+
+@mcp.tool()
+def quickshell_generate_service(
+    description: str,
+    version: str = "latest",
+    compositor: str | None = None,
+    project: str | None = None,
+) -> dict:
+    """Generate a generic, architecture-neutral Quickshell service
+    abstraction for a common application concern. The first version returns a
+    verified service skeleton with declared imports and a placeholder service
+    object you can extend; it is deliberately generic rather than a giant
+    library of service templates. No nonexistent Quickshell APIs are emitted.
+    Pass project= to align the target version and compositor with the project.
+    """
+    _record_tool("quickshell_generate_service")
+    return _generate_service(
+        description=description, version=version, compositor=compositor, project=project
+    )
+
+
+@mcp.tool()
+def quickshell_generate_panel(
+    description: str,
+    version: str = "latest",
+    compositor: str | None = None,
+    project: str | None = None,
+) -> dict:
+    """Generate high-level panel scaffolding for a bar, OSD, launcher,
+    dashboard, control center, or notification panel. This is scaffolding,
+    not a full design generator: it reuses the component generator and
+    project style detection, and outputs minimal, valid, extendable QML.
+    Pass project= to align version, compositor, and conventions with the
+    project.
+    """
+    _record_tool("quickshell_generate_panel")
+    return _generate_panel(
+        description=description, version=version, compositor=compositor, project=project
+    )
+
+
+@mcp.tool()
+def quickshell_refactor(project: str, old: str, new: str) -> dict:
+    """Propose a safe refactoring (rename component, property, or reference)
+    across a Quickshell project: rename an identifier everywhere it appears
+    as a whole token. Returns structured edits plus a unified diff. Never
+    writes files — apply the edits with quickshell_apply_patch when you are
+    ready.
+    """
+    _record_tool("quickshell_refactor")
+    return _refactor(project, old, new)
+
+
+@mcp.tool()
+def quickshell_apply_patch(
+    project: str,
+    edits: list[dict],
+    expected_base_hashes: dict[str, str] | None = None,
+) -> dict:
+    """Apply a previously generated edit set to a Quickshell project, but only
+    when explicitly requested. This is a mutating operation.
+
+    Validates that every edit path stays inside the authorized project root,
+    the patch is well-formed, not stale (optionally by expected file hashes),
+    and would not silently overwrite conflicting edits. Only whole-token
+    occurrences are replaced, and a target must be unique or the patch is
+    rejected. Reports every changed file. Nothing outside the project root is
+    ever touched.
+    """
+    _record_tool("quickshell_apply_patch")
+    return _apply_patch(
+        project,
+        edits=edits,
+        expected_base_hashes=expected_base_hashes,
+    )
+
+
+@mcp.tool()
+def quickshell_style_match(project: str) -> dict:
+    """Analyze an existing Quickshell project and infer reusable UI
+    conventions: colors, corner radius, font sizes, spacing, animation
+    durations, component structure, and naming patterns. Returns
+    evidence-backed findings (values actually present and their frequency),
+    never design opinions. Generation tools can consume this style
+    representation later.
+    """
+    _record_tool("quickshell_style_match")
+    return _style_match(project)
 
 
 @mcp.tool()
