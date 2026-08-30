@@ -210,7 +210,9 @@ Scoped Commits (`<scope>: <description>`). Small diffs, one logical change per c
 > ⚠️ A semantic-release CI runs on every merge to `main`. Every commit defaults to a **patch** release. A new feature/tool must signal a minor bump explicitly — there is no type-prefix heuristic anymore. Forgetting `Semver: minor` on a new tool means no minor release.
 
 - `Semver: minor` — new feature, tool, or user-facing addition
-- `BREAKING CHANGE: <description>` — breaking API/config change
+- `Semver: major` — breaking API/config change (preferred over `BREAKING CHANGE:`)
+
+Both are matched as trailing lines in the commit body, e.g. a final `Semver: minor` line. Matching requires a literal colon after `Semver:`/`BREAKING CHANGE:`, so prose that merely *mentions* "BREAKING CHANGE" or "Semver" never triggers a bump.
 
 Example:
 

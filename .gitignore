@@ -20,6 +20,11 @@ result
 result-*
 .direnv/
 
+# Node (used only for local semantic-release debugging)
+node_modules/
+package-lock.json
+package.json
+
 # Editors / OS
 .vscode/
 .idea/
