@@ -25,4 +25,5 @@ CAPABILITY_DEPENDS_ON = (
     "migration",
     "debugging",
     "project",
+    "runtime",
 )

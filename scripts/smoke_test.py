@@ -123,6 +123,12 @@ def main() -> int:
         "quickshell_refactor",
         "quickshell_apply_patch",
         "quickshell_style_match",
+        "quickshell_runtime_start",
+        "quickshell_runtime_stop",
+        "quickshell_runtime_reset",
+        "quickshell_runtime_status",
+        "quickshell_runtime_logs",
+        "quickshell_runtime_ping",
     }
     missing = expected - names
     assert not missing, f"missing tools: {missing}"

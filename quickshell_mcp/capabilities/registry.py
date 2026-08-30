@@ -25,7 +25,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import assistant, debugging, generation, knowledge, migration, project, validation
+from . import (
+    assistant,
+    debugging,
+    generation,
+    knowledge,
+    migration,
+    project,
+    runtime,
+    validation,
+)
 
 __all__ = [
     "ALL_CAPABILITIES",
@@ -72,6 +81,7 @@ _CAPABILITY_MODULES = (
     migration,
     debugging,
     project,
+    runtime,
     assistant,
 )
 
@@ -93,7 +103,7 @@ PLANNED_CAPABILITIES: dict[str, Capability] = {
         status="planned",
         safety_level=_safety_level(name),
     )
-    for name in ("runtime", "inspection", "testing", "performance")
+    for name in ("inspection", "testing", "performance")
 }
 
 ALL_CAPABILITIES: dict[str, Capability] = {**CAPABILITIES, **PLANNED_CAPABILITIES}

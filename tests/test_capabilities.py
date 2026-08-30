@@ -61,6 +61,12 @@ EXPECTED_TOOLS = {
     "quickshell_refactor",
     "quickshell_apply_patch",
     "quickshell_style_match",
+    "quickshell_runtime_start",
+    "quickshell_runtime_stop",
+    "quickshell_runtime_reset",
+    "quickshell_runtime_status",
+    "quickshell_runtime_logs",
+    "quickshell_runtime_ping",
 }
 
 # Tools that report session telemetry / live in server.py, not a domain capability.
@@ -138,7 +144,10 @@ def test_planned_capabilities_are_metadata_only():
 
 def test_implemented_capability_safety_levels():
     for name, cap in registry.CAPABILITIES.items():
-        assert cap.safety_level == "read-only", f"{name} should be read-only"
+        if name in ("runtime", "testing"):
+            assert cap.safety_level == "mutating", f"{name} should be mutating"
+        else:
+            assert cap.safety_level == "read-only", f"{name} should be read-only"
 
 
 def test_planned_capability_safety_levels():

@@ -117,6 +117,17 @@ from .capabilities.project import (  # noqa: F401
     _search_project,
     _validate_project,
 )
+from .capabilities.runtime import (  # noqa: F401
+    _SESSION_REGISTRY,
+    _logs,
+    _ping,
+    _qs_binary,
+    _reset_session,
+    _RuntimeProfile,
+    _start_session,
+    _status_session,
+    _stop_session,
+)
 from .capabilities.validation import (  # noqa: F401
     _api_in_version,
     _changelog_hits,
@@ -161,6 +172,14 @@ from .versions import (  # noqa: F401
 )
 
 mcp = FastMCP("quickshell-mcp")
+
+
+def _require_session(session_id: str):
+    """Look up a tracked runtime session, raising ValueError if unknown."""
+    session = _SESSION_REGISTRY.get(session_id)
+    if session is None:
+        raise ValueError(f"Unknown runtime session '{session_id}'")
+    return session
 
 
 @mcp.tool()
@@ -1014,6 +1033,93 @@ def quickshell_project_migrate(project: str, from_version: str, to_version: str)
     """
     _record_tool("quickshell_project_migrate")
     return _migrate_project(project, from_version=from_version, to_version=to_version)
+
+
+@mcp.tool()
+def quickshell_runtime_start(
+    project: str,
+    entrypoint: str | None = None,
+    config_dir: str | None = None,
+    environment: dict[str, str] | None = None,
+    compositor: str | None = None,
+    arguments: list[str] | None = None,
+) -> dict:
+    """Start a managed, isolated Quickshell runtime session for a project.
+
+    Launches ``qs`` with isolated XDG directories so it never touches your
+    real desktop session or other quickshell instances. Returns a session id
+    and tracks the process for later status, logs, ping, stop, and reset.
+    This is a mutating operation: it launches a process."""
+    _record_tool("quickshell_runtime_start")
+    profile = _RuntimeProfile(
+        project_root=project,
+        entrypoint=entrypoint,
+        config_dir=config_dir,
+        environment=environment or {},
+        compositor=compositor,
+        arguments=arguments or [],
+    )
+    return _start_session(profile).to_dict()
+
+
+@mcp.tool()
+def quickshell_runtime_stop(session_id: str) -> dict:
+    """Stop a managed runtime session safely (SIGTERM, then SIGKILL on timeout).
+
+    Handles already-exited and orphaned processes; stops only the tracked
+    session's process group, never unrelated user processes. Mutating."""
+    _record_tool("quickshell_runtime_stop")
+    session = _require_session(session_id)
+    _stop_session(session)
+    return session.to_dict()
+
+
+@mcp.tool()
+def quickshell_runtime_reset(session_id: str) -> dict:
+    """Reset a managed runtime session to a clean state.
+
+    Stops the current session, cleans up its isolated temp dirs, and starts a
+    fresh session with the same profile under a new session id. Mutating."""
+    _record_tool("quickshell_runtime_reset")
+    session = _require_session(session_id)
+    fresh = _reset_session(session)
+    return fresh.to_dict()
+
+
+@mcp.tool()
+def quickshell_runtime_status(session_id: str) -> dict:
+    """Return structured status for a runtime session: session id, running
+    state, PID, startup duration, exit code, and profile identity. Read-only."""
+    _record_tool("quickshell_runtime_status")
+    session = _require_session(session_id)
+    return _status_session(session)
+
+
+@mcp.tool()
+def quickshell_runtime_logs(
+    session_id: str,
+    stream: str | None = None,
+    severity: str | None = None,
+    text: str | None = None,
+    limit: int = 200,
+) -> dict:
+    """Return structured logs from a runtime session with optional filtering
+    by stream (stdout/stderr), text, and a bounded limit. Read-only."""
+    _record_tool("quickshell_runtime_logs")
+    session = _require_session(session_id)
+    lines = _logs(session, stream=stream, severity=severity, text=text, limit=limit)
+    return {"session_id": session_id, "logs": lines, "count": len(lines)}
+
+
+@mcp.tool()
+def quickshell_runtime_ping(session_id: str) -> dict:
+    """Lightweight readiness/health check for a runtime session.
+
+    Distinguishes: process_running, exited (with exit code), or unhealthy.
+    Fast, read-only."""
+    _record_tool("quickshell_runtime_ping")
+    session = _require_session(session_id)
+    return _ping(session)
 
 
 @mcp.tool()
